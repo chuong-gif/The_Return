@@ -1,0 +1,8 @@
+{
+  "rounds": 90,
+  "assertions": 2076,
+  "seatCoverage": 24,
+  "ruleKinds": 10,
+  "milliseconds": 1996,
+  "passed": true
+}

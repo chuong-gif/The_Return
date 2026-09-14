@@ -1,0 +1,9 @@
+{
+  "name": "TheReturn.Attendance",
+  "references": [
+    "TheReturn.Attendance.Domain",
+    "TheReturn.Core",
+    "TheReturn.Shared",
+    "Unity.InputSystem"
+  ]
+}

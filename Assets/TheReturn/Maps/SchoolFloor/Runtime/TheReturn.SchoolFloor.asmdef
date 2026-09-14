@@ -1,0 +1,10 @@
+{
+  "name": "TheReturn.SchoolFloor",
+  "references": [
+    "TheReturn.Attendance",
+    "TheReturn.Attendance.Domain",
+    "TheReturn.Core",
+    "TheReturn.Shared",
+    "TheReturn.QuietCorridor"
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "TheReturn.QuietCorridor",
+  "references": [
+    "TheReturn.Core",
+    "TheReturn.Shared",
+    "Unity.InputSystem"
+  ]
+}

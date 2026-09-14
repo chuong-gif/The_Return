@@ -1,0 +1,6 @@
+{
+  "name": "TheReturn.Core",
+  "references": [
+    "Unity.InputSystem"
+  ]
+}

@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dcb49a30f80cb946b9faecaed21e5aa, type: 3}
+  m_Name: AttendanceText_VI
+  m_EditorClassIdentifier: TheReturn.Attendance::TheReturn.AttendanceTextCatalog
+  roleNames:
+  - Minh
+  - An
+  - "B\xECnh"
+  - Chi
+  title: "\u0110i\u1EC3m danh sai ng\u01B0\u1EDDi"
+  introduction: "Gh\u1EBF c\xF3 \u0111\u1ECBa ch\u1EC9 H\xE0ng\u2013C\u1ED9t. H\xE0ng
+    1 g\u1EA7n b\u1EA3ng, c\u1ED9t 1 \u1EDF b\xEAn tr\xE1i khi nh\xECn l\xEAn b\u1EA3ng.
+    \u0110\u1ECDc manh m\u1ED1i c\u1EE7a t\u1EEBng vai r\u1ED3i t\xECm ch\u1ED7 ng\u1ED3i."
+  waiting: "C\u1EA7n \xEDt nh\u1EA5t 2 ng\u01B0\u1EDDi \u0111\u1EC3 b\u1EAFt \u0111\u1EA7u."
+  ready: "\u0110\u1EC1 m\u1EDBi \u0111\xE3 s\u1EB5n s\xE0ng. H\xE3y chia s\u1EBB
+    manh m\u1ED1i c\u1EE7a t\u1EEBng vai."
+  wrong: "Ch\u01B0a \u0111\xFAng. \u0110\u1ED1i chi\u1EBFu manh m\u1ED1i r\u1ED3i
+    \u0111\u1EE9ng d\u1EADy \u0111\u1ED5i ch\u1ED7."
+  success: "\u0110i\u1EC3m danh h\u1EE3p l\u1EC7. \u0110\u1EE9ng d\u1EADy v\xE0 \u0111i
+    qua c\u1EEDa EXIT."
+  hints:
+  - "T\xECm c\xE1c manh m\u1ED1i ch\u1EC9 r\xF5 h\xE0ng, c\u1ED9t ho\u1EB7c ch\u1EB5n/l\u1EBB
+    tr\u01B0\u1EDBc."
+  - "Tr\u01B0\u1EDBc/sau l\xE0 h\u01B0\u1EDBng v\u1EC1 b\u1EA3ng/xa b\u1EA3ng. Tr\xE1i/ph\u1EA3i
+    \u0111\u01B0\u1EE3c t\xEDnh khi nh\xECn l\xEAn b\u1EA3ng."
+  - "Chuy\u1EC3n t\u1EEBng quan h\u1EC7 th\xE0nh kho\u1EA3ng c\xE1ch h\xE0ng/c\u1ED9t;
+    \u0111\u1EEBng \u0111o\xE1n ch\u1ED7 t\u1EEB l\u01B0\u1EE3t tr\u01B0\u1EDBc."
+  entries:
+  - kind: 0
+    variants:
+    - "{a} ng\u1ED3i \u1EDF h\xE0ng {row}."
+    - "T\xEAn {a} thu\u1ED9c h\xE0ng {row}."
+    - "S\u1ED5 \u0111i\u1EC3m danh ghi {a}: h\xE0ng {row}."
+  - kind: 1
+    variants:
+    - "{a} ng\u1ED3i \u1EDF c\u1ED9t {column}."
+    - "C\u1ED9t {column} l\xE0 c\u1ED9t c\u1EE7a {a}."
+    - "H\u1ED3 s\u01A1 x\u1EBFp {a} v\xE0o c\u1ED9t {column}."
+  - kind: 2
+    variants:
+    - "{a} \u1EDF tr\u01B0\u1EDBc {b} \u0111\xFAng {steps} h\xE0ng."
+    - "H\xE0ng c\u1EE7a {a} g\u1EA7n b\u1EA3ng h\u01A1n h\xE0ng c\u1EE7a {b} \u0111\xFAng
+      {steps} h\xE0ng."
+    - "T\u1EEB h\xE0ng c\u1EE7a {b}, \u0111i {steps} h\xE0ng v\u1EC1 ph\xEDa b\u1EA3ng
+      s\u1EBD t\u1EDBi h\xE0ng c\u1EE7a {a}."
+  - kind: 3
+    variants:
+    - "{a} \u1EDF sau {b} \u0111\xFAng {steps} h\xE0ng."
+    - "H\xE0ng c\u1EE7a {a} xa b\u1EA3ng h\u01A1n h\xE0ng c\u1EE7a {b} \u0111\xFAng
+      {steps} h\xE0ng."
+    - "T\u1EEB h\xE0ng c\u1EE7a {b}, \u0111i xa b\u1EA3ng {steps} h\xE0ng s\u1EBD
+      t\u1EDBi h\xE0ng c\u1EE7a {a}."
+  - kind: 4
+    variants:
+    - "{a} \u1EDF b\xEAn tr\xE1i {b} \u0111\xFAng {steps} c\u1ED9t."
+    - "C\u1ED9t c\u1EE7a {a} c\xF3 s\u1ED1 nh\u1ECF h\u01A1n c\u1ED9t c\u1EE7a {b}
+      \u0111\xFAng {steps}."
+    - "T\u1EEB c\u1ED9t c\u1EE7a {b}, d\u1ECBch tr\xE1i {steps} c\u1ED9t s\u1EBD
+      t\u1EDBi c\u1ED9t c\u1EE7a {a}."
+  - kind: 5
+    variants:
+    - "{a} \u1EDF b\xEAn ph\u1EA3i {b} \u0111\xFAng {steps} c\u1ED9t."
+    - "C\u1ED9t c\u1EE7a {a} c\xF3 s\u1ED1 l\u1EDBn h\u01A1n c\u1ED9t c\u1EE7a {b}
+      \u0111\xFAng {steps}."
+    - "T\u1EEB c\u1ED9t c\u1EE7a {b}, d\u1ECBch ph\u1EA3i {steps} c\u1ED9t s\u1EBD
+      t\u1EDBi c\u1ED9t c\u1EE7a {a}."
+  - kind: 6
+    variants:
+    - "{a} v\xE0 {b} c\xF9ng h\xE0ng."
+    - "H\xE0ng c\u1EE7a {a} c\u0169ng l\xE0 h\xE0ng c\u1EE7a {b}."
+    - "S\u1ED5 l\u1EDBp x\u1EBFp {a} c\xF9ng h\xE0ng v\u1EDBi {b}."
+  - kind: 7
+    variants:
+    - "{a} v\xE0 {b} c\xF9ng c\u1ED9t."
+    - "C\u1ED9t c\u1EE7a {a} c\u0169ng l\xE0 c\u1ED9t c\u1EE7a {b}."
+    - "S\u1ED5 l\u1EDBp x\u1EBFp {a} c\xF9ng c\u1ED9t v\u1EDBi {b}."
+  - kind: 8
+    variants:
+    - "{a} ng\u1ED3i \u1EDF h\xE0ng mang s\u1ED1 {parity}."
+    - "S\u1ED1 h\xE0ng c\u1EE7a {a} l\xE0 s\u1ED1 {parity}."
+    - "Ki\u1EC3m tra {a} trong c\xE1c h\xE0ng c\xF3 s\u1ED1 {parity}."
+  - kind: 9
+    variants:
+    - "{a} ng\u1ED3i \u1EDF c\u1ED9t mang s\u1ED1 {parity}."
+    - "S\u1ED1 c\u1ED9t c\u1EE7a {a} l\xE0 s\u1ED1 {parity}."
+    - "Ki\u1EC3m tra {a} trong c\xE1c c\u1ED9t c\xF3 s\u1ED1 {parity}."

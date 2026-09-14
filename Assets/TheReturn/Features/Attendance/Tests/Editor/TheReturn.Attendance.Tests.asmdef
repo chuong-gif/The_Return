@@ -1,0 +1,12 @@
+{
+  "name": "TheReturn.Attendance.Tests",
+  "references": [
+    "TheReturn.Attendance",
+    "TheReturn.Attendance.Domain",
+    "TheReturn.Core",
+    "TheReturn.Shared"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

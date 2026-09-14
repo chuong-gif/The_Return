@@ -1,0 +1,31 @@
+# Unity generated data
+[Ll]ibrary/
+[Tt]emp/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+
+# IDE and generated project files
+.vs/
+*.csproj
+*.sln
+*.slnx
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+
+# Local/editor-only files
+.DS_Store
+Thumbs.db
+*.pid
+
+# Local backups and screenshots; keep deliberate documentation in Design/
+/Backups/
+/Captures/

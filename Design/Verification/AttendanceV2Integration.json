@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "playModeChecks": [
+    "2/3/4 participants solve and open door",
+    "retry preserves seed",
+    "new round changes answer",
+    "unchanged roster preserves state",
+    "replacement regenerates round",
+    "one participant waits; two resume",
+    "24 stand points clear",
+    "E selects H6-C4",
+    "self collider ignored; obstacle blocks ray"
+  ],
+  "seatPrefabInstances": 24,
+  "textVariants": 30,
+  "documentedCSharpFiles": 12,
+  "missingScripts": 0,
+  "brokenPrefabs": 0,
+  "multiplayerTested": false
+}
