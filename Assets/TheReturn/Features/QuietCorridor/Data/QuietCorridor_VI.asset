@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 340890b1a595d194b8ce67398173e055, type: 3}
+  m_Name: QuietCorridor_VI
+  m_EditorClassIdentifier: TheReturn.QuietCorridor::TheReturn.QuietCorridorSettings
+  graceSeconds: 3
+  sprintNoisePerSecond: 20
+  speakerNoisePerSecond: 15
+  recoveryPerSecond: 15
+  title: "GI\u1EEE TR\u1EACT T\u1EF0"
+  instructions: "M\u1ED9t ng\u01B0\u1EDDi gi\u1EEF n\xFAt A \u0111\u1EC3 t\u1EAFt
+    loa v\xE0 m\u1EDF c\u1EEDa. Ng\u01B0\u1EDDi qua tr\u01B0\u1EDBc gi\u1EEF n\xFAt
+    B khi A v\u1EABn \u0111ang \u0111\u01B0\u1EE3c gi\u1EEF. Sau \u0111\xF3 ng\u01B0\u1EDDi
+    \u1EDF A nh\u1EA3 n\xFAt v\xE0 \u0111i qua. C\u1EA3 \u0111\u1ED9i \u0111\u1EBFn
+    v\xF9ng \u0111\xEDch \u0111\u1EC3 ho\xE0n th\xE0nh."
+  localControls: "B\u1EA2N TH\u1EEC M\u1ED8T M\xC1Y \u2022 E gi\u1EEF/nh\u1EA3 n\xFAt
+    \u2022 \u0110\u1ED5i vai v\u1EABn gi\u1EEF n\xFAt; vai gi\u1EEF \u0111\u1EE9ng
+    t\u1EA1i ch\u1ED7 \u2022 1\u20134 \u0111\u1ED5i vai \u2022 WASD \u0111i \u2022
+    Shift ch\u1EA1y \u2022 R th\u1EED l\u1EA1i h\xE0nh lang \u2022 Tab menu"
+  failure: "Qu\xE1 \u1ED3n! C\u1EA3 \u0111\u1ED9i v\u1EC1 \u0111\u1EA7u h\xE0nh lang.
+    \u0110i\u1EC3m danh v\u1EABn \u0111\u01B0\u1EE3c gi\u1EEF."
+  success: "C\u1EA3 \u0111\u1ED9i \u0111\xE3 qua! \u0110\xE3 ho\xE0n th\xE0nh Gi\u1EEF
+    tr\u1EADt t\u1EF1."
+  waiting: "\u0110i\u1EC3m danh xong: \u0111\u1EE9ng d\u1EADy v\xE0 \u0111\u01B0a
+    t\u1EA5t c\u1EA3 c\xE1c vai t\u1EDBi v\xF9ng T\u1EACP H\u1EE2P ngo\xE0i c\u1EEDa
+    l\u1EDBp."

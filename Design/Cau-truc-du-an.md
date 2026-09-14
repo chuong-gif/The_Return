@@ -59,3 +59,11 @@ Khi thêm/sửa/xóa hàm, cập nhật danh sách đầu file cùng lúc. Giữ
 Để kết nối mạng, thêm adapter gọi ApplyParticipantRoster với các ID kết nối ổn định. Host phải sở hữu seed, đề và AttendanceState; client chỉ gửi yêu cầu tương tác. Chưa coi bộ điều khiển đổi vai trên một máy là lớp network.
 
 Để làm câu đố mới, tái sử dụng điều khiển nhân vật, cửa và prefab graybox; thêm Domain/Data/Presentation của tính năng mới. Không thêm luật mới vào AttendancePrototype nếu luật đó không thuộc điểm danh.
+
+## Map tầng học và nhiệm vụ 2
+
+Maps/SchoolFloor/Scenes chứa scene tích hợp SchoolFloorPrototype (giữ GUID scene lớp cũ). Maps/SchoolFloor/Runtime điều phối các nhiệm vụ; Editor chứa công cụ gắn hành lang và Tests/Editor chứa kiểm chứng liên nhiệm vụ. Features/QuietCorridor dùng Runtime/Domain, Runtime/Data, Runtime/Presentation, Data và Prefabs. Assembly Domain không tham chiếu Unity; hai feature không tham chiếu nhau, assembly map tham chiếu cả hai.
+
+## Sửa bảng điểm
+
+Features/GradeRepair gồm Runtime/Domain (luật thuần C#), Runtime/Data (catalog), Runtime/Presentation (terminal và controller), Data (asset text) và Prefabs. Maps/SchoolFloor chứa flow/HUD, công cụ ghép phòng trong Editor và kiểm tra liên nhiệm vụ trong Tests/Editor. Các feature không tham chiếu nhau; flow map chuyển điều khiển và giữ kết quả nhiệm vụ trước. Xem Sua-bang-diem.md.

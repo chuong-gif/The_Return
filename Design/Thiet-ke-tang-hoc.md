@@ -6,7 +6,7 @@ Ngày 13 tháng 9 năm 2026
 
 Game giải đố góc nhìn thứ nhất cho 2–4 người trong một ngôi trường siêu nhiên, có không khí kỳ lạ và những tình huống gây cười do phối hợp. Giai đoạn đầu gồm sảnh chờ và tầng học. Trong tài liệu này dùng cách gọi của bạn: Map 1 là sảnh chờ, Map 2 là tầng học. Tài liệu Word gốc đánh số hai khu này là 0 và 1.
 
-Bản này đề xuất thiết kế lại cả 7 nhiệm vụ của tầng học. Đây là thiết kế để triển khai và chơi thử; độ khó, thời lượng và mức gây cười phải được kiểm chứng với người chơi. Bản Unity hiện triển khai câu số 1 v2 trên một máy, hỗ trợ đội 2–4 vai. Các nhiệm vụ còn lại trong tài liệu này cần được rà soát theo quy mô đội mới trước khi triển khai. Chưa có kết nối mạng.
+Bản này đề xuất thiết kế lại cả 7 nhiệm vụ của tầng học. Đây là thiết kế để triển khai và chơi thử; độ khó, thời lượng và mức gây cười phải được kiểm chứng với người chơi. Bản Unity hiện triển khai ba nhiệm vụ đầu trong cùng map trên một máy, hỗ trợ đội 2–4 vai. Các nhiệm vụ còn lại trong tài liệu này cần được rà soát theo quy mô đội mới trước khi triển khai. Chưa có kết nối mạng.
 
 Giữ nét riêng của bản gốc: chia sẻ thông tin, tuân thủ nội quy kỳ quặc, sự bất thường tăng dần. Dùng các thao tác đơn giản như xem manh mối, ngồi/đứng, chọn thẻ, bấm nút và đi qua vùng kiểm tra. Mỗi quy luật siêu nhiên phải có dấu hiệu để người chơi suy ra được.
 
@@ -30,6 +30,8 @@ Phần này đã được thay thế bằng [thiết kế v2](Diem-danh-v2.md): 
 
 ## 2 Giữ trật tự ở hành lang
 
+Bản thử đã triển khai trong cùng scene lớp học; xem [Giữ trật tự](Giu-trat-tu.md) cho luật hiện tại, chỉnh sửa và cách chơi.
+
 **Vai trò:** thay nhịp, dạy phối hợp khi di chuyển. Mục tiêu 1–2 phút.
 
 Hành lang có một loa bị rè khiến cửa cách âm không mở. Nội quy nêu rõ: “Giữ nút tắt loa để mở cửa.” Bàn điều khiển ở hai đầu cùng điều khiển chế độ im lặng. Giữ một nút bất kỳ thì loa tắt và cửa mở; thả cả hai thì có 3 giây cảnh báo trước khi cửa đóng.
@@ -38,13 +40,15 @@ Một người giữ ở đầu gần, ba người qua. Một người bên kia 
 
 Đo tiếng ồn bằng sự kiện game đã định nghĩa: chạy làm tăng thanh cảnh báo; đi bộ không tăng; tương tác làm rơi đồ có thể bổ sung sau. Bản đầu không thêm nhặt ném vật lý chỉ để phục vụ nhiệm vụ này. Không lấy âm thanh voice chat hoặc microphone làm dữ liệu.
 
-Ngưỡng thử ban đầu: thanh 0–100, chạy +20 mỗi giây, đứng/đi bộ giảm 15 mỗi giây. Loa bật +15 mỗi giây sau 3 giây cảnh báo. Khi đủ 100, cả đội trở lại checkpoint đầu hành lang và thanh về 0. Không xóa nhiệm vụ 1 đã hoàn thành.
+Ngưỡng thử ban đầu: thanh 0–100, chạy +20 mỗi giây, đứng/đi bộ giảm 15 mỗi giây khi không có nguồn gây ồn. Loa bật +15 mỗi giây sau 3 giây cảnh báo. Khi đủ 100, cả đội trở lại checkpoint đầu hành lang và thanh về 0. Không xóa nhiệm vụ 1 đã hoàn thành.
 
 Cửa phải có cảm biến không đóng xuyên người; nếu có người trong cửa, giữ mở rồi tiếp tục khi vùng cửa trống. Hiện thanh và lý do tăng để đội biết lỗi đến từ đâu. Sự kiện chuông đổi tiết không được chạy trong đoạn này.
 
 **Xây dựng:** hai nút giữ, vùng hành lang, biến mức cảnh báo, vùng chống kẹp cửa, checkpoint. Host tính thời gian và độ ồn; client chỉ hiển thị. Khi người giữ mất kết nối phải hủy thao tác giữ và phát cảnh báo.
 
 ## 3 Sửa bảng điểm trong phòng giáo viên
+
+Đã có bản thử nối sau hành lang trong cùng map, hỗ trợ đội 2–4; xem [Sửa bảng điểm](Sua-bang-diem.md) để chơi và chỉnh sửa.
 
 **Vai trò:** câu logic có thao tác, yêu cầu đối chiếu chứng cứ. Mục tiêu 4–5 phút.
 
@@ -179,7 +183,7 @@ Tạo bộ prefab trường học: đoạn tường, cửa, cửa sổ, bàn gh�
 
 Bản thử điểm danh tập trung vào khả năng hiểu manh mối và thao tác ngồi/đứng. Cho phép đổi vai trên một máy để tác giả tự diễn tập. Cảnh được tạo từ hình khối và vật liệu trong dự án; không dùng tài nguyên tải ngoài.
 
-Chưa có: co-op qua mạng, lobby hoàn chỉnh, voice chat, lưu tiến trình, build phát hành và sáu nhiệm vụ còn lại. Không đánh đồng bài kiểm tra logic tự động với playtest bốn người thật.
+Chưa có: co-op qua mạng, lobby hoàn chỉnh, voice chat, lưu tiến trình, build phát hành và các nhiệm vụ 4–7. Không đánh đồng bài kiểm tra logic tự động với playtest bốn người thật.
 
 ## Cách đánh giá với người chơi
 

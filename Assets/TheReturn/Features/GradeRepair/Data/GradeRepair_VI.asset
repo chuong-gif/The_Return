@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c16b9595ac3bfd84c91e7cc372aac3b7, type: 3}
+  m_Name: GradeRepair_VI
+  m_EditorClassIdentifier: TheReturn.GradeRepair::TheReturn.GradeRepairCatalog
+  title: "S\u1EECA B\u1EA2NG \u0110I\u1EC2M"
+  introduction: "Tra h\u1ED3 s\u01A1 tr\xEAn b\u1ED1n b\xE0n. M\u1ED7i vai ph\u1EE5
+    tr\xE1ch m\u1ED9t ph\u1EA7n t\xE0i li\u1EC7u. \u0110\u1ED1i chi\u1EBFu m\xE3
+    h\u1ECDc sinh r\u1ED3i d\xF9ng hai phi\u1EBFu b\u1ED5 sung v\xE0 bi\xEAn b\u1EA3n
+    chuy\u1EC3n \u0111i\u1EC3m t\u1EA1i b\u1EA3ng s\u1EEDa. Khi \u0111\u1EE7 ch\u1EE9ng
+    t\u1EEB, n\u1ED9p b\u1EA3ng c\xF3 t\u1ED5ng 32, kh\xF4ng ai d\u01B0\u1EDBi 6."
+  documentTitles:
+  - "S\u1ED5 \u0111\u1ED1i chi\u1EBFu m\xE3"
+  - "Phi\u1EBFu b\u1ED5 sung 01"
+  - "Phi\u1EBFu b\u1ED5 sung 02"
+  - "Bi\xEAn b\u1EA3n nh\u1EADp nh\u1EA7m"
+  supplementVariants:
+  - "H\u1ECDc sinh {code}: b\xE0i th\u1EF1c h\xE0nh ch\u01B0a \u0111\u01B0\u1EE3c
+    c\u1ED9ng. B\u1ED5 sung \u0111\xFAng 2 \u0111i\u1EC3m v\xE0o h\u1ED3 s\u01A1
+    n\xE0y. Phi\u1EBFu ch\u1EC9 s\u1EED d\u1EE5ng m\u1ED9t l\u1EA7n."
+  - "\u0110\xE3 x\xE1c minh b\xE0i n\u1ED9p mu\u1ED9n c\u1EE7a {code}. Cho ph\xE9p
+    b\u1ED5 sung 2 \u0111i\u1EC3m; kh\xF4ng \xE1p d\u1EE5ng cho h\u1ECDc sinh kh\xE1c."
+  transferVariants:
+  - "C\xF3 1 \u0111i\u1EC3m c\u1EE7a {target} b\u1ECB ghi v\xE0o {source}. Tr\u1EEB
+    1 t\u1EA1i h\u1ED3 s\u01A1 {source} v\xE0 tr\u1EA3 1 cho {target}. Kh\xF4ng t\u1EA1o
+    th\xEAm \u0111i\u1EC3m."
+  - "L\u1ED7i nh\u1EADp li\u1EC7u: {source} \u0111ang th\u1EEBa 1 \u0111i\u1EC3m
+    thu\u1ED9c v\u1EC1 {target}. Chuy\u1EC3n l\u1EA1i \u0111\xFAng 1 \u0111i\u1EC3m
+    theo bi\xEAn b\u1EA3n n\xE0y."
+  success: "B\u1EA3ng \u0111i\u1EC3m \u0111\xE3 \u0111\u01B0\u1EE3c kh\xF4i ph\u1EE5c.
+    C\u1EEDa ph\xF2ng gi\xE1o vi\xEAn \u0111\xE3 m\u1EDF."
+  controls: "E xem/\u0111\xF3ng \u2022 1\u20134 \u0111\u1ED5i vai \u2022 WASD \u0111i
+    \u2022 R th\u1EED l\u1EA1i b\u1EA3ng \u2022 F5 h\u1ED3 s\u01A1 m\u1EDBi \u2022
+    Tab menu \u2022 B\u1EA2N TH\u1EEC M\u1ED8T M\xC1Y"
+  wrongRecord: "C\xF3 ch\u1EE9ng t\u1EEB \xE1p sai h\u1ED3 s\u01A1 ho\u1EB7c sai
+    chi\u1EC1u chuy\u1EC3n. \u0110\u1ED1i chi\u1EBFu m\xE3; c\xF3 th\u1EC3 ho\xE0n
+    t\xE1c."
+  boundsError: "Thao t\xE1c l\xE0m \u0111i\u1EC3m ra ngo\xE0i 0\u201310. Ki\u1EC3m
+    tra th\u1EE9 t\u1EF1 chuy\u1EC3n v\xE0 b\u1ED5 sung."
+  missingEvidence: "Ch\u01B0a \u0111\u1EE7 h\u1ED3 s\u01A1 \u0111\u01B0\u1EE3c c\xE1c
+    vai ph\u1EE5 tr\xE1ch \u0111\u1ECDc. Ki\u1EC3m tra b\u1ED1n b\xE0n ch\u1EE9ng
+    t\u1EEB."
+  missingVouchers: "Ch\u01B0a \xE1p d\u1EE5ng \u0111\u1EE7 hai phi\u1EBFu b\u1ED5
+    sung v\xE0 bi\xEAn b\u1EA3n chuy\u1EC3n \u0111i\u1EC3m."

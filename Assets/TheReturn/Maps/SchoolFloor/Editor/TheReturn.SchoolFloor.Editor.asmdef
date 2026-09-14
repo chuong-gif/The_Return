@@ -1,13 +1,16 @@
 {
-  "name": "TheReturn.SchoolFloor",
+  "name": "TheReturn.SchoolFloor.Editor",
   "references": [
+    "TheReturn.SchoolFloor",
     "TheReturn.Attendance",
     "TheReturn.Attendance.Domain",
+    "TheReturn.QuietCorridor",
     "TheReturn.Core",
     "TheReturn.Shared",
-    "TheReturn.QuietCorridor",
-    "TheReturn.QuietCorridor.Domain",
     "TheReturn.GradeRepair",
     "TheReturn.GradeRepair.Domain"
+  ],
+  "includePlatforms": [
+    "Editor"
   ]
 }

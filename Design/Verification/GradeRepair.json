@@ -1,0 +1,10 @@
+{
+    "assertions": 4257,
+    "seeds": 90,
+    "groups": [
+        "90 seeds / reproducibility / every role contributes / valid operation orders / wrong evidence / undo / bounds",
+        "Team 2: all three tasks / physical doors / private evidence / board authorization / retry",
+        "Team 3: all three tasks / physical doors / private evidence / board authorization / retry",
+        "Team 4: all three tasks / physical doors / private evidence / board authorization / retry"
+    ]
+}

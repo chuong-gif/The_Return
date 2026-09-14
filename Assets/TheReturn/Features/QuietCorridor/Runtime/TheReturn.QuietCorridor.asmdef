@@ -3,6 +3,7 @@
   "references": [
     "TheReturn.Core",
     "TheReturn.Shared",
-    "Unity.InputSystem"
+    "Unity.InputSystem",
+    "TheReturn.QuietCorridor.Domain"
   ]
 }

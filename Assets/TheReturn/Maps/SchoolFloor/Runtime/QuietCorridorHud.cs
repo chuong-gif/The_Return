@@ -45,7 +45,7 @@ namespace TheReturn
             GUI.DrawTexture(new Rect(38,113,480*game.State.Noise/100f,14), Texture2D.whiteTexture);
             GUI.color = color;
             string reason = game.State.Solved ? "Hoàn thành • Cửa giữ mở" :
-                game.State.SpeakerOn ? "Loa đang rè: +15/giây" :
+                game.State.SpeakerOn ? "Loa đang rè: +" + game.settings.speakerNoisePerSecond.ToString("0.#") + "/giây" :
                 game.State.Held ? "Loa đã tắt • Đi bộ để giảm ồn" : "Sắp bật loa: " + game.State.Grace.ToString("0.0") + " giây";
             if (game.party.IsSprinting && !game.State.Solved) reason += " • Đang chạy!";
             GUI.Label(new Rect(38,140,484,56), reason, small);

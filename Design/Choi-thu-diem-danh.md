@@ -1,6 +1,6 @@
 # Chơi thử điểm danh v2
 
-Scene: Assets/TheReturn/Features/Attendance/Scenes/AttendancePrototype.unity.
+Scene: Assets/TheReturn/Maps/SchoolFloor/Scenes/SchoolFloorPrototype.unity.
 
 Nhấn Play, chọn tab Game, bấm 2, 3 hoặc 4 người rồi Bắt đầu. Đây là chế độ diễn tập một máy; dùng 1–N để đổi vai và đọc từng gói manh mối.
 
@@ -24,3 +24,5 @@ Xem Diem-danh-v2.md cho quy luật sinh đề và Cau-truc-du-an.md cho tổ ch�
 Menu Rebuild Logic Classroom tạo lại bố cục scene từ prefab. Lưu thay đổi trước khi dùng; thao tác này thay bố cục scene sinh tự động, nhưng giữ prefab và catalog text đã có. Không cần rebuild để chỉnh text.
 
 Chưa có multiplayer, voice chat hoặc build phát hành. Phiên này đã kiểm tra bằng Play Mode và mô phỏng roster/input.
+
+Sau khi ra cửa: đưa cả đội tới vùng TẬP HỢP để bắt đầu nhiệm vụ 2 trong cùng scene. Xem Giu-trat-tu.md.

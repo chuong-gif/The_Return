@@ -151,11 +151,14 @@ namespace TheReturn
             speakerIndicator.SetPropertyBlock(speakerProperties);
         }
 
-        /// <summary>Không nhận tham số; ngừng input và thả quyền giữ khi map chuyển sang giai đoạn khác.</summary>
-        public void StopSession()
+        /// <summary>Nhận cờ reset; ngừng input, nhả nút; reset=false giữ kết quả khi chuyển nhiệm vụ.</summary>
+        public void StopSession(bool reset = true)
         {
             Active = false;
-            if (State != null) State.Reset();
+            if (State == null) return;
+            if (reset) State.Reset();
+            else for (int i = 0; i < State.PlayerCount; i++) State.Release(i);
+            RefreshPresentation();
         }
     }
 }
