@@ -9,7 +9,12 @@
     "TheReturn.Core",
     "TheReturn.Shared",
     "TheReturn.GradeRepair",
-    "TheReturn.GradeRepair.Domain"
+    "TheReturn.GradeRepair.Domain",
+    "TheReturn.NavigationExam",
+    "TheReturn.NavigationExam.Domain",
+    "TheReturn.DontLookBack",
+    "TheReturn.DontLookBack.Domain",
+    "Unity.ugui"
   ],
   "includePlatforms": [
     "Editor"

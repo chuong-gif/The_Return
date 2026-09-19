@@ -22,6 +22,7 @@ namespace TheReturn
         /// <summary>Không nhận tham số; vẽ trạng thái và các nút tiếp tục/thử lại, phục hồi ma trận GUI.</summary>
         void OnGUI()
         {
+            if (flow.useCanvas) return;
             var game = flow.corridor;
             if (!game.Active || game.State == null) return;
             if (body == null)

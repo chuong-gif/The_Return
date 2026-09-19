@@ -61,13 +61,12 @@ namespace TheReturn
             RefreshLabels();
         }
 
-        /// <summary>Không nhận tham số; tắt input và bảng khi người dùng chơi lại cả map.</summary>
-        public void StopSession()
+        /// <summary>Nhận cờ reset; tắt input và bảng, reset=false giữ điểm và cửa khi chuyển nhiệm vụ.</summary>
+        public void StopSession(bool reset = true)
         {
             Active = false;
             PanelOpen = false;
-            State = null;
-            exitDoor.SetOpen(false, true);
+            if (reset) { State = null; exitDoor.SetOpen(false, true); }
         }
 
         /// <summary>Không nhận tham số; đọc phím, cập nhật tầm tương tác, chỉ di chuyển khi đóng giao diện.</summary>

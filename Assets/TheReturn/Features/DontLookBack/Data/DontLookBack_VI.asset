@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5208c48f8e6a20745b4a9e8d9521d8da, type: 3}
+  m_Name: DontLookBack_VI
+  m_EditorClassIdentifier: TheReturn.DontLookBack::TheReturn.DontLookBackCatalog
+  title: "KH\xD4NG \u0110\u01AF\u1EE2C QUAY \u0110\u1EA6U"
+  introduction: "H\u01B0\u1EDBng an to\xE0n theo m\u0169i t\xEAn +Z. \u0110i hai
+    l\xE0n, l\xF9i \u0111\u1EC3 \u0111\u1ECDc l\u01B0ng \u0111\u1ED3ng \u0111\u1ED9i
+    b\u1EB1ng E. \u0110\u1ED5i v\u1ECB tr\xED tr\u01B0\u1EDBc/sau, r\u1ED3i t\u1EADp
+    h\u1EE3p cu\u1ED1i h\xE0nh lang v\xE0 nh\u1EADp k\xFD hi\u1EC7u theo s\u1ED1
+    th\u1EBB."
+  warning: "\u0110ang nh\xECn qu\xE1 l\u1EC7ch! Nh\xECn theo m\u0169i t\xEAn. Qu\xE1
+    110\xB0 trong 0,6 gi\xE2y s\u1EBD v\u1EC1 checkpoint."
+  penalty: "C\xF3 ng\u01B0\u1EDDi quay \u0111\u1EA7u. \u0110\u1ED9i tr\u1EDF v\u1EC1
+    checkpoint; ghi ch\xE9p v\xE0 m\xE3 \u0111\xE3 nh\u1EADp v\u1EABn \u0111\u01B0\u1EE3c
+    gi\u1EEF."
+  success: "\u0110\xE3 x\xE1c nh\u1EADn \u0111\u1EE7 k\xFD hi\u1EC7u. C\u1EEDa m\u1EDF
+    \u2014 c\u1EA3 \u0111\u1ED9i c\xF3 th\u1EC3 \u0111i ti\u1EBFp."
+  controls: "WASD \u0111i/l\xF9i \u2022 E \u0111\u1ECDc th\u1EBB/m\u1EDF kh\xF3a
+    \u2022 1\u20134 \u0111\u1ED5i vai \u2022 R th\u1EED l\u1EA1i \u2022 Tab menu"
+  symbolNames:
+  - "Tam gi\xE1c"
+  - "Tr\xF2n"
+  - "Vu\xF4ng"
+  - "Ch\u1EEF X"
+  - "D\u1EA5u c\u1ED9ng"
+  - "H\xECnh thoi"
+  worldSymbols:
+  - "\u25B3"
+  - "\u25CB"
+  - "\u25A1"
+  - X
+  - +
+  - "\u25C7"

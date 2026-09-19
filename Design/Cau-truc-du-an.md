@@ -67,3 +67,13 @@ Maps/SchoolFloor/Scenes chứa scene tích hợp SchoolFloorPrototype (giữ GUI
 ## Sửa bảng điểm
 
 Features/GradeRepair gồm Runtime/Domain (luật thuần C#), Runtime/Data (catalog), Runtime/Presentation (terminal và controller), Data (asset text) và Prefabs. Maps/SchoolFloor chứa flow/HUD, công cụ ghép phòng trong Editor và kiểm tra liên nhiệm vụ trong Tests/Editor. Các feature không tham chiếu nhau; flow map chuyển điều khiển và giữ kết quả nhiệm vụ trước. Xem Sua-bang-diem.md.
+
+## Bài kiểm tra dẫn đường
+Features/NavigationExam chứa Runtime/Domain, Runtime/Data, Runtime/Presentation, Data và Prefabs. Domain giữ luật lượt/ô/dấu; map flow giữ tiến trình bốn nhiệm vụ. Công cụ dựng và kiểm tra nằm trong Maps/SchoolFloor/Editor và Tests/Editor.
+
+
+## UI Canvas và công cụ test
+Shared/Runtime/UI chứa theme và binding dùng chung; Shared/UI/Themes và Shared/UI/Prefabs chứa tài sản giao diện tái sử dụng. Maps/SchoolFloor/UI/Prefabs chứa Canvas của map; Runtime/UI nối giao diện với gameplay, Runtime/Testing chứa bộ chọn nhiệm vụ dành cho Editor/Development Build. Công cụ dựng giao diện nằm trong Editor. Hướng dẫn sử dụng: [UI và test nhanh](UI-va-test-nhanh.md).
+
+## Không được quay đầu
+Features/DontLookBack chứa Runtime/Domain, Runtime/Data, Runtime/Presentation, Data và Prefabs. Map flow nối sau NavigationExam; Canvas có DontLookBackPanel và nút test thứ năm. Domain không tham chiếu Unity. Xem [hướng dẫn nhiệm vụ 5](Khong-duoc-quay-dau.md).

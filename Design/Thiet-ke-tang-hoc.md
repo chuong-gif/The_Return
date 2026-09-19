@@ -6,7 +6,7 @@ Ngày 13 tháng 9 năm 2026
 
 Game giải đố góc nhìn thứ nhất cho 2–4 người trong một ngôi trường siêu nhiên, có không khí kỳ lạ và những tình huống gây cười do phối hợp. Giai đoạn đầu gồm sảnh chờ và tầng học. Trong tài liệu này dùng cách gọi của bạn: Map 1 là sảnh chờ, Map 2 là tầng học. Tài liệu Word gốc đánh số hai khu này là 0 và 1.
 
-Bản này đề xuất thiết kế lại cả 7 nhiệm vụ của tầng học. Đây là thiết kế để triển khai và chơi thử; độ khó, thời lượng và mức gây cười phải được kiểm chứng với người chơi. Bản Unity hiện triển khai ba nhiệm vụ đầu trong cùng map trên một máy, hỗ trợ đội 2–4 vai. Các nhiệm vụ còn lại trong tài liệu này cần được rà soát theo quy mô đội mới trước khi triển khai. Chưa có kết nối mạng.
+Bản này đề xuất thiết kế lại cả 7 nhiệm vụ của tầng học. Đây là thiết kế để triển khai và chơi thử; độ khó, thời lượng và mức gây cười phải được kiểm chứng với người chơi. Bản Unity hiện triển khai bốn nhiệm vụ đầu trong cùng map trên một máy, hỗ trợ đội 2–4 vai. Các nhiệm vụ còn lại trong tài liệu này cần được rà soát theo quy mô đội mới trước khi triển khai. Chưa có kết nối mạng.
 
 Giữ nét riêng của bản gốc: chia sẻ thông tin, tuân thủ nội quy kỳ quặc, sự bất thường tăng dần. Dùng các thao tác đơn giản như xem manh mối, ngồi/đứng, chọn thẻ, bấm nút và đi qua vùng kiểm tra. Mỗi quy luật siêu nhiên phải có dấu hiệu để người chơi suy ra được.
 
@@ -71,6 +71,8 @@ Nộp sai chỉ báo loại lỗi: thiếu chứng từ, sai hồ sơ, chưa đ�
 **Xây dựng:** bảng số nhỏ, thẻ chứng từ có ID, ô chọn hồ sơ, ba loại thao tác hữu hạn, lịch sử hoàn tác. Không nhận chữ viết tay hoặc câu trả lời tự do. Đây là logic rời rạc, không cần AI diễn giải.
 
 ## 4 Bài kiểm tra dẫn đường
+
+Đã có bản thử trong cùng map, hỗ trợ 2–4 người; xem [Bài kiểm tra](Bai-kiem-tra.md).
 
 **Vai trò:** đổi từ suy luận chỗ ngồi sang phối hợp theo không gian. Mục tiêu 3–4 phút.
 
@@ -183,7 +185,7 @@ Tạo bộ prefab trường học: đoạn tường, cửa, cửa sổ, bàn gh�
 
 Bản thử điểm danh tập trung vào khả năng hiểu manh mối và thao tác ngồi/đứng. Cho phép đổi vai trên một máy để tác giả tự diễn tập. Cảnh được tạo từ hình khối và vật liệu trong dự án; không dùng tài nguyên tải ngoài.
 
-Chưa có: co-op qua mạng, lobby hoàn chỉnh, voice chat, lưu tiến trình, build phát hành và các nhiệm vụ 4–7. Không đánh đồng bài kiểm tra logic tự động với playtest bốn người thật.
+Chưa có: co-op qua mạng, lobby hoàn chỉnh, voice chat, lưu tiến trình, build phát hành và các nhiệm vụ 5–7. Không đánh đồng bài kiểm tra logic tự động với playtest bốn người thật.
 
 ## Cách đánh giá với người chơi
 

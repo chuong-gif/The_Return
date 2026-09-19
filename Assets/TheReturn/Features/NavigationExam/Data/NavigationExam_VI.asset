@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 203b90507b6dac14081a2650a5d190a0, type: 3}
+  m_Name: NavigationExam_VI
+  m_EditorClassIdentifier: TheReturn.NavigationExam::TheReturn.NavigationExamCatalog
+  title: "B\xC0I KI\u1EC2M TRA D\u1EAAN \u0110\u01AF\u1EDCNG"
+  introduction: "\u0110\u01B0a qu\xE2n t\u1EEB {start} t\u1EDBi {goal}. C\u1ED9t
+    A\u2013C t\u1EEB tr\xE1i sang ph\u1EA3i, h\xE0ng 1\u20133 t\u1EEB tr\xEAn xu\u1ED1ng.
+    M\u1ED7i b\u01B0\u1EDBc \u0111\xFAng chuy\u1EC3n quy\u1EC1n cho vai ti\u1EBFp
+    theo. Trao \u0111\u1ED5i manh m\u1ED1i ri\xEAng v\xE0 l\u1EA5y \u0111\u1EE7 hai
+    con d\u1EA5u theo th\u1EE9 t\u1EF1."
+  clues:
+  - "\xD4 {blocked1} b\u1ECB kh\xF3a. Kh\xF4ng \u0111\u01B0\u1EE3c b\u01B0\u1EDBc
+    v\xE0o."
+  - "\xD4 {blocked2} b\u1ECB kh\xF3a. Kh\xF4ng \u0111\u01B0\u1EE3c b\u01B0\u1EDBc
+    v\xE0o."
+  - "\xD4 {blocked3} b\u1ECB kh\xF3a. Kh\xF4ng \u0111\u01B0\u1EE3c b\u01B0\u1EDBc
+    v\xE0o."
+  - "L\u1EA5y S\u1ED4 L\u1EDAP t\u1EA1i {first} tr\u01B0\u1EDBc CH\xCCA KH\xD3A t\u1EA1i
+    {second}. C\u1EA1nh {first} \u2192 {second} ch\u1EC9 \u0111i m\u1ED9t chi\u1EC1u;
+    kh\xF4ng \u0111i ng\u01B0\u1EE3c."
+  success: "\u0110\xE3 v\u01B0\u1EE3t qua b\xE0i ki\u1EC3m tra. C\u1EEDa \u0111\xE3
+    m\u1EDF; c\xE1c nhi\u1EC7m v\u1EE5 tr\u01B0\u1EDBc \u0111\u01B0\u1EE3c gi\u1EEF."
+  controls: "E m\u1EDF/\u0111\xF3ng sa b\xE0n \u2022 1\u20134 \u0111\u1ED5i vai \u2022
+    WASD \u0111i \u2022 R th\u1EED l\u1EA1i \u2022 F5 bi\u1EBFn th\u1EC3 ti\u1EBFp
+    \u2022 Tab menu \u2022 TH\u1EEC M\u1ED8T M\xC1Y"

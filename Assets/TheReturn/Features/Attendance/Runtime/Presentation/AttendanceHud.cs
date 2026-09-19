@@ -13,6 +13,7 @@ namespace TheReturn
     public sealed class AttendanceHud : MonoBehaviour
     {
         public AttendancePrototype session;
+        public bool useCanvas;
         GUIStyle heading, body, small, button;
         Vector2 clueScroll;
 
@@ -40,6 +41,7 @@ namespace TheReturn
         /// <summary>Không nhận tham số; đọc session và vẽ UI theo tỷ lệ 1280×720, không quyết định đáp án.</summary>
         void OnGUI()
         {
+            if (useCanvas) return;
             if (session == null || session.textCatalog == null) return;
             PrepareStyles();
             Matrix4x4 previous = GUI.matrix;

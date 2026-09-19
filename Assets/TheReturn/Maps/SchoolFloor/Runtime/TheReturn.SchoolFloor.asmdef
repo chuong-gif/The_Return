@@ -8,6 +8,12 @@
     "TheReturn.QuietCorridor",
     "TheReturn.QuietCorridor.Domain",
     "TheReturn.GradeRepair",
-    "TheReturn.GradeRepair.Domain"
+    "TheReturn.GradeRepair.Domain",
+    "TheReturn.NavigationExam",
+    "TheReturn.NavigationExam.Domain",
+    "Unity.ugui",
+    "Unity.InputSystem",
+    "TheReturn.DontLookBack",
+    "TheReturn.DontLookBack.Domain"
   ]
 }

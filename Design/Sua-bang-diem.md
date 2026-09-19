@@ -85,3 +85,5 @@ Trong Play, chạy `TheReturn.Editor.GradeRepairChecks.Run()` để kiểm tra l
 Ảnh: `Captures/grade-repair-board.png`, `grade-repair-document.png`, `school-floor-three-tasks.png`.
 
 Chưa có mạng, lưu tiến trình lâu dài hoặc chuông đổi tiết sau nhiệm vụ 3. Lối sau cửa hiện là vùng kết thúc phần thử; nhiệm vụ kế tiếp sẽ nối tiếp tại đây. Độ vui/khó cần playtest nhóm thật.
+
+Cập nhật: sau khi sửa bảng điểm và đóng bảng bằng E, nhiệm vụ 4 tiếp nối trong phòng kiểm tra. Xem Bai-kiem-tra.md; chưa bật chuông đổi tiết.

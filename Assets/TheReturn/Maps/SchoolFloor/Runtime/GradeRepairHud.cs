@@ -38,6 +38,7 @@ namespace TheReturn
         /// <summary>Không nhận tham số; vẽ HUD theo khung 1280×720 và phục hồi ma trận sau khi vẽ.</summary>
         void OnGUI()
         {
+            if (flow.useCanvas) return;
             var game = flow.gradeRepair;
             if (game == null || !game.Active || game.State == null) return;
             Prepare();
