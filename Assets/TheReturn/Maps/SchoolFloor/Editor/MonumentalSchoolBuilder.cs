@@ -4,6 +4,7 @@
  * - Build: kiểm tra scene, đặt lại các root nhiệm vụ, dựng art và lưu scene.
  * - ArrangeMissionIslands: xoay/đặt từng phòng theo vòng đứng và giữ vùng tập hợp nhiệm vụ 1 ở cửa lớp.
  * - BuildAtrium: tạo vực trung tâm, cột, vòng cầu, đồng hồ và các khối lơ lửng.
+ * - BuildMissionGate: tạo cổng nhận diện và rào bảo vệ tái sử dụng cho từng đảo nhiệm vụ.
  * - SetRootCenter: nhận root, tâm nguồn, tâm đích và góc; tính transform không làm biến dạng phòng.
  * - Block / Cylinder / Label: tạo module hình học và biển chỉ dẫn có thể thay model.
  * - MakeMaterial: tạo hoặc cập nhật material URP dùng chung cho môi trường.
@@ -99,6 +100,7 @@ namespace TheReturn.Editor
                 Vector3 toward=(new Vector3(0,centers[i].y,31)-centers[i]).normalized;
                 Block("MissionBeacon_"+(i+1),centers[i]+Vector3.up*5f,new Vector3(.7f,10f,.7f),colors[i],Vector3.zero);
                 Label("MissionLabel_"+(i+1),names[i],centers[i]+Vector3.up*7f+toward*4f,colors[i],Quaternion.LookRotation(-toward,Vector3.up));
+                BuildMissionGate(i+1,centers[i],toward,colors[i]);
                 if(i>0)BuildSuspendedBridge("Bridge_"+i,centers[i-1],centers[i],colors[i]);
             }
             BuildSuspendedBridge("Bridge_Return",centers[5],new Vector3(0,20,31),magenta);
@@ -108,6 +110,25 @@ namespace TheReturn.Editor
                 Vector3 p=new Vector3(Mathf.Cos(angle)*radius,5+(i%6)*4.2f,31+Mathf.Sin(angle)*radius);
                 Block("FloatingDebris",p,new Vector3(1.2f+(i%3),.35f,2.5f+(i%4)),i%5==0?cyan:concrete,new Vector3(i*13,i*23,i*7));
             }
+        }
+
+        /// <summary>Nhận số đảo, tâm, hướng vào atrium và material; tạo cổng, đèn sàn và lan can ở mép đảo.</summary>
+        static void BuildMissionGate(int index,Vector3 center,Vector3 inward,Material accent)
+        {
+            Vector3 right=Vector3.Cross(Vector3.up,inward).normalized;
+            Vector3 gateCenter=center+inward*5.2f;
+            float yaw=Mathf.Atan2(inward.x,inward.z)*Mathf.Rad2Deg;
+            for(int side=-1;side<=1;side+=2)
+            {
+                Vector3 pillar=gateCenter+right*(side*3.8f)+Vector3.up*3.5f;
+                Block("MissionGate_"+index+"_Pillar_"+side,pillar,new Vector3(.7f,7f,.7f),concrete,new Vector3(0,yaw,0));
+                Block("MissionGate_"+index+"_Rune_"+side,pillar-inward*.37f,new Vector3(.13f,4.8f,.13f),accent,new Vector3(0,yaw,0));
+            }
+            Block("MissionGate_"+index+"_Crown",gateCenter+Vector3.up*6.7f,new Vector3(8.3f,.65f,.85f),concrete,new Vector3(0,yaw,0));
+            for(int step=0;step<5;step++)
+                Block("MissionPathLight_"+index+"_"+step,center+inward*(step*1.35f)+Vector3.up*.09f,new Vector3(.16f,.08f,.75f),accent,new Vector3(0,yaw,0));
+            for(int side=-1;side<=1;side+=2)
+                Block("IslandRail_"+index+"_"+side,center+right*(side*6f)+Vector3.up*1.1f,new Vector3(.22f,2.2f,9f),voidStone,new Vector3(0,yaw,0));
         }
 
         /// <summary>Không nhận đầu vào; thêm lớp trang trí tùy chọn từ ThirdParty, thiếu gói thì giữ nguyên graybox.</summary>
@@ -172,7 +193,9 @@ namespace TheReturn.Editor
             RenderSettings.fog=true;RenderSettings.fogColor=new Color(.012f,.02f,.038f);RenderSettings.fogMode=FogMode.ExponentialSquared;RenderSettings.fogDensity=.008f;
             RenderSettings.ambientMode=UnityEngine.Rendering.AmbientMode.Trilight;RenderSettings.ambientSkyColor=new Color(.07f,.13f,.2f);RenderSettings.ambientEquatorColor=new Color(.025f,.04f,.07f);RenderSettings.ambientGroundColor=new Color(.006f,.008f,.015f);
             for(int i=0;i<6;i++)
-            {float angle=i*60f*Mathf.Deg2Rad;var light=new GameObject("AtriumLight_"+(i+1),typeof(Light)).GetComponent<Light>();light.transform.SetParent(artRoot);light.transform.position=new Vector3(Mathf.Sin(angle)*16,5+i*3.2f,31+Mathf.Cos(angle)*16);light.type=LightType.Point;light.range=25;light.intensity=4;light.color=i<4?new Color(.1f,.75f,1f):new Color(.9f,.15f,.65f);}
+            {float angle=i*60f*Mathf.Deg2Rad;var light=new GameObject("AtriumLight_"+(i+1),typeof(Light)).GetComponent<Light>();light.transform.SetParent(artRoot);light.transform.position=new Vector3(Mathf.Sin(angle)*16,5+i*3.2f,31+Mathf.Cos(angle)*16);light.type=LightType.Point;light.range=25;light.intensity=3.2f;light.shadows=LightShadows.Soft;light.shadowStrength=.42f;light.color=i<4?new Color(.1f,.75f,1f):new Color(.9f,.15f,.65f);}
+            var moon=new GameObject("AtriumMoonlight",typeof(Light)).GetComponent<Light>();moon.transform.SetParent(artRoot);moon.type=LightType.Directional;
+            moon.color=new Color(.35f,.5f,.82f);moon.intensity=.65f;moon.shadows=LightShadows.Soft;moon.shadowStrength=.7f;moon.transform.rotation=Quaternion.Euler(52,-35,0);
         }
 
         /// <summary>Nhận tên, pose và material; trả cube có collider dưới art root.</summary>

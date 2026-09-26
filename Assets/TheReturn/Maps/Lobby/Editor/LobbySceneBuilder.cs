@@ -1,6 +1,7 @@
 /*
  * Mục đích: Dựng scene sảnh 2–4 người với Canvas sẵn sàng, portal và luồng sang tầng học.
- * Hàm: Build dựng/lưu scene; CreateArchitecture tạo kiến trúc; CreateParty tạo đội FPS;
+ * Hàm: Build dựng/lưu scene; CreateArchitecture tạo kiến trúc; BuildCeremonialAxis tạo trục nghi lễ;
+ * BuildPortalSanctum tạo bệ và vòm portal; CreateParty tạo đội FPS;
  * CreateCanvas tạo UI; Block/Cylinder/Material tạo module; ConfigureBuildSettings đăng ký scene.
  */
 using System;
@@ -78,6 +79,49 @@ namespace TheReturn.Editor
                 float a=i*30f*Mathf.Deg2Rad;
                 GameObject slab=Block("FloatingSlab",new Vector3(Mathf.Cos(a)*14f,9+(i%3)*1.8f,Mathf.Sin(a)*11f),new Vector3(3.2f,.35f,1.2f),stone);
                 slab.transform.rotation=Quaternion.Euler(i*7f,-i*30f,i%2==0?12:-12);
+            }
+            BuildCeremonialAxis();
+            BuildPortalSanctum();
+        }
+
+        /// <summary>Không nhận đầu vào; tạo lối dẫn, hoa văn sàn và các vòm lặp để dẫn mắt về portal.</summary>
+        static void BuildCeremonialAxis()
+        {
+            Block("NaveCarpet",new Vector3(0,.025f,-3.2f),new Vector3(7.2f,.05f,24),dark);
+            for(int i=0;i<9;i++)
+            {
+                float z=-12+i*2.7f;
+                Block("FloorRune_Left_"+i,new Vector3(-3.1f,.065f,z),new Vector3(.12f,.035f,1.7f),glow);
+                Block("FloorRune_Right_"+i,new Vector3(3.1f,.065f,z),new Vector3(.12f,.035f,1.7f),glow);
+            }
+            for(int i=0;i<5;i++)
+            {
+                float z=-10+i*5.2f;
+                Block("NaveArch_Left_"+i,new Vector3(-8.2f,7.1f,z),new Vector3(.75f,5.8f,.75f),stone);
+                Block("NaveArch_Right_"+i,new Vector3(8.2f,7.1f,z),new Vector3(.75f,5.8f,.75f),stone);
+                GameObject lintel=Block("NaveArch_Crown_"+i,new Vector3(0,11.7f,z),new Vector3(16.8f,.55f,.75f),stone);
+                lintel.transform.rotation=Quaternion.Euler(0,0,i%2==0?2.5f:-2.5f);
+                Block("NaveArch_Light_"+i,new Vector3(0,11.25f,z),new Vector3(6.5f,.08f,.16f),glow);
+            }
+        }
+
+        /// <summary>Không nhận đầu vào; tạo bậc nghi lễ, tháp hai bên và quầng năng lượng quanh portal.</summary>
+        static void BuildPortalSanctum()
+        {
+            for(int i=0;i<4;i++)
+                Block("PortalStep_"+i,new Vector3(0,.12f+i*.22f,9.2f+i*.72f),new Vector3(9-i*1.1f,.24f,2.2f),i==3?glow:stone);
+            for(int side=-1;side<=1;side+=2)
+            {
+                Cylinder("PortalSpire_"+side,new Vector3(side*6.2f,5.6f,12.9f),new Vector3(.72f,5.6f,.72f),stone);
+                for(int i=0;i<3;i++)
+                    Block("PortalSigil_"+side+"_"+i,new Vector3(side*(5.15f+i*.38f),3.2f+i*2.1f,12.22f),new Vector3(.1f,1.15f,.12f),glow);
+            }
+            for(int i=0;i<12;i++)
+            {
+                float a=i*30f*Mathf.Deg2Rad;
+                Vector3 p=new Vector3(Mathf.Cos(a)*5.2f,4.6f+Mathf.Sin(a)*5.2f,12.45f);
+                GameObject shard=Block("PortalHalo_"+i,p,new Vector3(.2f,1.15f,.32f),i%3==0?glow:stone);
+                shard.transform.rotation=Quaternion.Euler(0,0,-i*30f);
             }
         }
 
@@ -169,8 +213,15 @@ namespace TheReturn.Editor
             RenderSettings.fog=true; RenderSettings.fogColor=new Color(.015f,.035f,.06f); RenderSettings.fogMode=FogMode.ExponentialSquared; RenderSettings.fogDensity=.012f;
             RenderSettings.ambientMode=UnityEngine.Rendering.AmbientMode.Trilight; RenderSettings.ambientSkyColor=new Color(.08f,.16f,.22f);
             RenderSettings.ambientEquatorColor=new Color(.03f,.055f,.08f); RenderSettings.ambientGroundColor=new Color(.008f,.012f,.02f);
-            var sun=new GameObject("Moonlight",typeof(Light)).GetComponent<Light>(); sun.type=LightType.Directional; sun.color=new Color(.48f,.68f,1f); sun.intensity=1.15f; sun.transform.rotation=Quaternion.Euler(42,-28,0);
+            var sun=new GameObject("Moonlight",typeof(Light)).GetComponent<Light>(); sun.type=LightType.Directional; sun.color=new Color(.48f,.68f,1f); sun.intensity=.72f; sun.shadows=LightShadows.Soft; sun.shadowStrength=.72f; sun.transform.rotation=Quaternion.Euler(42,-28,0);
             for(int i=0;i<4;i++){var light=new GameObject("PortalLight_"+i,typeof(Light)).GetComponent<Light>(); light.type=LightType.Point; light.color=new Color(.1f,.9f,1f); light.range=14; light.intensity=4; light.transform.position=new Vector3((i-1.5f)*2.2f,2.5f+(i%2)*3f,10.5f);}
+            for(int i=0;i<5;i++)
+            {
+                float z=-10+i*5.2f;
+                var light=new GameObject("NaveLight_"+i,typeof(Light)).GetComponent<Light>();light.transform.SetParent(architecture);
+                light.type=LightType.Point;light.color=i%2==0?new Color(.1f,.72f,1f):new Color(.18f,.95f,.82f);
+                light.range=10;light.intensity=2.2f;light.shadows=LightShadows.Soft;light.shadowStrength=.45f;light.transform.position=new Vector3(0,8.8f,z);
+            }
         }
 
         /// <summary>Nhận hình học; trả cube có collider trong root kiến trúc.</summary>
