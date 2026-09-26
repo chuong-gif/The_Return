@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aece1833734f1ea47bff0702456f5dc7, type: 3}
+  m_Name: TeacherTruth_VI
+  m_EditorClassIdentifier: TheReturn.TeacherTruth::TheReturn.TeacherTruthCatalog
+  title: "GI\xC1O VI\xCAN N\xD3I TH\u1EACT / N\xD3I D\u1ED0I"
+  introduction: "B\u1ED1n k\xEAnh gi\xE1o vi\xEAn \u0111ang \u0111\u01B0a ch\u1EC9
+    d\u1EABn m\xE2u thu\u1EABn. \u0110\u1ECDc \u0111\xE8n M\u1EA4T \u0110\u1ED2NG
+    B\u1ED8 v\xE0 n\u1ED9i quy: khi c\xE1c k\xEAnh m\xE2u thu\u1EABn, d\xF9ng x\xE1c
+    nh\u1EADn th\u1EE7 c\xF4ng."
+  priorEvidence: "B\u1EA2N GHI PH\xD2NG TR\u01AF\u1EDAC: Khi c\xE1c k\xEAnh th\xF4ng
+    b\xE1o m\xE2u thu\u1EABn,\nchuy\u1EC3n sang X\xC1C NH\u1EACN TH\u1EE6 C\xD4NG."
+  roomEvidence: "S\u01A0 \u0110\u1ED2 K\xCANH 1\u20134: M\u1EA4T \u0110\u1ED2NG B\u1ED8.\nKh\xF4ng
+    k\xEAnh n\xE0o \u0111\u01B0\u1EE3c d\xF9ng l\xE0m ngu\u1ED3n ch\xE2n l\xFD duy
+    nh\u1EA5t."
+  exitRule: "N\u1ED8I QUY C\u1EECA: X\xE1c nh\u1EADn \u0111\u1EE7 b\u1ED1n k\xEAnh
+    trong 3 gi\xE2y.\nM\u1ECDi th\xE0nh vi\xEAn ph\u1EA3i tham gia."
+  success: "X\xE1c nh\u1EADn th\u1EE7 c\xF4ng ho\xE0n t\u1EA5t. H\u1EC7 th\u1ED1ng
+    b\u1ECF qua b\u1ED1n k\xEAnh l\u1ED7i v\xE0 m\u1EDF c\u1ED5ng tho\xE1t t\u1EA7ng."
+  controls: "WASD di chuy\u1EC3n \u2022 E nghe/x\xE1c nh\u1EADn \u2022 1\u20134 \u0111\u1ED5i
+    vai \u2022 R th\u1EED l\u1EA1i \u2022 F5 \u0111\u1ED5i bi\u1EBFn th\u1EC3 \u2022
+    Tab menu"
+  announcements:
+  - "K\xEAnh 1: Ch\u1EC9 gi\xE1o vi\xEAn s\u1ED1 1 n\xF3i th\u1EADt. Tuy\u1EC7t \u0111\u1ED1i
+    kh\xF4ng ch\u1EA1m n\xFAt s\u1ED1 4."
+  - "K\xEAnh 2: K\xEAnh 1 \u0111\xE3 b\u1ECB thay th\u1EBF. Ch\u1EC9 n\xFAt 2 v\xE0
+    4 l\xE0 an to\xE0n."
+  - "K\xEAnh 3: Kh\xF4ng c\xF3 ch\u1EBF \u0111\u1ED9 th\u1EE7 c\xF4ng. H\xE3y ch\u1EDD
+    chu\xF4ng \u0111\u1ED5i ti\u1EBFt."
+  - "K\xEAnh 4: T\u1EA5t c\u1EA3 b\u1ED1n k\xEAnh \u0111ang \u0111\u1ED3ng b\u1ED9
+    ho\xE0n to\xE0n."
+  - "K\xEAnh 1: C\u1EEDa ch\u1EC9 m\u1EDF n\u1EBFu b\u1ECF qua k\xEAnh 2."
+  - "K\xEAnh 2: Kh\xF4ng \u0111\u01B0\u1EE3c d\xF9ng b\u1EA5t k\u1EF3 n\xFAt x\xE1c
+    nh\u1EADn n\xE0o."
+  - "K\xEAnh 3: Ch\u1EC9 k\xEAnh 3 v\xE0 k\xEAnh 4 \u0111ang ho\u1EA1t \u0111\u1ED9ng."
+  - "K\xEAnh 4: \u0110\xE8n M\u1EA4T \u0110\u1ED2NG B\u1ED8 l\xE0 th\xF4ng b\xE1o
+    gi\u1EA3."
+  - "K\xEAnh 1: K\xEAnh 4 lu\xF4n n\xF3i d\u1ED1i, h\xE3y x\xE1c nh\u1EADn ri\xEAng
+    k\xEAnh 1."
+  - "K\xEAnh 2: C\u1EA3 b\u1ED1n gi\xE1o vi\xEAn \u0111\u1EC1u n\xF3i c\xF9ng m\u1ED9t
+    n\u1ED9i dung."
+  - "K\xEAnh 3: Ch\u1EC9 c\u1EA7n m\u1ED9t ng\u01B0\u1EDDi \u0111\u1EE9ng ch\u1EDD
+    tr\u01B0\u1EDBc c\u1EEDa."
+  - "K\xEAnh 4: Ch\u1EBF \u0111\u1ED9 th\u1EE7 c\xF4ng \u0111\xE3 b\u1ECB v\xF4 hi\u1EC7u
+    h\xF3a."

@@ -98,7 +98,7 @@ namespace TheReturn.Editor
             }
             Check(game.State.WitnessedCount==count,"all last-player cards readable");
             var view=UnityEngine.Object.FindFirstObjectByType<SchoolFloorCanvasView>();
-            Check(view.missionButtons.Length==5&&view.backSlots.Length==4,"prefab UI references");
+            Check(view.missionButtons.Length>=5&&view.backSlots.Length==4,"prefab UI references");
             for(int i=0;i<count;i++)game.party.Teleport(i,new Vector3(i%2==0?3.8f:7.8f,.05f,i<2?99.1f:97.8f));
             game.party.SwitchRole(0,false);Physics.SyncTransforms();
             Check(game.TryOpen(),"near lock opens");

@@ -1,0 +1,9 @@
+{
+  "name": "TheReturn.TeacherTruth",
+  "references": [
+    "TheReturn.TeacherTruth.Domain",
+    "TheReturn.Core",
+    "TheReturn.Shared",
+    "Unity.InputSystem"
+  ]
+}

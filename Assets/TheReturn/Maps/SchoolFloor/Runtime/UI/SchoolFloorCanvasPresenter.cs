@@ -1,5 +1,5 @@
 /*
- * Mục đích: Đồng bộ Canvas với năm nhiệm vụ, giữ bố cục/ảnh/font trong prefab thay vì vẽ OnGUI.
+ * Mục đích: Đồng bộ Canvas với sáu nhiệm vụ, giữ bố cục/ảnh/font trong prefab thay vì vẽ OnGUI.
  * Hàm: Awake gắn nút; Bind đăng ký callback; LateUpdate đồng bộ panel và HUD;
  * Resume / Retry / NextCase gọi controller hiện tại; OpenTests / Launch chọn bài test;
  * RefreshHud cập nhật dữ liệu chung; RefreshGrade / RefreshExam cập nhật giao diện riêng (file partial).
@@ -15,7 +15,8 @@ namespace TheReturn
         public SchoolFloorCanvasView view;
         int count=4, voucher, source, target;
         bool testingMenu;
-        int Phase => flow.dontLookBack!=null && flow.dontLookBack.Active ? 4 : flow.navigationExam!=null && flow.navigationExam.Active ? 3 :
+        int Phase => flow.teacherTruth!=null && flow.teacherTruth.Active ? 5 :
+            flow.dontLookBack!=null && flow.dontLookBack.Active ? 4 : flow.navigationExam!=null && flow.navigationExam.Active ? 3 :
             flow.gradeRepair!=null && flow.gradeRepair.Active ? 2 : flow.corridor.Active ? 1 : 0;
 
         /// <summary>Nhận nút và callback; đăng ký một lần khi prefab được tạo, không sửa persistent listener của designer.</summary>
@@ -91,6 +92,7 @@ namespace TheReturn
                 case 2: flow.gradeRepair.Retry();break;
                 case 3: flow.navigationExam.ResetRound();break;
                 case 4: flow.dontLookBack.Retry();break;
+                case 5: flow.teacherTruth.Retry();break;
             }
         }
 
@@ -101,6 +103,7 @@ namespace TheReturn
             if(Phase==2)flow.gradeRepair.NewCase();
             if(Phase==3)flow.navigationExam.ResetRound(true);
             if(Phase==4)flow.dontLookBack.Retry(true);
+            if(Phase==5)flow.teacherTruth.Retry(true);
         }
 
         /// <summary>Không nhận tham số; cập nhật panel sau gameplay, không tạo GameObject hoặc asset trong mỗi frame.</summary>
@@ -119,7 +122,7 @@ namespace TheReturn
             SchoolFloorCanvasView.SetVisible(view.gradeBoard,grade&&flow.gradeRepair.OpenDocument<0&&!testingMenu);
             SchoolFloorCanvasView.SetVisible(view.document,grade&&flow.gradeRepair.OpenDocument>=0&&!testingMenu);
             SchoolFloorCanvasView.SetVisible(view.examBoard,exam&&!testingMenu);
-            SchoolFloorCanvasView.SetVisible(view.cluePanel,(Phase==0||Phase==3||Phase==4)&&!paused&&!testingMenu);
+            SchoolFloorCanvasView.SetVisible(view.cluePanel,(Phase==0||Phase==3||Phase==4||Phase==5)&&!paused&&!testingMenu);
             SchoolFloorCanvasView.SetVisible(view.noisePanel,Phase==1&&!paused&&!testingMenu);
             view.crosshair.enabled=!paused&&!testingMenu&&!grade&&!exam&&!back;
             view.nextCase.gameObject.SetActive(Phase!=1);
@@ -141,7 +144,8 @@ namespace TheReturn
         void RefreshHud()
         {
             var a=flow.attendance;
-            string[] titles={a.textCatalog.title,flow.corridor.settings.title,flow.gradeRepair.catalog.title,flow.navigationExam.catalog.title,flow.dontLookBack!=null?flow.dontLookBack.catalog.title:""};
+            string[] titles={a.textCatalog.title,flow.corridor.settings.title,flow.gradeRepair.catalog.title,flow.navigationExam.catalog.title,
+                flow.dontLookBack!=null?flow.dontLookBack.catalog.title:"",flow.teacherTruth!=null?flow.teacherTruth.catalog.title:""};
             SchoolFloorCanvasView.SetText(view.title,titles[Phase]);
             SchoolFloorCanvasView.SetText(view.role,(launcher.TestSession?"TEST • ":"")+"VAI "+(a.party.ActivePlayer+1)+" / ĐỘI "+a.PartySize);
             string info="",message="",hint="",help="";
@@ -190,6 +194,18 @@ namespace TheReturn
                     b.LockTarget?"[E] Mở bảng khóa":"Hướng an toàn +Z • Lùi để nhìn lưng đồng đội";
                 help=b.catalog.controls;
                 SchoolFloorCanvasView.SetText(view.clues,b.catalog.Notebook(b.State,a.ActivePlayer));
+            }
+            if(Phase==5)
+            {
+                var teacher=flow.teacherTruth;
+                info=teacher.ResultText();
+                message=teacher.Status;
+                hint=teacher.State.Solved?teacher.catalog.success:
+                    teacher.TargetTeacher!=null?"[E] Nghe kênh "+(teacher.TargetTeacher.channel+1):
+                    teacher.TargetStation!=null?"[E] Xác nhận thủ công "+(teacher.TargetStation.channel+1):
+                    "Tìm bốn giáo viên, đèn MẤT ĐỒNG BỘ và bốn nút xác nhận";
+                help=teacher.catalog.controls;
+                SchoolFloorCanvasView.SetText(view.clues,teacher.catalog.Notebook(teacher.State,a.ActivePlayer));
             }
             SchoolFloorCanvasView.SetText(view.objective,info);
             SchoolFloorCanvasView.SetText(view.status,message);

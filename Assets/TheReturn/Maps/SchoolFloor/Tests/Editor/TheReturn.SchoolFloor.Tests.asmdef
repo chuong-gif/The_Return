@@ -14,7 +14,9 @@
     "TheReturn.NavigationExam.Domain",
     "TheReturn.DontLookBack",
     "TheReturn.DontLookBack.Domain",
-    "Unity.ugui"
+    "Unity.ugui",
+    "TheReturn.TeacherTruth",
+    "TheReturn.TeacherTruth.Domain"
   ],
   "includePlatforms": [
     "Editor"

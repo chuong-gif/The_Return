@@ -1,17 +1,17 @@
 /*
  * Mục đích: Vào thẳng nhiệm vụ trong Editor/Development Build, chuẩn bị tiến trình trước bằng luật thật.
  * Hàm: Start áp lựa chọn Inspector; Launch đặt lại phiên và mở nhiệm vụ;
- * PrepareAttendance / PrepareCorridor / PrepareGrades / PrepareExam hoàn tất điều kiện trước;
+ * PrepareAttendance / PrepareCorridor / PrepareGrades / PrepareExam / PrepareBack hoàn tất điều kiện trước;
  * PlaceParty đưa đội tới checkpoint; Available giới hạn công cụ test; EndTestSession xóa nhãn test.
  */
 using UnityEngine;
 namespace TheReturn
 {
-    public enum MissionTestEntry { NormalPlay = -1, Attendance = 0, QuietCorridor = 1, GradeRepair = 2, NavigationExam = 3, DontLookBack = 4 }
+    public enum MissionTestEntry { NormalPlay = -1, Attendance = 0, QuietCorridor = 1, GradeRepair = 2, NavigationExam = 3, DontLookBack = 4, TeacherTruth = 5 }
     public sealed class MissionTestLauncher : MonoBehaviour
     {
         public SchoolFloorFlow flow;
-        [Tooltip("-1 chơi bình thường; 0 điểm danh; 1 giữ trật tự; 2 bảng điểm; 3 bài kiểm tra; 4 không quay đầu.")]
+        [Tooltip("-1 chơi bình thường; 0 điểm danh; 1 giữ trật tự; 2 bảng điểm; 3 bài kiểm tra; 4 không quay đầu; 5 giáo viên.")]
         public MissionTestEntry startMission = MissionTestEntry.NormalPlay;
         [Range(2,4)] public int testPartySize = 4;
         public bool TestSession { get; private set; }
@@ -36,10 +36,10 @@ namespace TheReturn
             if (Available() && (int)startMission >= 0) Launch((int)startMission,testPartySize);
         }
 
-        /// <summary>Nhận nhiệm vụ 0–4 và đội 2–4; tạo phiên test sạch, trả false nếu sai hoặc đang ngoài Play.</summary>
+        /// <summary>Nhận nhiệm vụ 0–5 và đội 2–4; tạo phiên test sạch, trả false nếu sai hoặc đang ngoài Play.</summary>
         public bool Launch(int mission,int count)
         {
-            if (!Available() || !Application.isPlaying || mission<0 || mission>4 || count<2 || count>4) return false;
+            if (!Available() || !Application.isPlaying || mission<0 || mission>5 || count<2 || count>4) return false;
             flow.RestartMap();
             flow.attendance.SetParticipantCount(count);
             flow.attendance.BeginSession();
@@ -58,6 +58,9 @@ namespace TheReturn
             PrepareExam();
             flow.dontLookBack.Begin();
             flow.dontLookBack.Retry();
+            if(mission==4) return true;
+            PrepareBack();
+            flow.teacherTruth.Begin();
             return true;
         }
 
@@ -109,6 +112,22 @@ namespace TheReturn
             if(!e.State.Solved)throw new System.InvalidOperationException("Cannot prepare exam.");
             e.exitDoor.SetOpen(true,true);
             e.StopSession(false);
+        }
+
+        /// <summary>Không nhận tham số; ghi nhận mọi thẻ, nhập đúng mã và giữ cửa nhiệm vụ 5 mở trước khi vào phòng giáo viên.</summary>
+        void PrepareBack()
+        {
+            var game=flow.dontLookBack;
+            for(int subject=0;subject<game.State.PlayerCount;subject++)
+            {
+                int observer=(subject+1)%game.State.PlayerCount;
+                game.State.Observe(observer,subject);
+                game.State.Select(subject,game.State.SymbolOf(subject));
+            }
+            if(game.State.Submit(true)!=BackLockResult.Solved)
+                throw new System.InvalidOperationException("Cannot prepare dont look back.");
+            game.exitDoor.SetOpen(true,true);
+            game.StopSession(false);
         }
 
         /// <summary>Nhận mốc nhiệm vụ; đặt đủ đội vào chỗ trống, chọn vai 1 và khóa chuột để chơi.</summary>

@@ -67,6 +67,7 @@ namespace TheReturn.Editor
             BuildExam(frame);
             BuildBack(frame);
             AddBackTest();
+            AddTeacherTest();
             view.pause.SetActive(false); view.tests.SetActive(false); view.gradeBoard.SetActive(false);
             view.document.SetActive(false); view.examBoard.SetActive(false);
             var prefab=PrefabUtility.SaveAsPrefabAsset(canvasObject,Root+"Prefabs/PF_SchoolFloorCanvas.prefab");
