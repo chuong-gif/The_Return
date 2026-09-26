@@ -77,3 +77,6 @@ Shared/Runtime/UI chứa theme và binding dùng chung; Shared/UI/Themes và Sha
 
 ## Không được quay đầu
 Features/DontLookBack chứa Runtime/Domain, Runtime/Data, Runtime/Presentation, Data và Prefabs. Map flow nối sau NavigationExam; Canvas có DontLookBackPanel và nút test thứ năm. Domain không tham chiếu Unity. Xem [hướng dẫn nhiệm vụ 5](Khong-duoc-quay-dau.md).
+
+## Giáo viên thật / dối
+Features/TeacherTruth chứa Runtime/Domain, Runtime/Data, Runtime/Presentation, Data và Prefabs. Map flow nối sau DontLookBack; HUD chung hiển thị phụ đề riêng và menu F8 có nút thứ sáu. Domain giữ cửa sổ xác nhận cùng điều kiện đội 2–4, không tham chiếu Unity. Xem [hướng dẫn nhiệm vụ 6](Giao-vien-that-doi.md).

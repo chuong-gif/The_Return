@@ -1,0 +1,8 @@
+{
+  "name": "TheReturn.Lobby",
+  "references": [
+    "TheReturn.Core",
+    "Unity.ugui",
+    "Unity.InputSystem"
+  ]
+}

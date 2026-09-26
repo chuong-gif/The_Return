@@ -29,3 +29,7 @@ Thumbs.db
 # Local backups and screenshots; keep deliberate documentation in Design/
 /Backups/
 /Captures/
+
+# Licensed Unity Asset Store content stays local. See Design/ThirdParty-manifest.md.
+/Assets/ThirdParty/
+/Assets/ThirdParty.meta

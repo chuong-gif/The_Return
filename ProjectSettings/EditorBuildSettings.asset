@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/TheReturn/Scenes/Maps/Lobby/Sanh_Cho.unity
+    guid: a39e50a3ad989be4c95c9248e2a1f889
+  - enabled: 1
+    path: Assets/TheReturn/Maps/SchoolFloor/Scenes/SchoolFloorPrototype.unity
+    guid: 29c3527afb6c18f40abbe9e7d511c01c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

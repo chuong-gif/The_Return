@@ -6,7 +6,7 @@ Ngày 13 tháng 9 năm 2026
 
 Game giải đố góc nhìn thứ nhất cho 2–4 người trong một ngôi trường siêu nhiên, có không khí kỳ lạ và những tình huống gây cười do phối hợp. Giai đoạn đầu gồm sảnh chờ và tầng học. Trong tài liệu này dùng cách gọi của bạn: Map 1 là sảnh chờ, Map 2 là tầng học. Tài liệu Word gốc đánh số hai khu này là 0 và 1.
 
-Bản này đề xuất thiết kế lại cả 7 nhiệm vụ của tầng học. Đây là thiết kế để triển khai và chơi thử; độ khó, thời lượng và mức gây cười phải được kiểm chứng với người chơi. Bản Unity hiện triển khai bốn nhiệm vụ đầu trong cùng map trên một máy, hỗ trợ đội 2–4 vai. Các nhiệm vụ còn lại trong tài liệu này cần được rà soát theo quy mô đội mới trước khi triển khai. Chưa có kết nối mạng.
+Bản này đề xuất thiết kế lại cả 7 nhiệm vụ của tầng học. Đây là thiết kế để triển khai và chơi thử; độ khó, thời lượng và mức gây cười phải được kiểm chứng với người chơi. Bản Unity hiện triển khai sáu nhiệm vụ đầu trong cùng map trên một máy, hỗ trợ đội 2–4 vai. Nhiệm vụ còn lại trong tài liệu này cần được rà soát theo quy mô đội mới trước khi triển khai. Chưa có kết nối mạng.
 
 Giữ nét riêng của bản gốc: chia sẻ thông tin, tuân thủ nội quy kỳ quặc, sự bất thường tăng dần. Dùng các thao tác đơn giản như xem manh mối, ngồi/đứng, chọn thẻ, bấm nút và đi qua vùng kiểm tra. Mỗi quy luật siêu nhiên phải có dấu hiệu để người chơi suy ra được.
 
@@ -112,6 +112,8 @@ Hiệu ứng “hành lang dài ra” chỉ dùng một đoạn module lặp có
 **Xây dựng:** hai làn, camera angle check theo hướng cố định, dấu hiệu cảnh báo, ký hiệu lưng, bảng nhập 4 ô, checkpoint. Host quyết định vi phạm từ dữ liệu hướng đã nhận, có dung sai độ trễ. Không bật chuông đổi tiết ở đây.
 
 ## 6 Giáo viên và chế độ thủ công
+
+Bản thử đã triển khai trong cùng scene; xem [Giáo viên thật / dối](Giao-vien-that-doi.md) cho luật co giãn 2–4 người, cách chỉnh nội dung và kết quả kiểm chứng.
 
 **Vai trò:** câu cuối tầng, dạy người chơi nghi ngờ đúng chỗ dựa vào chứng cứ. Mục tiêu 3–4 phút.
 

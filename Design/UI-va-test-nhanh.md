@@ -45,4 +45,4 @@ Các HUD OnGUI cũ được giữ làm phương án tương thích; scene tích 
 
 Đây là kiểm tra chức năng UI và phiên thử cục bộ, chưa xác nhận đồng bộ mạng. Ảnh kiểm tra nằm trong Captures/canvas-mission-selector.png và Captures/canvas-exam-panel.png.
 
-Nhiệm vụ 5 đã có trong bộ chọn F8; xem Khong-duoc-quay-dau.md và các báo cáo DontLookBack*.json để biết các kiểm chứng mới.
+Nhiệm vụ 5 và 6 đã có trong bộ chọn F8; xem Khong-duoc-quay-dau.md, Giao-vien-that-doi.md và các báo cáo tương ứng trong Design/Verification.

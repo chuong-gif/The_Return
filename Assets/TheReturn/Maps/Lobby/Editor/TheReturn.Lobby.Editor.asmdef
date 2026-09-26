@@ -1,0 +1,10 @@
+{
+  "name": "TheReturn.Lobby.Editor",
+  "references": [
+    "TheReturn.Core",
+    "TheReturn.Lobby",
+    "Unity.ugui",
+    "Unity.InputSystem"
+  ],
+  "includePlatforms": ["Editor"]
+}
