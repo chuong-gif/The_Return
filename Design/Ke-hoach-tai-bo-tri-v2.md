@@ -15,17 +15,17 @@ Phân khu bằng hướng bàn ghế, tủ hồ sơ, ánh sáng, biển khu và 
 | Khu | Công năng đề xuất | Trạng thái nhiệm vụ |
 |---|---|---|
 | Phong_1 | Điểm danh | Chuyển 24 bàn ghế ra toàn không gian phòng |
-| Hanh_Lang_2, nối phòng 1–2 | Giữ trật tự | Đặt trạm giữ nút, loa, cửa vào chính hành lang |
+| Hanh_Lang_1, nối phòng 1–2 | Giữ trật tự | Đặt trạm giữ nút, loa, cửa vào chính hành lang |
 | Phong_2 | Sửa bảng điểm | Phòng học vụ chia vùng tìm và đối chiếu hồ sơ |
-| Hanh_Lang_3 | Chuyển tiếp | Chưa có nhiệm vụ |
+| Hanh_Lang_2 | Chuyển tiếp | Chưa có nhiệm vụ |
 | Phong_3 | Bài kiểm tra | Phòng khảo thí với vùng hướng dẫn, giải mã, thao tác |
-| Hanh_Lang_4, nối phòng 3–4 | Không được quay đầu | Dùng hành lang thật, bố trí làn và checkpoint theo hướng đi |
+| Hanh_Lang_3, nối phòng 3–4 | Không được quay đầu | Dùng hành lang thật, bố trí làn và checkpoint theo hướng đi |
 | Phong_4 | Giáo viên nói thật/nói dối | Các trạm nghe và khu hội ý/xác nhận |
-| Hanh_Lang_5 | Chuyển tiếp | Chưa có nhiệm vụ |
+| Hanh_Lang_4 | Chuyển tiếp | Chưa có nhiệm vụ |
 | Phong_5 | Dự trữ | Chưa có nhiệm vụ |
-| Hanh_Lang_6 | Chuyển tiếp | Chưa có nhiệm vụ |
+| Hanh_Lang_5 | Chuyển tiếp | Chưa có nhiệm vụ |
 | Phong_6 | Dự trữ | Chưa có nhiệm vụ |
-| Hanh_Lang_1, nối phòng 6–1 | Khép vòng | Chưa có nhiệm vụ |
+| Hanh_Lang_6, nối phòng 6–1 | Khép vòng | Chưa có nhiệm vụ |
 
 Khu chuẩn bị phục vụ đọc hướng dẫn, tập hợp, checkpoint và nhận diện nhiệm vụ phía trước; không chiếm bằng phòng nhiệm vụ nhỏ. Hai phòng trống và bốn hành lang trống không có puzzle giả, không tính là nhiệm vụ hoàn tất. Mốc kết thúc sáu nhiệm vụ tạm thời đặt sau giáo viên; vẫn cho phép khảo sát khu dự trữ theo chế độ test.
 
@@ -88,3 +88,5 @@ Hierarchy scene theo khu: `Campus/Architecture`, `Campus/Areas/Room_01/...` và 
 6. **Cập nhật flow và kiểm thử:** thứ tự nhiệm vụ độc lập với số phòng; không coi mỗi khu kiến trúc là một nhiệm vụ. Kiểm tra hoàn thành, retry, test nhanh, quay lại và kết thúc map. Sau mỗi phần cập nhật PROJECT_STATE và bằng chứng ngắn.
 
 Nghiệm thu: không còn vỏ phòng cũ lồng trong blockout; đúng 4 nhiệm vụ phòng + 2 nhiệm vụ hành lang; hai phòng/bốn hành lang dự trữ không làm kẹt progression; thay model không mất component/ID; đủ 24 bàn ghế điểm danh; manh mối tìm được có định hướng; lối cửa và checkpoint không bị che; ảnh góc nhìn người chơi thể hiện rõ chức năng mỗi vùng. Compile sạch và raycast đi được là điều kiện cần, không thay cho đánh giá thiết kế hoặc playtest 2–4 người. Không báo multiplayer đã đạt nếu chỉ test đổi vai trên một máy.
+
+> Ghi chú 2026-10-15: số hành lang đã đổi theo tên object mới trong scene (cũ 1→6, 2→1, 3→2, 4→3, 5→4, 6→5). Chỉ đổi số hành lang, nội dung khác giữ nguyên.

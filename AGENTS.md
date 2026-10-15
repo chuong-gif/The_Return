@@ -2,12 +2,10 @@
 
 Unity 6000.3.7f1, URP 17.3, Input System 1.18, Windows. Gốc dự án: `E:\kho model 3D\Project Unity\The Return`.
 
-## Đọc theo thứ tự (dừng khi đã đủ cho task)
-1. `.ai/CURRENT.md` — trạng thái và task hiện tại (HOT).
-2. `PROJECT_STATE.md` — trạng thái triển khai + quy tắc bảo toàn do chủ dự án duy trì.
-3. `.ai/ARCHITECTURE.md`, `.ai/SYSTEMS.md` — chỉ phần liên quan (WARM).
-4. README của feature trong `Assets/TheReturn/Features/<Tên>/` và `Assets/TheReturn/README.md`.
-Không quét lại toàn dự án. Source code và Unity Editor là nguồn sự thật; file `.ai/` chỉ là bản đồ.
+## Bắt đầu phiên (≈ 5 file; KHÔNG quét dự án) — chi tiết: `.ai/PROTOCOL.md`
+1. `AGENTS.md` (file này). 2. `.ai/CURRENT.md` (trạng thái, khóa scene, cảnh báo). 3. `.ai/LOG.md` — 15 mục cuối. 4. `.ai/OWNER_UPDATES.md` — mục mới hơn mục LOG cuối. 5. `.ai/TASKS.md` — chỉ dòng task của bạn (cột Đọc cho biết file cần mở).
+Rồi PREFLIGHT (PROTOCOL mục 3): task đã có người giữ/đã xong chưa, file nào đổi mà chưa ghi (`.ai/tools/changed_since.snippet.cs`, Git nếu có terminal), Console, khóa scene. Chỉ sau đó mới đọc ngữ cảnh liên quan.
+Source code và Unity Editor là nguồn sự thật; file `.ai/` chỉ là bản đồ. `PROJECT_STATE.md` là mô tả triển khai dài của chủ dự án — đọc khi task cần.
 
 ## Quy tắc an toàn (bắt buộc)
 - Không commit, push, đổi nhánh, reset, xóa nếu chưa được yêu cầu rõ.
@@ -17,6 +15,9 @@ Không quét lại toàn dự án. Source code và Unity Editor là nguồn sự
 - Di chuyển asset bằng Unity/AssetDatabase để giữ GUID/.meta. Không chép thư mục Backups vào Assets.
 - Không tự sáng tác nhiệm vụ cho phòng 5/6 và hành lang 1/3/5/6.
 - Không ghi API key, token, mật khẩu vào bất kỳ file nào.
+
+## ĐỔI SỐ HÀNH LANG (chủ dự án đã đổi tên, 2026-10-15)
+Tên object trong scene là CHUẨN: Hanh_Lang_k nối Phong_k và Phong_(k+1) (Hanh_Lang_6 nối Phong_6 và Phong_1). QuietCorridor = Hanh_Lang_1, DontLookBack = Hanh_Lang_3; hành lang chưa có nhiệm vụ: Hanh_Lang_2, 4, 5, 6. Tài liệu (PROJECT_STATE, README, Design) đã sửa theo số mới. CÒN số cũ: nhãn `areaName` trên cổng trong scene («Hanh lang 2» = Hanh_Lang_1, «Hanh lang 4» = Hanh_Lang_3) và `Design/Ke-hoach-tai-bo-tri-v2.md` dòng ~79 (`Corridor_02`, kế hoạch hierarchy chưa thấy trong scene). Cụm «nhiệm vụ N» là số thứ tự nhiệm vụ, không phải số hành lang. Chi tiết: `.ai/MAPS/area-adjacency.md`.
 
 ## Quy ước code
 - Domain assembly là C# thuần, không tham chiếu Unity. Core/Shared không tham chiếu ngược Feature.
@@ -29,8 +30,15 @@ File đã tạo / code đã compile / test đã chạy / runtime đã xác nhậ
 ## Quản lý ngữ cảnh
 HOT = `.ai/CURRENT.md` + file đang sửa. WARM = kiến trúc/README của hệ thống liên quan. COLD = toàn source, Git history, `Design/`, `Backups/`, báo cáo cũ — chỉ truy xuất khi cần.
 
-## Sau mỗi task
-Cập nhật `.ai/CURRENT.md`; thêm vào `.ai/TASKS.md`; chỉ ghi `DECISIONS/` hoặc `BUGS/` khi có tri thức lâu dài. Xem `.ai/AI_HANDOFF.md`.
+## Lập kế hoạch và sửa lỗi (PROTOCOL mục 12-13)
+- Nhận task mới (đổi >1 file/scene/hành vi): đọc có giới hạn rồi viết `.ai/PLANS/T-xxx-<slug>.md` theo `_TEMPLATE.md` TRƯỚC khi code; làm từng subtask, báo 1-3 dòng mỗi subtask.
+- Gặp lỗi: `.ai/SYSTEM_CARDS/INDEX.md` -> 1 thẻ -> bảng «Triệu chứng -> nơi xem» -> mở đúng file/hàm; sửa xong phải ghi lại dòng mới vào thẻ.
+
+## Trước khi sửa và sau khi làm (bắt buộc, cả khi chưa xong)
+- Trước: ghi `START` vào `.ai/LOG.md` + đổi trạng thái dòng task ở `.ai/TASKS.md`, liệt kê file định đụng.
+- Sau hoặc khi dừng: LOG (`DONE`/`PAUSED`/`BLOCKED`) + TASKS + CURRENT (nếu đổi trọng tâm, nhả khóa scene) + `DECISIONS/`/`BUGS/` nếu có tri thức lâu dài + báo cáo chat ≤ 8 dòng (PROTOCOL mục 9).
+- Việc dở của AI khác: tiếp quản theo PROTOCOL mục 6, không làm trùng, không hoàn tác khi chưa chắc.
+- Chủ dự án báo thay đổi ở `.ai/OWNER_UPDATES.md`; nghe họ nói «ghi vào OWNER_UPDATES» thì phải ghi vào file đó.
 
 ## MenuItem GHI/TÁI TẠO scene — không chạy nếu chưa được yêu cầu rõ (kiểm kê 2026-10-14)
 Mọi mục dưới menu `The Return/` NGOẠI TRỪ `School Floor/Objects - Find and Edit` (cửa sổ tìm vật) và `Attendance/Validate Generated Puzzles` (ghi đè một file báo cáo) đều là builder/migration: Art/* (Classroom And Gallery, Mission Rooms, Dress All Interiors, Observatory), School Floor/* (Build Connected Walkways, Apply User Blockout Layout, Add Dont Look Back/Grade Repair/Navigation Exam/Quiet Corridor/Teacher Truth, Spatial Pass 01, Monumental Atrium, Apply Layout V2), Attendance/Rebuild Logic Classroom, Lobby/Rebuild Monumental Lobby, UI/Install School Floor Canvas. Chạy một mục ngoài ý định có thể ghi đè bố cục đã được chủ dự án chấp nhận.

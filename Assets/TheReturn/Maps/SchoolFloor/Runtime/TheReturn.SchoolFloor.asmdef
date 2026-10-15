@@ -1,6 +1,7 @@
 {
   "name": "TheReturn.SchoolFloor",
   "references": [
+    "TheReturn.SchoolFloor.Domain",
     "TheReturn.Attendance",
     "TheReturn.Attendance.Domain",
     "TheReturn.Core",

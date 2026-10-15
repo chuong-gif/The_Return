@@ -4,7 +4,7 @@ Cập nhật 2026-09-29. Đọc file này rồi chỉ kiểm tra khu vực sắp
 
 ## Đã triển khai
 - Scene chính: Assets/TheReturn/Maps/SchoolFloor/Scenes/SchoolFloorPrototype.unity.
-- Phong_1 Attendance (24 ghế), Phong_2 GradeRepair, Phong_3 NavigationExam, Phong_4 TeacherTruth. Hanh_Lang_2 QuietCorridor, Hanh_Lang_4 DontLookBack. Phòng 5/6 và hành lang 1/3/5/6 chưa có nhiệm vụ.
+- Phong_1 Attendance (24 ghế), Phong_2 GradeRepair, Phong_3 NavigationExam, Phong_4 TeacherTruth. Hanh_Lang_1 QuietCorridor, Hanh_Lang_3 DontLookBack. Phòng 5/6 và hành lang 2/4/5/6 chưa có nhiệm vụ.
 - Dùng trực tiếp blockout. Vỏ nhỏ cũ của các nhiệm vụ đã ẩn; Environment_LogicOnly của Attendance đã tắt. Giữ vật có logic và nội thất, không đưa nguyên phòng vào phòng. Một số đồ trang trí vẫn cần sắp xếp/thẩm mỹ thêm.
 - SchoolLayoutV2 chứa SchoolFloorAccessController và 22 SchoolPreparationGate: 3 cửa mỗi phòng, 2 cửa mỗi hành lang nhiệm vụ. Hai lối vòng phòng rộng khoảng 8.9m, lối hướng sảnh khoảng 7.06m; cổng có dư biên nhỏ. Cửa vào mở khi nhiệm vụ trước xong; đủ đội tập hợp phía trong thì flow bắt đầu, khóa mọi cửa khu đang làm; giải xong mở lại. Khu chưa có nhiệm vụ luôn mở.
 - Flow.transitionGatherZones và stagingZone đã gán trigger mới. Chế độ test nhanh vẫn dùng MissionTestLauncher. Cửa nhỏ cũ giữ ẩn do controller còn tham chiếu; quyền chặn các lối thật do AccessController quản lý.
@@ -32,3 +32,5 @@ Cập nhật 2026-09-29. Đọc file này rồi chỉ kiểm tra khu vực sắp
 ## Tiếp theo
 - Kiểm tra người dùng chơi liên tục một vòng, đặc biệt nhánh sảnh và chỉ dẫn điểm tập hợp; hoàn thiện nội thất/ánh sáng theo khu thay vì lắp lại vỏ phòng.
 - Khi thay model, mở đúng prefab logic từ cửa sổ Objects; không xóa mốc tương tác/collider/ID. Đọc README nhiệm vụ trước.
+
+> Ghi chú 2026-10-15: số hành lang đã đổi theo tên object mới trong scene (cũ 1→6, 2→1, 3→2, 4→3, 5→4, 6→5). Chỉ đổi số hành lang, nội dung khác giữ nguyên.

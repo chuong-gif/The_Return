@@ -1,6 +1,6 @@
 # QuietCorridor — Giữ trật tự
 
-**Vị trí:** Hanh_Lang_2; hai trạm giữ, cổng âm thanh, vùng chống kẹp và vùng đích.
+**Vị trí:** Hanh_Lang_1; hai trạm giữ, cổng âm thanh, vùng chống kẹp và vùng đích.
 
 | File code | Vai trò |
 |---|---|

@@ -4,7 +4,7 @@
 
 Map The Reture (có khoảng trắng cuối tên trong scene) là bản thiết kế gốc của người dùng. Root này được giữ nguyên hình học, ẩn để không chồng lên bản dùng trong game. `BlockoutCampus_Generated/Architecture_From_User_Blockout` là bản có collider và xử lý ngưỡng sàn.
 
-Phong_1–Phong_6 lần lượt chứa điểm danh, giữ trật tự, sửa bảng điểm, bài kiểm tra, không quay đầu, giáo viên nói thật/nói dối. Giữ nguyên kích thước nội thất/câu đố; mỗi vùng chơi nằm trong khoang phòng lớn của blockout. Cửa vào và ra nối qua khu chuẩn bị với hành lang vòng. Hanh_Lang_2 nối phòng 1–2, tiếp tục tới Hanh_Lang_6 nối 5–6; Hanh_Lang_1 khép vòng 6–1.
+Phong_1–Phong_6 lần lượt chứa điểm danh, giữ trật tự, sửa bảng điểm, bài kiểm tra, không quay đầu, giáo viên nói thật/nói dối. Giữ nguyên kích thước nội thất/câu đố; mỗi vùng chơi nằm trong khoang phòng lớn của blockout. Cửa vào và ra nối qua khu chuẩn bị với hành lang vòng. Hanh_Lang_1 nối phòng 1–2, tiếp tục tới Hanh_Lang_5 nối 5–6; Hanh_Lang_6 khép vòng 6–1.
 
 Khu chuẩn bị ở đầu vào phòng 2–6 chứa vùng tập hợp cho bước chuyển nhiệm vụ. Cả đội phải hoàn thành nhiệm vụ hiện tại và vào vùng này. Kiểm tra hộp theo tọa độ local, không dùng bounds bao trục world cho các phòng xoay. Các điểm checkpoint đi cùng root nhiệm vụ. Lớp đầu có cửa sau mới; cửa ra phòng giáo viên được chỉnh hai vách để có ô thông 2,4 m.
 
@@ -15,3 +15,5 @@ Scene dự phòng trước khi bố trí: `Assets/TheReturn/Maps/SchoolFloor/Sce
 Kiểm tra sau khi ghép: 1.858 điểm tuyến có sàn, không gặp vật cản ngoài cửa nhiệm vụ; các điểm xuất phát có sàn; CharacterController đi cả hai chiều trên sáu dốc cầu thang (12 lượt); 30 kiểm tra vùng tập hợp xoay với đội 2–4 người đạt. Play Mode có 9 kiểm tra vị trí/hướng khi teleport, reset và góc trước/sau của nhiệm vụ không quay đầu đạt; Console không có lỗi. Đây không thay thế việc chơi lại toàn bộ câu đố và thử nhiều máy qua mạng.
 
 Teleport theo mốc Transform giờ giữ hướng ngang của checkpoint/ghế. ResetPositions khôi phục cả vị trí lẫn hướng xuất phát. Góc cấm quay đầu đo theo trục forward của root nhiệm vụ thay vì trục Z cố định của thế giới.
+
+> Ghi chú 2026-10-15: số hành lang đã đổi theo tên object mới trong scene (cũ 1→6, 2→1, 3→2, 4→3, 5→4, 6→5). Chỉ đổi số hành lang, nội dung khác giữ nguyên.

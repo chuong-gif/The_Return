@@ -1,6 +1,6 @@
 # DontLookBack — Không được quay đầu
 
-**Vị trí:** Hanh_Lang_4. Hướng cấm được tính theo forward của root nhiệm vụ, không theo trục world.
+**Vị trí:** Hanh_Lang_3. Hướng cấm được tính theo forward của root nhiệm vụ, không theo trục world.
 
 | File code | Vai trò |
 |---|---|

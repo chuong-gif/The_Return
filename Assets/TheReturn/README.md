@@ -15,10 +15,10 @@ TheReturn/
 │   └── SceneFlow/              SceneTransitionService: chuyển scene.
 ├── Features/                    Sáu nhiệm vụ; mỗi thư mục có README riêng.
 │   ├── Attendance/             Điểm danh — Phong_1, 24 bàn ghế.
-│   ├── QuietCorridor/          Giữ trật tự — Hanh_Lang_2.
+│   ├── QuietCorridor/          Giữ trật tự — Hanh_Lang_1.
 │   ├── GradeRepair/            Sửa bảng điểm — Phong_2.
 │   ├── NavigationExam/         Bài kiểm tra — Phong_3.
-│   ├── DontLookBack/           Không được quay đầu — Hanh_Lang_4.
+│   ├── DontLookBack/           Không được quay đầu — Hanh_Lang_3.
 │   └── TeacherTruth/           Giáo viên nói thật/nói dối — Phong_4.
 ├── Maps/                        Scene chơi và phần nối nhiệm vụ theo từng map.
 │   ├── Lobby/                  Sảnh chờ: trạng thái sẵn sàng, Canvas, công cụ dựng.

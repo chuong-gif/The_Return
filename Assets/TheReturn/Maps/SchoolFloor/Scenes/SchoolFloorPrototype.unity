@@ -34123,7 +34123,7 @@ GameObject:
   - component: {fileID: 132846765}
   - component: {fileID: 132846764}
   m_Layer: 0
-  m_Name: Hanh_Lang_2
+  m_Name: Hanh_Lang_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -180424,7 +180424,7 @@ GameObject:
   - component: {fileID: 690746562}
   - component: {fileID: 690746561}
   m_Layer: 0
-  m_Name: Hanh_Lang_5
+  m_Name: Hanh_Lang_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -201783,7 +201783,7 @@ GameObject:
   - component: {fileID: 781187687}
   - component: {fileID: 781187686}
   m_Layer: 0
-  m_Name: Hanh_Lang_6
+  m_Name: Hanh_Lang_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -224800,12 +224800,12 @@ Transform:
   - {fileID: 1614775988}
   - {fileID: 1068407721}
   - {fileID: 1567389830}
-  - {fileID: 1897105125}
   - {fileID: 132846763}
   - {fileID: 1449564377}
   - {fileID: 1305228273}
   - {fileID: 690746560}
   - {fileID: 781187685}
+  - {fileID: 1897105125}
   - {fileID: 1940718467}
   - {fileID: 877271340}
   - {fileID: 308455475}
@@ -347044,7 +347044,7 @@ GameObject:
   - component: {fileID: 1305228275}
   - component: {fileID: 1305228274}
   m_Layer: 0
-  m_Name: Hanh_Lang_4
+  m_Name: Hanh_Lang_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -385806,7 +385806,7 @@ GameObject:
   - component: {fileID: 1449564379}
   - component: {fileID: 1449564378}
   m_Layer: 0
-  m_Name: Hanh_Lang_3
+  m_Name: Hanh_Lang_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -501760,7 +501760,7 @@ GameObject:
   - component: {fileID: 1897105127}
   - component: {fileID: 1897105126}
   m_Layer: 0
-  m_Name: Hanh_Lang_1
+  m_Name: Hanh_Lang_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -501774,9 +501774,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1897105124}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0, y: 13.303132, z: 114.841255}
-  m_LocalScale: {x: 2903.446, y: 870.4155, z: 563.5129}
+  m_LocalRotation: {x: -0.7071069, y: -0, z: 0.000000004854261, w: 0.7071067}
+  m_LocalPosition: {x: 0.000015258789, y: 13.303121, z: 114.841255}
+  m_LocalScale: {x: 2903.4463, y: 870.4155, z: 563.5129}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 860183315}

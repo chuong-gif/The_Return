@@ -1,6 +1,7 @@
 # AI HANDOFF — The Return
 
 - Gốc dự án: `E:\kho model 3D\Project Unity\The Return`. Unity 6000.3.7f1, URP 17.3. Nhánh Git hiện tại: `main` (đọc từ .git/HEAD; status chưa xác minh).
+- QUY TRÌNH ĐẦY ĐỦ (nhận task, ghi LOG, tiếp quản việc dở, chủ dự án báo thay đổi): `.ai/PROTOCOL.md`. Nhật ký: `.ai/LOG.md`. Thay đổi do chủ dự án làm: `.ai/OWNER_UPDATES.md`.
 - Đọc đầu tiên: `AGENTS.md` -> `.ai/CURRENT.md` -> `PROJECT_STATE.md`. Sau đó chỉ đọc phần liên quan: `.ai/ARCHITECTURE.md`, `.ai/SYSTEMS.md`, README của feature.
 - Task hiện tại: `.ai/CURRENT.md`; backlog: `.ai/TASKS.md`.
 - Tra kiến trúc: `.ai/ARCHITECTURE.md`, `.ai/MAPS/`. Code graph/index: CHƯA có (xem TOOLING.md). Tạm thời tìm tên file/symbol trong `Assets/TheReturn` rồi mở file liên quan.

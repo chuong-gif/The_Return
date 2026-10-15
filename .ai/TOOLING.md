@@ -10,6 +10,8 @@
 | Unity CLI / compile ngoài Editor | Terminal | Chưa có quyền truy cập |
 | Symbol/usage index | `.ai/MAPS/index-scripts.md` (75 file .cs, 35 script được scene/prefab/asset tham chiếu) | Hoạt động [V]; chạy lại bằng `.ai/tools/rebuild_index.snippet.cs` |
 
+Phát hiện thay đổi chưa ghi: `.ai/tools/changed_since.snippet.cs` (chỉ đọc, qua execute_code) [V, đã chạy]; có terminal thì dùng thêm git status/log.
+
 ## Skill (cài 2026-10-14 bằng `npx skills add Unity-Technologies/skills`; license Unity Companion License)
 Vị trí thật (đã thấy trên đĩa, bản copy, không phải symlink): `.claude/skills/<tên>/` và `.agents/skills/<tên>/` (cùng nội dung). Chưa có skill nào được commit.
 
