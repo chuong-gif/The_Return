@@ -207,6 +207,14 @@ namespace TheReturn
                 help=teacher.catalog.controls;
                 SchoolFloorCanvasView.SetText(view.clues,teacher.catalog.Notebook(teacher.State,a.ActivePlayer));
             }
+            bool solved=Phase==0?a.State.Solved:Phase==1?flow.corridor.State.Solved:Phase==2?flow.gradeRepair.State.Solved:Phase==3?flow.navigationExam.State.Solved:Phase==4&&flow.dontLookBack.State.Solved;
+            if(solved && Phase<5 && flow.transitionGatherZones!=null && flow.transitionGatherZones.Length>Phase && flow.transitionGatherZones[Phase]!=null)
+            {
+                float distance=Vector3.Distance(a.party.players[a.ActivePlayer].position,flow.transitionGatherZones[Phase].transform.position);
+                info="Đến phòng "+(Phase+2)+" • Đã tập hợp "+flow.Gathered+"/"+a.PartySize;
+                message="Đi theo hành lang có viền đèn vàng. Cả đội tập hợp tại biển trước phòng tiếp theo.";
+                hint="Cách điểm tập hợp: "+Mathf.CeilToInt(distance)+" m";
+            }
             SchoolFloorCanvasView.SetText(view.objective,info);
             SchoolFloorCanvasView.SetText(view.status,message);
             SchoolFloorCanvasView.SetText(view.prompt,hint);

@@ -60,12 +60,12 @@ namespace TheReturn
         public void ReturnToCheckpoint()
         {
             var points=Checkpoint==0?checkpoints:laterCheckpoints;
-            for(int i=0;i<party.PartySize;i++)party.Teleport(i,points[i].position);
+            for(int i=0;i<party.PartySize;i++)party.Teleport(i,points[i]);
             party.SwitchRole(party.ActivePlayer,false);State.ClearExposure();
             PrototypePartyController.SetCursor(true);
         }
         /// <summary>Nhận vai; trả góc ngang tuyệt đối với +Z, không tính nhìn lên/xuống.</summary>
-        public float Angle(int actor) => Vector3.Angle(Vector3.forward,party.players[actor].forward);
+        public float Angle(int actor) => Vector3.Angle(transform.forward,party.players[actor].forward);
         /// <summary>Nhận chủ thẻ; kiểm tra người khác, khoảng cách, phía lưng, hướng ngắm và vật cản.</summary>
         public bool CanRead(int subject)
         {

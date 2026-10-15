@@ -53,7 +53,7 @@ namespace TheReturn
         {
             if (!Active || State == null) return;
             ClosePanel();
-            for (int i = 0; i < party.PartySize; i++) party.Teleport(i, checkpoints[i].position);
+            for (int i = 0; i < party.PartySize; i++) party.Teleport(i, checkpoints[i]);
             party.SwitchRole(party.ActivePlayer, false);
             State.Reset();
             exitDoor.SetOpen(false, true);

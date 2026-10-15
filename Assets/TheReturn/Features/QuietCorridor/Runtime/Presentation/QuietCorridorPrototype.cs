@@ -44,7 +44,7 @@ namespace TheReturn
             if (State == null) return;
             if (failed) Failures++;
             State.Reset();
-            for (int i = 0; i < State.PlayerCount; i++) party.Teleport(i, checkpoints[i].position);
+            for (int i = 0; i < State.PlayerCount; i++) party.Teleport(i, checkpoints[i]);
             party.SwitchRole(party.ActivePlayer, false);
             gate.SetOpen(false, true);
             Status = failed ? settings.failure : "Đã đặt lại hành lang; điểm danh vẫn được giữ.";
@@ -138,7 +138,9 @@ namespace TheReturn
         {
             if (party.PartySize != State.PlayerCount) return false;
             for (int i = 0; i < State.PlayerCount; i++)
-                if (!party.players[i].gameObject.activeInHierarchy || !goalZone.bounds.Contains(party.players[i].position)) return false;
+                // Dùng hộp local để hành lang xoay không nhận nhầm người còn đứng ngoài vùng đích.
+                if (!party.players[i].gameObject.activeInHierarchy ||
+                    !new Bounds(goalZone.center, goalZone.size).Contains(goalZone.transform.InverseTransformPoint(party.players[i].position))) return false;
             return true;
         }
 

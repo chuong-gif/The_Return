@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "generate-editor-search-query": {
+      "source": "Unity-Technologies/skills",
+      "sourceType": "github",
+      "skillPath": "skills/generate-editor-search-query/SKILL.md",
+      "computedHash": "c4606b02473430780b2c413415d3795f43eb13a3e6149629cfc8cc15d0e03a1d"
+    },
+    "physics-3d-collision": {
+      "source": "Unity-Technologies/skills",
+      "sourceType": "github",
+      "skillPath": "skills/physics-3d-collision/SKILL.md",
+      "computedHash": "4f95829b4f27a34fcb05c9a4a6da3968fa4ca194b6db5dc4ac9b94fc53640906"
+    },
+    "ui": {
+      "source": "Unity-Technologies/skills",
+      "sourceType": "github",
+      "skillPath": "skills/ui/SKILL.md",
+      "computedHash": "4019dcb930e8c9f5fb9b1e8f6b11e87bfd32d74cee64d1361cce6b10ee7b4be5"
+    },
+    "ui-ugui": {
+      "source": "Unity-Technologies/skills",
+      "sourceType": "github",
+      "skillPath": "skills/ui-ugui/SKILL.md",
+      "computedHash": "2e863af9fb1d41e570a9e6c1f8850874bfce7de923a1b7ad3af48d37450f41e2"
+    },
+    "unity-cli": {
+      "source": "Unity-Technologies/skills",
+      "sourceType": "github",
+      "skillPath": "skills/unity-cli/SKILL.md",
+      "computedHash": "b238ae2011256f6a5df07d9f868f4d9cf6daa6b338422ec4c6ffe05554d0202b"
+    }
+  }
+}

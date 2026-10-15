@@ -68,7 +68,7 @@ namespace TheReturn
         /// <summary>Không nhận tham số; đưa đội vào các vị trí đầu phòng và khóa chuột cho góc nhìn thứ nhất.</summary>
         void PlaceParty()
         {
-            for (int i = 0; i < party.PartySize; i++) party.Teleport(i, checkpoints[i].position);
+            for (int i = 0; i < party.PartySize; i++) party.Teleport(i, checkpoints[i]);
             party.SwitchRole(0, false);
             PrototypePartyController.SetCursor(true);
         }

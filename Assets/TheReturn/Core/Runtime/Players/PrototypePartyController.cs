@@ -28,6 +28,7 @@ namespace TheReturn
         public int PartySize { get; private set; }
         CharacterController[] controllers;
         Vector3[] spawns;
+        Quaternion[] spawnRotations;
         float[] pitches;
         float[] fallSpeeds;
 
@@ -36,12 +37,14 @@ namespace TheReturn
         {
             controllers = new CharacterController[players.Length];
             spawns = new Vector3[players.Length];
+            spawnRotations = new Quaternion[players.Length];
             pitches = new float[players.Length];
             fallSpeeds = new float[players.Length];
             for (int i = 0; i < players.Length; i++)
             {
                 controllers[i] = players[i].GetComponent<CharacterController>();
                 spawns[i] = players[i].position;
+                spawnRotations[i] = players[i].rotation;
             }
         }
 
@@ -131,7 +134,18 @@ namespace TheReturn
         /// <summary>Không nhận tham số; trả tất cả vai về spawn đã lưu, không reset câu đố.</summary>
         public void ResetPositions()
         {
-            for (int i = 0; i < players.Length; i++) Teleport(i, spawns[i]);
+            for (int i = 0; i < players.Length; i++)
+            {
+                Teleport(i, spawns[i]);
+                players[i].rotation = spawnRotations[i];
+            }
+        }
+
+        /// <summary>Nhận ID vai và mốc Transform; đặt vị trí cùng hướng ngang của mốc, dùng được cho phòng đã xoay.</summary>
+        public void Teleport(int index, Transform target)
+        {
+            Teleport(index, target.position);
+            players[index].rotation = Quaternion.Euler(0, target.eulerAngles.y, 0);
         }
 
         /// <summary>Nhận true để khóa chuột, false để thả; cập nhật con trỏ hệ thống.</summary>

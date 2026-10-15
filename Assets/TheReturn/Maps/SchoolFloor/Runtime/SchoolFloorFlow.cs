@@ -3,6 +3,8 @@
  * Hàm: Start gán chế độ nối map; Update chờ cả đội tập hợp rồi chuyển điều khiển;
  * RestartMap đặt lại cả sáu nhiệm vụ; OnGUI hiện hướng dẫn tập hợp.
  */
+// ReachedNextRoom: nhận chỉ số tuyến, kiểm tra đủ thành viên tại vùng tập hợp và trả về bool.
+// ContainsPlayer: kiểm tra vị trí trong hộp theo trục local để vùng tập hợp xoay vẫn chính xác.
 using UnityEngine;
 namespace TheReturn
 {
@@ -19,6 +21,24 @@ namespace TheReturn
         public DontLookBackPrototype dontLookBack;
         public TeacherTruthPrototype teacherTruth;
         public int Gathered { get; private set; }
+        public BoxCollider[] transitionGatherZones;
+
+        /// <summary>Nhận chỉ số tuyến; trả true khi cả đội đứng trong vùng đích, hoặc map cũ chưa có tuyến.</summary>
+        bool ReachedNextRoom(int index)
+        {
+            if (transitionGatherZones == null || transitionGatherZones.Length <= index || transitionGatherZones[index] == null) return true;
+            var zone = transitionGatherZones[index];
+            Gathered = 0;
+            for (int i = 0; i < attendance.party.PartySize; i++)
+                if (ContainsPlayer(zone, attendance.party.players[i].position)) Gathered++;
+            return attendance.party.PartySize >= 2 && Gathered == attendance.party.PartySize;
+        }
+
+        /// <summary>Nhận collider và vị trí world; trả true khi điểm nằm trong hộp thật, kể cả hộp đã xoay.</summary>
+        static bool ContainsPlayer(BoxCollider zone, Vector3 position)
+        {
+            return zone != null && new Bounds(zone.center, zone.size).Contains(zone.transform.InverseTransformPoint(position));
+        }
 
         /// <summary>Không nhận tham số; bật chế độ nối tiếp để cửa lớp không kết thúc bản thử.</summary>
         void Start() { attendance.continueIntoMap = true; }
@@ -29,7 +49,7 @@ namespace TheReturn
             if (teacherTruth != null && teacherTruth.Active) return;
             if (dontLookBack != null && dontLookBack.Active)
             {
-                if (teacherTruth != null && dontLookBack.State.Solved)
+                if (teacherTruth != null && dontLookBack.State.Solved && ReachedNextRoom(4))
                 {
                     dontLookBack.StopSession(false);
                     teacherTruth.Begin();
@@ -38,7 +58,7 @@ namespace TheReturn
             }
             if (navigationExam != null && navigationExam.Active)
             {
-                if (dontLookBack != null && navigationExam.State.Solved && !navigationExam.PanelOpen)
+                if (dontLookBack != null && navigationExam.State.Solved && !navigationExam.PanelOpen && ReachedNextRoom(3))
                 {
                     navigationExam.StopSession(false);
                     dontLookBack.Begin();
@@ -47,7 +67,7 @@ namespace TheReturn
             }
             if (gradeRepair != null && gradeRepair.Active)
             {
-                if (navigationExam != null && gradeRepair.State != null && gradeRepair.State.Solved && !gradeRepair.PanelOpen)
+                if (navigationExam != null && gradeRepair.State != null && gradeRepair.State.Solved && !gradeRepair.PanelOpen && ReachedNextRoom(2))
                 {
                     gradeRepair.StopSession(false);
                     navigationExam.Begin();
@@ -56,7 +76,7 @@ namespace TheReturn
             }
             if (corridor.Active)
             {
-                if (gradeRepair != null && corridor.State != null && corridor.State.Solved)
+                if (gradeRepair != null && corridor.State != null && corridor.State.Solved && ReachedNextRoom(1))
                 {
                     corridor.StopSession(false);
                     gradeEntrance.SetOpen(true);
@@ -67,8 +87,9 @@ namespace TheReturn
             if (!attendance.Begun || attendance.State == null || !attendance.State.Solved) return;
             Gathered = 0;
             for (int i = 0; i < attendance.PartySize; i++)
-                if (attendance.State.SeatOf(i) < 0 && stagingZone.bounds.Contains(attendance.party.players[i].position)) Gathered++;
+                if (attendance.State.SeatOf(i) < 0 && ContainsPlayer(stagingZone, attendance.party.players[i].position)) Gathered++;
             if (Gathered != attendance.PartySize) return;
+            if (!ReachedNextRoom(0)) return;
             attendance.ExternalControl = true;
             attendanceHud.enabled = false;
             corridor.Begin();

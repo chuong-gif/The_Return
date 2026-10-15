@@ -40,7 +40,7 @@ namespace TheReturn
         public void ResetRound(bool nextVariant = false)
         {
             if (!Active || State == null) return;
-            for (int i = 0; i < party.PartySize; i++) party.Teleport(i, checkpoints[i].position);
+            for (int i = 0; i < party.PartySize; i++) party.Teleport(i, checkpoints[i]);
             party.SwitchRole(party.ActivePlayer, false);
             if (nextVariant) State = new NavigationExamState(party.PartySize, unchecked(State.Seed + 1));
             else State.Reset();

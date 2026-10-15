@@ -256,7 +256,7 @@ namespace TheReturn
             { Status = "Hãy đến gần ghế hơn."; return false; }
             if (!State.TrySit(ActivePlayer, index))
             { Status = "Ghế đã có người, bạn đang ngồi, hoặc lượt đã kết thúc."; return false; }
-            party.Teleport(ActivePlayer, seats[index].sitPoint.position);
+            party.Teleport(ActivePlayer, seats[index].sitPoint);
             SwitchRole(ActivePlayer);
             Status = State.Round.Names[ActivePlayer] + " đã ngồi " + AttendanceRound.SeatCode(index) + ".";
             return true;
@@ -268,7 +268,7 @@ namespace TheReturn
             if (State == null) return false;
             int seat = State.SeatOf(ActivePlayer);
             if (!State.Stand(ActivePlayer)) return false;
-            party.Teleport(ActivePlayer, seats[seat].standPoint.position);
+            party.Teleport(ActivePlayer, seats[seat].standPoint);
             SwitchRole(ActivePlayer);
             Status = State.Solved ? textCatalog.success : "Đã đứng dậy; có thể chọn chỗ khác.";
             return true;
