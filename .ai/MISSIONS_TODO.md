@@ -21,3 +21,5 @@ Dùng TÊN OBJECT (đề xuất, chờ chủ dự án xác nhận — xem MAPS/a
 
 Mỗi nhiệm vụ mới cần: cả đội 2-4 người, khu chuẩn bị phía trước, tuân theo cấu trúc Features/<Tên> (Domain thuần + Presentation + Data + Tests), prefab chỉ cho vật có tương tác/logic.
 Nguồn bảng: PROJECT_STATE.md (cập nhật 2026-09-29) + chủ dự án 2026-10-14; kiểm lại trước khi dùng.
+
+2026-10-16 00:06 UTC: đã có ĐỀ XUẤT (chưa duyệt) cho 6 khu trống tại PLANS/T-006-mission-designs.md. Chưa làm theo khi chủ dự án chưa duyệt.

@@ -1,13 +1,15 @@
 # CURRENT (HOT — ≤ 30 dòng, ghi đè)
 
-Cập nhật: 2026-10-15 08:05 UTC bởi Claude Sonnet 5.5 (chat + Unity MCP, phiên #3)
-Scene lock: không ai giữ
-Trọng tâm: luồng nhiệm vụ tự chọn phòng. DONE: T-001 (bảng kề), T-002 (MapProgress), T-003 (IMissionAdapter + MissionRegistry + 6 adapter + factory). Test NUnit 34/34 xanh; adapter thật mới compile. Gameplay/scene CHƯA đổi, chưa có gì gọi registry trong scene.
+Cập nhật: 2026-10-15 23:37 UTC bởi Claude Sonnet 5.5 (chat + Unity MCP, phiên #4)
+Scene lock: không ai giữ (phiên #5 đã trả sau T-007 S4, 2026-10-16 01:51 UTC)
+Trọng tâm: luồng nhiệm vụ tự chọn phòng ĐÃ NỐI VÀO GAME. DONE: T-001..T-004. Đội xuất hiện giữa sân; Attendance không tự chạy; cả đội đứng đủ trong vùng chuẩn bị của khu chưa xong thì khu bắt đầu và khóa cả 3 lối; xong thì mở lại. Code: Maps/SchoolFloor/Runtime/Missions/MissionFlowController.cs; scene có object MissionFlow_Controller (bảng 22 cổng). EditMode 43/43 xanh.
 Cảnh báo:
-- `SchoolFloorPrototype.unity` có thay đổi lúc 01:59 UTC chưa ai ghi/xác nhận (LOG). Đọc lại scene thực tế trước khi dùng giả định.
-- Các bộ `*Checks` cũ lỗi thời (BUGS/quiet-corridor-...); đừng chạy lại để «xác nhận» gameplay mới. Test mới: NUnit EditMode (TESTING.md).
-- Mọi MenuItem builder/migration: không chạy (AGENTS.md).
-- T-012, T-013 do phiên Claude khác giữ (07:29, 07:40 UTC): không làm trùng.
-Việc tiếp theo: T-004 (nối registry vào SchoolFloorFlow/AccessController) — dòng TASKS BLOCKED; cần chủ dự án duyệt nháp PLANS/T-004-wire-registry.md và quyết định: Phong_1/Attendance tự chạy từ đầu hay chờ người chơi chọn. Cần Scene lock + snapshot scene khi làm.
-Việc khác chưa ai giữ, cần brief của chủ dự án: T-006 (nhiệm vụ cho Phong_5/6 + Hanh_Lang_2/4/5/6), T-008, T-010, T-011. T-007 (màn thắng) làm được sau T-004 (dùng MissionRegistry.Won).
+- Chủ dự án đang tự đi thử từng phòng trong Play Mode: đừng dừng/điều khiển Play Mode, đừng lưu scene khi chưa hỏi.
+- Phiên #3 đã ghi TAKEOVER T-004 (13:06) rồi chủ dự án giao lại cho #4; xem LOG CORRECTION/TAKEOVER cuối. Phiên #3 nếu còn: không sửa T-004.
+- SchoolFloorPrototype.unity có lần lưu 11:42 UTC không rõ ai (UNLOGGED-CHANGE). Đọc scene thực tế trước khi dựa vào giả định cũ.
+- Các bộ *Checks cũ lỗi thời (BUGS/quiet-corridor-...); đừng chạy lại. Test mới: NUnit EditMode (TESTING.md).
+- Mọi MenuItem builder/migration: không chạy (AGENTS.md). T-012, T-013 do phiên khác giữ.
+- File thừa: Assets/Screenshots/screenshot-20261015-201221.png (chủ dự án xóa tay).
+Chưa kiểm/để lại: vòng bắt đầu-kết thúc thật của Phong_2..4 + hành lang 3 (T-005); Canvas còn hiện bảng Điểm danh ở sân (T-011); MissionTestLauncher không tự chuyển khu.
+Việc tiếp theo: T-005 (TODO, kiểm Play Mode luồng mới, thay *Checks cũ); T-007 (màn thắng) ĐÃ GẮN SCENE (object WinScreen), chờ chủ dự án chơi thật xem màn thắng hiện sau 6 nhiệm vụ; T-011 UI theo khu cần brief; T-006 đã có ĐỀ XUẤT chờ chủ dự án duyệt (PLANS/T-006-mission-designs.md, phiên #3); T-008/T-010 cần brief của chủ dự án.
 Chủ dự án báo thay đổi ở: OWNER_UPDATES.md. Lịch sử: LOG.md. Git status chỉ lấy được bằng terminal ngoài.

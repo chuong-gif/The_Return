@@ -1,6 +1,6 @@
 # KẾ HOẠCH T-004 (NHÁP, CHỜ DUYỆT): nối MissionRegistry vào SchoolFloorFlow / SchoolFloorAccessController   (file: .ai/PLANS/T-004-wire-registry.md)
 
-Trạng thái: CHỜ DUYỆT | AI giữ: - | Viết: 2026-10-15 08:05 UTC bởi Claude Sonnet 5.5 (phiên #3) | Là bước S3 của PLANS/nonlinear-mission-flow.md
+Trạng thái: DONE (2026-10-15 23:37 UTC; code + scene đã nối, logic qua Play Mode, chủ dự án tự đi thử từng phòng) | AI giữ: - | Viết: 2026-10-15 08:05 UTC bởi Claude Sonnet 5.5 (phiên #3) | Là bước S3 của PLANS/nonlinear-mission-flow.md
 
 ## 1. Mục tiêu
 - Thay luồng tuyến tính (chuỗi if trong `SchoolFloorFlow.Update` + mở cửa theo `m-1` trong `SchoolFloorAccessController.Refresh`) bằng `MissionRegistry`: người chơi tự chọn khu theo luật đã chốt (DECISIONS mục 1-10). Nghiệm thu: compile sạch + chơi thử Play Mode (mức 4).
@@ -30,3 +30,10 @@ Trạng thái: CHỜ DUYỆT | AI giữ: - | Viết: 2026-10-15 08:05 UTC bởi 
 ## 6. Rủi ro
 - Gắn component/gán field trong scene chủ dự án đang tự chỉnh; 5 bộ `*Checks` cũ sẽ hỏng (thay ở S5 của kế hoạch lớn).
 - `FindFirstObjectByType` rải nhiều file; ưu tiên truyền tham chiếu qua field.
+
+
+## Kết quả (phiên #4, 2026-10-15 23:37 UTC)
+- Chủ dự án duyệt và chốt: Attendance không tự chạy; 4 người xuất hiện quanh tâm sân; giữ vùng chuẩn bị phía TRONG cửa; cửa khu chưa xong luôn mở khi không khu nào đang làm; đủ đội trong vùng thì khu bắt đầu, khóa 3 lối; xong thì mở lại.
+- Làm: MissionFlowController (mới), SchoolFloorFlow/AccessController/Gate/MissionAdapters/MissionTestLauncher (sửa nhỏ), scene (object điều phối, bảng 22 cổng, dời 4 PlayerSlot). Snapshot trước khi sửa scene: Scenes/BeforeRegistry_20261015_082336.unity.
+- Kiểm: EditMode 43/43; Play Mode (teleport đội vào vùng): 3/4 không bắt đầu, 4/4 bắt đầu Phong_1 và khóa 16 cổng nhiệm vụ, phải đứng dậy mới bàn giao, hoàn thành mở cửa, vào Hanh lang 2_Vao thì Hanh_Lang_1 bắt đầu, RestartMap về sân. Chủ dự án tự đi bộ thử từng phòng.
+- CHƯA kiểm/để lại: vòng bắt đầu-kết thúc thật của Phong_2..4 và hành lang 3 (T-005); Canvas còn hiện bảng Điểm danh ở sân (T-011); test launcher không tự chuyển khu; index-scripts.md (tự sinh) chưa dựng lại cho script mới.

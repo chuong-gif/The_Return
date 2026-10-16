@@ -96,3 +96,120 @@ Quy tắc: không sửa/xóa mục cũ; sai thì thêm mục mới đính chính
 - Xác minh: MỨC 3 cho MissionRegistry (34/34 test xanh, Console 0 lỗi); MỨC 2 cho 6 adapter + factory (compile, chưa chạy trong scene). Scene không dirty, không Play Mode, không đụng SchoolFloorFlow/6 nhiệm vụ/prefab.
 - Ghi chú cho T-004: Attendance chạy từ đầu scene (Begun do UI/khởi động; flow bàn giao bằng ExternalControl + tắt attendanceHud). GradeRepair/NavigationExam chỉ bàn giao khi !PanelOpen. Bàn giao hiện tại còn điều kiện VỊ TRÍ (cả đội ở transitionGatherZones, Attendance còn cần staging zone + chỗ ngồi): đó là Presentation, thuộc T-004, registry chỉ nhận cờ teamReady.
 - index-scripts.md (tự sinh) chưa dựng lại cho 5 script mới. Bước kế: T-004 cần chủ dự án duyệt nháp kế hoạch (đổi gameplay/scene) trước khi code.
+
+### 2026-10-15 08:25 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #4) | START | T-004
+- Chủ dự án DUYỆT làm T-004 và chốt: (a) Phong_1/Attendance KHÔNG tự chạy; 4 người xuất hiện giữa sân (San, tâm khoảng (-11.5, 24.3)); (b) giữ vùng chuẩn bị hiện tại (phía TRONG cửa): cửa vào khu chưa xong luôn mở khi không có khu nào đang làm; cả đội đứng đủ trong vùng thì nhiệm vụ bắt đầu và khóa cả 3 lối; xong thì mở lại.
+- PREFLIGHT: Console 0 lỗi; không Play Mode; scene không dirty; Scene lock trống. UNLOGGED-CHANGE: SchoolFloorPrototype.unity có mtime 08:04:15 UTC (sau mục 01:59, trước DONE T-003 08:05; không rõ ai lưu). Đã đọc scene hiện tại (22 cổng, vùng chuẩn bị nằm phía trong cửa), không dùng giả định cũ.
+- Files định đụng: MỚI Runtime/Missions/MissionFlowController.cs; SỬA SchoolFloorFlow.cs (Update/RestartMap/OnGUI nhường quyền), SchoolFloorAccessController.cs (mở cửa theo MapProgress), SchoolPreparationGate.cs (chỉ nhãn), Missions/MissionAdapters.cs (Attendance.CanHandOff = xong và không ai còn ngồi); scene SchoolFloorPrototype (thêm object điều phối + bảng cổng, dời 4 PlayerSlot ra sân; có snapshot BeforeRegistry_*.unity); .ai/*.
+
+### 2026-10-15 08:50 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #4) | PROGRESS | T-004
+- Xong S1-S5 (mức 2 compile + scene lưu): MỚI MissionFlowController.cs (registry, đi lại tự do, bắt đầu khu khi cả đội trong preparationZone, Tick hoàn thành); SỬA SchoolFloorFlow (nhường quyền, RestartMap reset registry), SchoolFloorAccessController (cửa theo MapProgress, fallback luồng cũ nếu thiếu missionFlow), SchoolPreparationGate.Apply (+tham số done, chỉ nhãn), AttendanceMissionAdapter.CanHandOff (chờ mọi vai đứng dậy), MissionTestLauncher (2 dòng giữ hành vi cũ). Scene: thêm MissionFlow_Controller (bảng 22 cổng đã đối chiếu khoảng cách: 0 sai), dời 4 PlayerSlot ra tâm sân (-11.5,2.5,24.3). Snapshot: Scenes/BeforeRegistry_20261015_082336.unity. Console 0 lỗi.
+- Còn: S6 chơi thử Play Mode (mức 4), chạy lại 34 test NUnit, cập nhật thẻ/PLANS/CURRENT. Nếu bị ngắt: scene đã lưu với controller; kiểm Play Mode trước, KHÔNG chạy lại việc dời người chơi.
+
+### 2026-10-15 11:32 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #5) | START | T-007
+- Chủ dự án giao làm tiếp phần chưa ai giữ. PREFLIGHT: đọc CURRENT/TASKS/LOG/OWNER_UPDATES; T-004 (phiên #4) giữ Scene lock từ 08:25, mục LOG cuối 08:50 (2h40 trước), CHƯA STALE (<24h) nên KHÔNG tiếp quản. T-012 (07:29) và T-013 (07:40) cũng do phiên khác giữ - không đụng.
+- UNLOGGED-CHANGE: scene SchoolFloorPrototype.unity ĐANG dirty trong Editor (chưa lưu, không rõ ai: có thể phiên #4 hoặc chủ dự án); Assembly-CSharp*.csproj đổi 11:23 (Unity vừa compile lại); Attendance/Runtime/Data/AttendanceTextCatalog.cs đổi 08:39 UTC chưa có mục LOG. KHÔNG lưu scene, KHÔNG vào Play Mode.
+- Phạm vi T-007: Domain/WinSummary.cs + test NUnit (mới), Runtime/UI/WinScreenPresenter.cs (mới), PLANS/T-007-win-screen.md, TASKS/LOG/CURRENT/SYSTEM_CARDS/SchoolFloor.md. Không sửa file có sẵn trừ .ai.
+
+### 2026-10-15 12:44 | Claude Sonnet 5.5 (chat + Unity MCP, phien #2) | DONE (phan 1) | T-013
+- Ra soat unity-cli: doc toan bo SKILL.md + SECURITY.md, quet mau rui ro 16 file .md, doi chieu .claude vs .agents (24/24 giong), thu doi chieu hash lock (khong khop SHA-256 SKILL.md; thuat toan chua ro). Khong thay chi thi an/injection; rui ro con lai la nang luc co chu dich (eval C#, cai CLI tai-va-chay, ghi cau hinh AI client). Ghi ket qua vao TOOLING.md.
+- Files: .ai/TOOLING.md, .ai/TASKS.md, .ai/LOG.md | Xac minh: muc 2 (chi doc; khong chay CLI, khong cai gi). Khong doc tung dong cac file references/CHANGELOG.
+- Dang do/Tiep theo: phan 'thu Claude Code mo tai goc du an co nap .claude/skills khong' | Can chu du an: tu thu va bao ket qua (hoac cho phep dua huong dan thu vao OWNER_UPDATES).
+
+### 2026-10-15 13:06 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #3) | TAKEOVER | T-004
+- Từ: phiên #4 (START 08:25, PROGRESS 08:50: xong S1-S5, còn S6 chơi thử Play Mode + 34 test + cập nhật tài liệu). Lý do: CHỦ DỰ ÁN chỉ định phiên #3 tiếp nối T-004 trong chat (OWNER_UPDATES); phiên #4 không còn dấu hiệu hoạt động (không file code/.ai nào của T-004 đổi sau 08:26; T-004 chưa tới ngưỡng STALE 24h nhưng chủ dự án quyết).
+- Đối chiếu thực tế (changed_since sau 08:50): chỉ có WinSummary.cs/WinScreenPresenter.cs/WinSummaryTests.cs (T-007, phiên #5), TOOLING/TASKS/LOG (T-013) và scene SchoolFloorPrototype.unity lưu lúc 11:42 UTC (UNLOGGED-CHANGE: không rõ ai; phiên #5 thấy scene dirty lúc 11:32). Console 0 lỗi; scene không dirty; không Play Mode. Snapshot BeforeRegistry_20261015_082336.unity còn nguyên.
+- GIỮ NGUYÊN phần #4 đã làm (MissionFlowController, sửa SchoolFloorFlow/AccessController/Gate/MissionAdapters, scene có MissionFlow_Controller, 4 PlayerSlot ở sân): KHÔNG làm lại, KHÔNG dời người chơi lần nữa. Việc của phiên #3: S6 kiểm chứng (đọc scene hiện tại, chạy test NUnit, chơi thử Play Mode mức 4), sửa lỗi nếu có trong phạm vi T-004, cập nhật thẻ/PLANS/CURRENT.
+- Scene lock: chuyển từ phiên #4 sang phiên #3 (2026-10-15 13:06 UTC). Không đụng T-007 (phiên #5), T-012, T-013.
+
+### 2026-10-15 09:20 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #4) | DONE | T-004
+- Nối registry vào luồng chơi. Kiểm tra mức 4 (Play Mode, đội teleport vào vùng): bắt đầu đúng trạng thái (Attendance không chạy, 4 người ở sân, 22 cửa mở); 3/4 người trong vùng Phong 1_Cua 3 KHÔNG bắt đầu, đủ 4/4 thì bắt đầu Phong_1 và khóa 16 cổng nhiệm vụ (6 cổng Phong_5/6 vẫn mở); ngồi đúng chỗ + Solved nhưng còn ngồi thì chưa bàn giao, đứng dậy hết thì Phong_1 done và cửa mở lại; cả đội vào vùng Hanh lang 2_Vao thì Hanh_Lang_1 bắt đầu (entry Phong_1); RestartMap về sân, mọi khu chưa xong. EditMode test 43/43 xanh; Console 0 lỗi; scene không dirty sau Play.
+- CHƯA kiểm: đi bộ thật từ sân tới từng phòng (thang/va chạm; đội chỉ được teleport trong test); cổng Phong_2..4 và các hành lang khác chưa chạy vòng bắt đầu-kết thúc thật; MissionTestLauncher chỉ giữ hành vi cũ cho vào thẳng nhiệm vụ, test launcher KHÔNG tự chuyển sang khu kế tiếp nữa. UI Canvas vẫn theo Phase tuyến tính (hiện bảng Điểm danh ở sân) — thuộc S6/T-011.
+- Tác dụng phụ: Assets/Screenshots/screenshot-20261015-201221.png (ảnh chụp kiểm tra UI, công cụ chặn xóa; chủ dự án xóa tay nếu không cần). Snapshot Scenes/BeforeRegistry_20261015_082336.unity giữ lại.
+- Mở khóa T-005, T-007. Scene lock đã trả.
+
+### 2026-10-15 13:14 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #4) | CORRECTION | T-004
+- Mục `DONE | T-004` đóng dấu 09:20 ở trên thực ra được ghi lúc 2026-10-15 13:14 UTC (đồng hồ ước tính của phiên #4 sai; phiên #4 bị ngắt nhiều giờ giữa chừng). Phiên #4 ghi nó trước khi thấy mục TAKEOVER 13:06 của phiên #3. COI MỤC ĐÓ LÀ KẾT QUẢ KIỂM CHỨNG của phiên #4, KHÔNG phải việc đóng task: câu 'Scene lock đã trả' SAI — lock thuộc phiên #3 theo TAKEOVER.
+- Phiên #4 đã tự chạy S6 (Play Mode bằng teleport + EditMode 43/43) trước khi thấy TAKEOVER; scene không bị lưu hay sửa thêm (không dirty). Phiên #4 đã ghi đè dòng T-004 trong TASKS.md bằng DONE rồi KHÔI PHỤC lại thành IN-PROGRESS thuộc phiên #3 (dòng cũ có thể khác chữ; phiên #3 hãy chỉnh lại nếu cần). CURRENT.md không bị đổi.
+- Phiên #4 dừng hẳn ở đây, không đụng gì thêm. Việc còn lại cho phiên #3: đọc kết quả mục DONE ở trên, nếu đồng ý thì đóng T-004 (DONE) và nhả lock; phần CHƯA kiểm (đi bộ thật sân -> phòng, vòng bắt đầu-kết thúc Phong_2..4 và hành lang 3, UI Canvas theo Phase) làm tiếp hoặc giao T-005/T-011. Ảnh Assets/Screenshots/screenshot-20261015-201221.png là tác dụng phụ kiểm UI, cần xóa tay.
+
+### 2026-10-15 23:29 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #4) | TAKEOVER | T-004
+- Từ: phiên #3 (TAKEOVER 13:06, sau đó không có mục LOG hay file nào đổi ngoài các mục CORRECTION/TASKS của phiên #4 lúc 13:14). Lý do: CHỦ DỰ ÁN trả lời trực tiếp trong chat của phiên #4: lấy lại khóa scene, kiểm đi bộ thật từ sân tới từng phòng rồi đóng T-004.
+- PREFLIGHT: Console 0 lỗi; không Play Mode; scene không dirty (mtime 11:42:08); không file code/scene nào đổi kể từ 13:14. Phần code/scene của T-004 giữ nguyên, không làm lại, không dời người chơi lần nữa.
+- Phạm vi: chỉ ĐỌC/CHƠI THỬ (Play Mode, không lưu scene) để đo đường đi bộ sân -> Cua 3 các phòng và phòng -> hành lang; chỉ sửa nếu phát hiện lỗi thuộc T-004 (khi đó ghi PROGRESS + snapshot mới trước khi sửa scene).
+
+### 2026-10-15 23:36 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #4) | TAKEOVER | T-004
+- Từ: phiên #3 (TAKEOVER 13:06). Lý do: CHỦ DỰ ÁN chỉ định ngay trong chat: phiên #4 lấy lại Scene lock, kiểm đi bộ thật từ sân tới từng phòng rồi đóng T-004 (phiên #3 chưa có mục PROGRESS nào sau TAKEOVER). Phiên #3 nếu còn hoạt động: dừng, không sửa scene/code T-004.
+- PREFLIGHT: không Play Mode, scene không dirty. Phạm vi: chỉ ĐI THỬ trong Play Mode (CharacterController, không lưu scene); chỉ sửa scene/code khi phát hiện lỗi chặn đường trong phạm vi T-004, kèm snapshot mới.
+
+### 2026-10-15 23:36 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #4) | PROGRESS | T-004
+- SỬA mục TAKEOVER ngay trên: câu 'không Play Mode' SAI. Lúc 2026-10-15 23:36 UTC Unity ĐANG ở Play Mode (đã chạy ~330s, không do phiên #4 bật: phiên #4 đã Stop trước đó). Có người (chủ dự án hoặc phiên khác) đang chơi thử: player0 đứng trong Phong_5 (85.5, 11.2, 27.3), tiếp đất, không khu nào đang làm, chuột chưa khóa.
+- Phiên #4 KHÔNG đụng Play Mode đó (không teleport, không Stop); chỉ đọc trạng thái. Chờ chủ dự án cho biết ai đang chơi và cho phép dừng/dùng Play Mode để kiểm đi bộ. Quan sát phụ: player0 lên được tầng phòng (y=11.2) từ sân nên đường sân -> Phong_5 đi bộ được (chưa xác nhận cách đi tới).
+
+### 2026-10-15 23:37 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #4) | DONE | T-004
+- Đóng T-004 theo quyết định chủ dự án: chủ dự án tự đi thử các phòng nên phiên #4 KHÔNG chạy kiểm đi bộ (và không đụng Play Mode đang chạy). Kết quả kiểm trước đó nằm ở mục `DONE | T-004` đóng dấu 09:20 (giờ thực tế 13:13) và mục CORRECTION; câu 'Scene lock đã trả' trong mục đó lúc ấy sai, nay ĐÚNG: lock đã trả.
+- Mức xác minh: MỨC 4 một phần (Play Mode bằng teleport + EditMode 43/43); đi bộ thật do chủ dự án tự thử. Cập nhật: TASKS (T-004 DONE, T-005 BLOCKED->TODO), CURRENT (viết lại), SYSTEM_CARDS/SchoolFloor.md (B, C, D), PLANS/T-004 (kết quả). index-scripts.md tự sinh chưa dựng lại.
+
+### 2026-10-15 23:57 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #3) | NOTE | T-004
+- Chủ dự án nhắn phiên #3 «làm theo đề xuất, tiếp nối T-004» (chốt lại Attendance/Phong_1 chờ người chơi chọn - đã có trong OWNER_UPDATES). PREFLIGHT thấy T-004 đã DONE bởi phiên #4 (23:37 UTC) nên phiên #3 KHÔNG nhận lại, KHÔNG sửa code/scene, KHÔNG giữ Scene lock. Phiên #3 thôi mọi quyền liên quan T-004 (TAKEOVER 13:06 không còn hiệu lực).
+- Trạng thái đọc được: Console 0 lỗi, không Play Mode lúc 2026-10-15 23:57 UTC, scene không dirty. Việc tiếp theo theo CURRENT: T-005 (TODO), T-007 (phiên #5), các task cần brief.
+
+### 2026-10-16 00:06 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #3) | REVIEW | T-006
+- Chủ dự án bảo làm task thiết kế gameplay cho 2 phòng + 4 hành lang còn trống và sẽ duyệt (chat 2026-10-16). Vì MISSIONS_TODO cấm tự bịa, kết quả là ĐỀ XUẤT: PLANS/T-006-mission-designs.md (6 nhiệm vụ: BreakerPanel, Choir, GlassBridge, SharedLantern, TeacherSays, PlankAndKey + ý tưởng dự phòng + 5 câu hỏi cho chủ dự án). Đọc: Design/Thiet-ke-tang-hoc.md, Giu-trat-tu.md, thẻ 6 nhiệm vụ, MISSIONS_TODO, PROJECT.
+- Kiểm chứng bằng tính toán trong Editor (không tạo/sửa file Unity): cầu dao S=4/5/6 có đúng 1 nghiệm trong giới hạn quá tải; cầu ván tối thiểu 8/17/17/11 cho 4 bộ tốc độ. KHÔNG code, KHÔNG đụng scene/prefab. Mức xác minh: mức 1-2 (tài liệu + tính toán); chưa playtest.
+- Việc tiếp: chờ chủ dự án duyệt; sau đó tách T-006a..f. Phát hiện phụ (mục 8 của đề xuất): TeacherTruth có thể phụ thuộc tờ nội quy ở phòng khác — cần kiểm theo thứ tự tự do (T-005/T-011).
+
+### 2026-10-16 00:16 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #3) | START | T-006a, T-006d
+- OWNER-CHANGE-PROCESSED: chủ dự án DUYỆT PLANS/T-006-mission-designs.md và yêu cầu thời gian giữa hai nốt của Phong_6 chỉnh được (OWNER_UPDATES + DECISIONS/2026-10-16-t006-mission-designs-approved.md). T-006 -> DONE; tách T-006a..f trong TASKS.
+- PREFLIGHT: Console 0 lỗi; không Play Mode; scene không dirty; Scene lock trống; không trùng tên kiểu. Không có mục LOG lạ sau 00:06.
+- Phạm vi lần này: CHỈ Domain + NUnit test của T-006a (BreakerPanel) và T-006d (Choir) tại Assets/TheReturn/Features/{BreakerPanel,Choir}/ (file MỚI). KHÔNG đụng scene/prefab/code cũ. Presentation/prefab/cổng cần hỏi chủ dự án (câu 4 chưa được trả lời).
+
+### 2026-10-16 00:20 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #3) | PROGRESS | T-006a
+- S1-S3 xong: Features/BreakerPanel/Runtime/Domain/{BreakerRound,BreakerGenerator,BreakerState}.cs + asmdef; Tests/EditMode/BreakerPanelTests.cs (16 test). Mức 3: 16/16 xanh, Console 0 lỗi. Chưa Presentation/prefab/scene; chưa đăng ký adapter. Đang làm T-006d (Choir) ngay sau.
+
+### 2026-10-16 00:26 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #2) | DONE | T-013
+- Đã làm: ghi vào TOOLING.md kết quả rà soát unity-cli và mục «Xác minh nạp skill» với phạm vi chính xác (đọc được 5 SKILL.md qua Unity MCP; 5 skill không có trong available_skills của phiên; chưa xác minh cơ chế tự nạp của Claude Desktop; chưa kiểm tra Claude Code). Kiểm lại manifest.json và packages-lock.json: không có com.unity.pipeline. Sửa 3 câu trong TOOLING.md từng nói quá (không còn ghi '[V] không tự nạp', 'sẽ không chạy').
+- Files: .ai/TOOLING.md, .ai/TASKS.md, .ai/LOG.md. Không commit; không sửa file ngoài phạm vi.
+- Mức xác minh: 1 (chỉ sửa tài liệu). Sửa nhãn: mục START/DONE trước của T-013 ghi 'mức 2' là SAI theo thang PROTOCOL (2 = compile); đúng là mức 1.
+- Việc dở: không. Câu hỏi cho chủ dự án: không. Ghi chú: DONE theo sự đồng ý của chủ dự án với phạm vi thu hẹp (bỏ phần thử Claude Code).
+
+### 2026-10-16 00:42 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #2) | DONE | Bổ sung tài liệu sau T-013 (không mở task mới)
+- Đã làm: cập nhật .ai/TOOLING.md theo yêu cầu chủ dự án: mục môi trường (Claude Desktop + Unity MCP 10.2.0, không giả định Claude Code), cách nạp công cụ bằng tool_search, trạng thái 47 công cụ, MCP resources chưa truy cập được (không kết luận Unity MCP không hỗ trợ), quy trình an toàn Editor, ghi nhận scene SchoolFloorPrototype isDirty=true (không khẳng định nguyên nhân), trạng thái 6 skill (đọc được file khác với hệ thống tự nạp). Sửa 2 dòng bảng đầu (Console, Scene).
+- Files: .ai/TOOLING.md, .ai/LOG.md. Không đổi TASKS.md, không commit, không sửa scene/script/cấu hình.
+- Mức xác minh: 1 (chỉ sửa tài liệu). Các số liệu công cụ/Editor lấy từ lần kiểm tra chỉ đọc cùng ngày; chưa xác minh: cơ chế tự nạp skill của Claude Desktop, resources của Unity MCP ở phía server, manage_camera screenshot, unity_docs.
+- Lưu ý cho chủ dự án: scene SchoolFloorPrototype đang có thay đổi chưa lưu (isDirty=true); T-012 vẫn IN-PROGRESS (không đụng).
+
+### 2026-10-16 01:02 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #2) | DONE | Bổ sung tài liệu lần 2 (không mở task mới)
+- Đã làm: .ai/TOOLING.md thêm mục «Kiểm chứng bổ sung (2026-10-16)»: resources có ở server (code), screenshot LUÔN ghi file PNG (code), compile sau sửa script (code), unity_docs chạy được, kho skill riêng của Claude Desktop không có skill Unity (gián tiếp). Sửa lời khuyên screenshot và bảng 47 công cụ (unity_docs sang 'gọi thành công').
+- Files: .ai/TOOLING.md, .ai/LOG.md. Mức xác minh: 1 (chỉ sửa tài liệu; các kết luận là đọc code/đọc tên thư mục, chưa chạy thật). Không commit; không sửa scene/script/cấu hình.
+
+### 2026-10-16 01:05 | Claude Sonnet 5.5 (chat + Unity MCP, phiên MCP #2) | START | T-006b
+- Chủ dự án bảo «tìm task phù hợp mà làm». Chọn T-006b (PlankAndKey, Hanh_Lang_6): đúng thứ tự trong thiết kế đã duyệt (sau Phong_5), tự chứa, có số liệu đã tính để đối chiếu, chỉ cần Domain + NUnit. Không chọn T-005 (cần Play Mode, CURRENT dặn không điều khiển), T-006e/f (cần hỏi cổng scene), T-006c (để sau, phụ thuộc cách đo chuyển động/phát hiện phụ mục 8).
+- PREFLIGHT: Console 0 lỗi; không Play Mode, không compile; Scene lock trống; scene SchoolFloorPrototype dirty=true (có thay đổi chưa lưu, nguồn không rõ, KHÔNG đụng, KHÔNG lưu); quét 96 file .cs không trùng tên kiểu Plank*; không asset Plank/KeyCard; phiên #3 (T-006a/d) log cuối 00:20, tôi không đụng file Features/BreakerPanel và Choir.
+- Phạm vi: CHỈ Domain + NUnit test, file MỚI tại Assets/TheReturn/Features/PlankAndKey/. KHÔNG đụng scene/prefab/code cũ/file của T-006a, T-006d. Kế hoạch: PLANS/T-006b-plank-and-key.md.
+- Files định đụng: PLANS/T-006b-plank-and-key.md, TASKS.md, LOG.md, Assets/TheReturn/Features/PlankAndKey/**
+
+### 2026-10-16 01:45 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #5) | PROGRESS | T-007
+- PREFLIGHT lần 2 (ngủ ~14h): đọc CURRENT/TASKS/LOG: T-004 DONE (lock trả), T-006 đã duyệt và tách T-006a..f (phiên khác), không ai giữ T-007 ngoài tôi. Console 0 lỗi, không Play Mode, scene không dirty, lock trống.
+- S1+S2 xong: WinSummary.cs + WinSummaryTests.cs (9 test) + WinScreenPresenter.cs đã compile; run_tests EditMode 43/43 xanh (mức 3 cho Domain, mức 2 cho presenter). Viết PLANS/T-007-win-screen.md.
+- Tiếp theo: S3 kiểm Play Mode bằng object tạm (KHÔNG lưu scene, không gắn vĩnh viễn); sẽ vào Play Mode vài phút. S4 gắn scene chờ chủ dự án đồng ý lưu scene (CURRENT dặn).
+
+### 2026-10-16 01:47 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #5) | DONE (S1-S3) | T-007
+- Xong: WinSummary + 9 test (43/43 EditMode xanh), WinScreenPresenter, kiểm Play Mode bằng object tạm: ép thắng bằng registry -> màn hiện đúng nội dung; raycast UI trúng nút Chơi lại; Chơi lại reset map và khóa chuột lại. Tìm và sửa 1 lỗi của chính mình: SetCursor(true) khóa chuột (không bấm được nút) -> SetCursor(false).
+- Files MỚI: Runtime/Domain/WinSummary.cs, Tests/EditMode/WinSummaryTests.cs, Runtime/UI/WinScreenPresenter.cs, .ai/PLANS/T-007-win-screen.md. SỬA .ai: TASKS, CURRENT, SYSTEM_CARDS/SchoolFloor.md. Scene/prefab/code cũ KHÔNG đổi, không lưu scene (sau Play không dirty), Console 0 lỗi.
+- Xác minh: mức 3 (Domain), mức 4 một phần (Play Mode, thắng ép bằng registry, chưa chơi thật 6 nhiệm vụ). Chưa gắn scene.
+- Chưa làm: S4 gắn object WinScreen vào scene (chờ chủ dự án đồng ý lưu scene theo dặn ở CURRENT); chưa rebuild .ai/MAPS/index-scripts.md (còn thiếu 3 file mới của T-007 và các file T-006). Cần chủ dự án: đồng ý S4.
+
+### 2026-10-16 01:50 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #5) | START | T-007 (S4)
+- Chủ dự án ĐỒNG Ý gắn object WinScreen vào scene và lưu (chat 2026-10-16). Lấy Scene lock. PREFLIGHT: Console 0 lỗi; không Play Mode; scene không dirty; lock trống; không có mục LOG sau mục DONE S1-S3 của tôi. UNLOGGED-CHANGE: file scene có mtime 01:08 UTC hôm nay (sau mọi mục LOG liên quan scene; không rõ ai lưu).
+- Phạm vi: snapshot Scenes/BeforeWinScreen_*.unity; thêm ĐÚNG 1 object `WinScreen` (WinScreenPresenter, gán missionFlow + flow) cùng cấp MissionFlow_Controller; lưu scene. Không sửa object khác.
+
+### 2026-10-16 01:51 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #5) | DONE | T-007
+- S4 xong: snapshot BeforeWinScreen_20261016_015040.unity; thêm 1 object `WinScreen` (WinScreenPresenter, missionFlow + flow đã gán) ở gốc scene SchoolFloorPrototype và lưu. Kiểm trên đĩa: scene chứa 1 tham chiếu GUID script. Kiểm Play Mode với object thật: ép thắng bằng registry -> canvas hiện, Chơi lại reset (Won false, done 0) và khóa chuột; sau Stop scene không dirty; Console 0 lỗi.
+- Nhả Scene lock. Xác minh: mức 4 một phần (thắng ép, chưa chơi thật 6 nhiệm vụ). Files sửa: scene SchoolFloorPrototype.unity (+1 object), .ai/{TASKS,CURRENT,LOG,SYSTEM_CARDS/SchoolFloor,PLANS/T-007}.
+- Còn lại: chủ dự án chơi thật để xác nhận; nút Về sảnh chờ T-008 (nối onReturnToLobby); index-scripts.md chưa rebuild.
+
+### 2026-10-16 10:16 | Claude Sonnet 5.5 (chat + Unity MCP, phiên #5) | DONE | COMMIT (chủ dự án yêu cầu)
+- Chủ dự án yêu cầu chia commit và commit toàn bộ thay đổi chưa commit. Đã tạo 7 commit trên nhánh main, KHÔNG push: 1d763c9 xóa ảnh chụp cũ (14 file); 88f7fff định dạng AttendanceTextCatalog (1); 733c37d T-004 code (7); 502b457 T-007 code+test (6); 1086756 T-006 Domain BreakerPanel+Choir (28, đang làm); 2a59c83 Scene (+2 snapshot) (5); commit cuối là .ai/ (gồm chính mục này).
+- Cách làm: git qua Process trong execute_code với safety_checks=false CHỈ cho các lệnh git (status/add/commit/log), vì chủ dự án yêu cầu commit rõ ràng; commit message ghi bằng file UTF-8 (-F). Trước khi thêm: kiểm tra không có file staged sẵn. Mỗi commit chỉ chứa nhóm file của nó.
+- Lưu ý: scene SchoolFloorPrototype chứa cả thay đổi của T-004 (MissionFlow_Controller + tham chiếu missionFlow) và T-007 (WinScreen) trong một commit vì không tách được theo hunk. File T-006 (BreakerPanel/Choir) đang do phiên khác làm, có thể còn dở dang; commit ở trạng thái hiện tại.
