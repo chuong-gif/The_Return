@@ -33,7 +33,8 @@ namespace TheReturn
         public string ready = "Đề mới đã sẵn sàng. Hãy chia sẻ manh mối của từng vai.";
         public string wrong = "Chưa đúng. Đối chiếu manh mối rồi đứng dậy đổi chỗ.";
         public string success = "Điểm danh hợp lệ. Đứng dậy và đi qua cửa EXIT.";
-        [TextArea(2, 4)] public string[] hints = {
+        [TextArea(2, 4)]
+        public string[] hints = {
             "Tìm các manh mối chỉ rõ hàng, cột hoặc chẵn/lẻ trước.",
             "Trước/sau là hướng về bảng/xa bảng. Trái/phải được tính khi nhìn lên bảng.",
             "Chuyển từng quan hệ thành khoảng cách hàng/cột; đừng đoán chỗ từ lượt trước."
