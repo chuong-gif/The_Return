@@ -5,6 +5,7 @@
  * Kiểu: AttendanceMissionAdapter, QuietCorridorMissionAdapter, GradeRepairMissionAdapter,
  * NavigationExamMissionAdapter, DontLookBackMissionAdapter, TeacherTruthMissionAdapter.
  * Hàm mỗi adapter: constructor (ID khu + nhiệm vụ), AreaId, Active, Solved, CanHandOff, Begin, Stop.
+ * Riêng Attendance: NobodySeated (CanHandOff chờ mọi vai đứng dậy; T-004).
  */
 using System;
 using UnityEngine;
@@ -20,7 +21,7 @@ namespace TheReturn
         public string AreaId { get; }
         public bool Active => mission.Begun && !mission.ExternalControl;
         public bool Solved => mission.State != null && mission.State.Solved;
-        public bool CanHandOff => Solved;
+        public bool CanHandOff => Solved && NobodySeated();
 
         /// <summary>Nhận ID khu, prototype Attendance (không null) và HUD tùy chọn (null được); tạo adapter.</summary>
         public AttendanceMissionAdapter(string areaId, AttendancePrototype mission, Behaviour hud)
@@ -29,6 +30,15 @@ namespace TheReturn
             AreaId = areaId;
             this.mission = mission;
             this.hud = hud;
+        }
+
+        /// <summary>Không nhận tham số; trả true khi không còn vai nào đang ngồi (phải đứng dậy mới được rời lớp, như luồng cũ).</summary>
+        bool NobodySeated()
+        {
+            if (mission.State == null) return false;
+            for (int i = 0; i < mission.PartySize; i++)
+                if (mission.State.SeatOf(i) >= 0) return false;
+            return true;
         }
 
         /// <summary>Không nhận tham số; trả quyền điều khiển cho Attendance, bật HUD và bắt đầu phiên nếu chưa bắt đầu.</summary>

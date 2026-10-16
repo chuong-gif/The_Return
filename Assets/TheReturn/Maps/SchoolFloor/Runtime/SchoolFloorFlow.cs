@@ -2,6 +2,7 @@
  * Mục đích: Điều phối sáu nhiệm vụ tầng học trong cùng một scene.
  * Hàm: Start gán chế độ nối map; Update chờ cả đội tập hợp rồi chuyển điều khiển;
  * RestartMap đặt lại cả sáu nhiệm vụ; OnGUI hiện hướng dẫn tập hợp.
+ * T-004: khi có missionFlow đang bật, Update/OnGUI nhường quyền cho MissionFlowController; RestartMap reset registry và trả Attendance về trạng thái chờ.
  */
 // ReachedNextRoom: nhận chỉ số tuyến, kiểm tra đủ thành viên tại vùng tập hợp và trả về bool.
 // ContainsPlayer: kiểm tra vị trí trong hộp theo trục local để vùng tập hợp xoay vẫn chính xác.
@@ -22,6 +23,8 @@ namespace TheReturn
         public TeacherTruthPrototype teacherTruth;
         public int Gathered { get; private set; }
         public BoxCollider[] transitionGatherZones;
+        [Tooltip("Nếu có và đang bật: luồng tự chọn khu (T-004) thay chuỗi if tuyến tính trong Update.")]
+        public MissionFlowController missionFlow;
 
         /// <summary>Nhận chỉ số tuyến; trả true khi cả đội đứng trong vùng đích, hoặc map cũ chưa có tuyến.</summary>
         bool ReachedNextRoom(int index)
@@ -46,6 +49,7 @@ namespace TheReturn
         /// <summary>Không nhận tham số; kiểm điều kiện hoàn thành và chuyển quyền điều khiển tuần tự qua sáu nhiệm vụ.</summary>
         void Update()
         {
+            if (missionFlow != null && missionFlow.isActiveAndEnabled) return;
             if (teacherTruth != null && teacherTruth.Active) return;
             if (dontLookBack != null && dontLookBack.Active)
             {
@@ -98,14 +102,16 @@ namespace TheReturn
         /// <summary>Không nhận tham số; người dùng chọn chơi lại cả map thì bật lớp và sinh đề mới.</summary>
         public void RestartMap()
         {
+            if (missionFlow != null) missionFlow.ResetFlow();
             if (teacherTruth != null) teacherTruth.StopSession();
             if (dontLookBack != null) dontLookBack.StopSession();
             if (navigationExam != null) navigationExam.StopSession();
             if (gradeRepair != null) gradeRepair.StopSession();
             if (gradeEntrance != null) gradeEntrance.SetOpen(false, true);
             corridor.StopSession();
-            attendance.ExternalControl = false;
-            attendanceHud.enabled = true;
+            bool freeRoam = missionFlow != null && missionFlow.isActiveAndEnabled;
+            attendance.ExternalControl = freeRoam;
+            attendanceHud.enabled = !freeRoam;
             attendance.StartNewRound();
             PrototypePartyController.SetCursor(false);
             Gathered = 0;
@@ -114,6 +120,7 @@ namespace TheReturn
         /// <summary>Không nhận tham số; hiện thông báo chuyển tiếp trên lớp, không sửa trạng thái nhiệm vụ.</summary>
         void OnGUI()
         {
+            if (missionFlow != null && missionFlow.isActiveAndEnabled) return;
             if ((teacherTruth != null && teacherTruth.Active) || (dontLookBack != null && dontLookBack.Active) || (navigationExam != null && navigationExam.Active) || (gradeRepair != null && gradeRepair.Active) || corridor.Active || attendance.State == null || !attendance.State.Solved) return;
             if (useCanvas) return;
             var style = new GUIStyle(GUI.skin.box) { fontSize = 18, wordWrap = true };

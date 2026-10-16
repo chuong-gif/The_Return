@@ -18,15 +18,15 @@ namespace TheReturn
         public string areaName;
         public bool IsOpen { get; private set; }
 
-        /// <summary>Nhận quyền mở, trạng thái làm bài và đội; cập nhật chặn đường và hướng dẫn, không trả dữ liệu.</summary>
-        public void Apply(bool open,bool active,PrototypePartyController party)
+        /// <summary>Nhận quyền mở, trạng thái làm bài, đội và cờ khu đã xong (mặc định false); cập nhật chặn đường và nhãn, không trả dữ liệu.</summary>
+        public void Apply(bool open,bool active,PrototypePartyController party,bool done=false)
         {
             IsOpen=open;
             blocker.enabled=!open;
             visualRoot.SetActive(!open);
             if(statusLabel)
-                statusLabel.text=areaName+"\n"+(mission<0?"CHUA CO NHIEM VU":open?"LOI MO":active?"HOAN THANH NHIEM VU DE MO CUA":"CHO TIEN TRINH NHIEM VU")+
-                    (designatedEntrance && !active && mission>=0?"\nTAP HOP BEN TRONG: "+CountInside(party)+"/"+(party?party.PartySize:0):"");
+                statusLabel.text=areaName+"\n"+(mission<0?"CHUA CO NHIEM VU":done?"DA HOAN THANH - LOI MO":open?"LOI MO":active?"HOAN THANH NHIEM VU DE MO CUA":"CHO TIEN TRINH NHIEM VU")+
+                    ((designatedEntrance || open) && !active && !done && mission>=0?"\nTAP HOP BEN TRONG: "+CountInside(party)+"/"+(party?party.PartySize:0):"");
         }
 
         /// <summary>Nhận đội; trả số nhân vật đang hoạt động nằm trong vùng chuẩn bị theo tọa độ local.</summary>

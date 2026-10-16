@@ -41,6 +41,7 @@ namespace TheReturn
         {
             if (!Available() || !Application.isPlaying || mission<0 || mission>5 || count<2 || count>4) return false;
             flow.RestartMap();
+            flow.attendance.ExternalControl=false; flow.attendanceHud.enabled=true; // giữ hành vi cũ của bản thử (T-004: RestartMap mới trả Attendance về chờ)
             flow.attendance.SetParticipantCount(count);
             flow.attendance.BeginSession();
             SelectedMission=mission;
