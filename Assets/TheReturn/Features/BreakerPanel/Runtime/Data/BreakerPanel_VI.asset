@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4043c04f3467fe4a9c17d552d86e2fd, type: 3}
+  m_Name: BreakerPanel_VI
+  m_EditorClassIdentifier: TheReturn.BreakerPanel::TheReturn.BreakerSettings
+  holdSeconds: 3
+  fixedSeed: 0
+  instructions: "M\u1ED7i ng\u01B0\u1EDDi ch\u1EC9 b\u1EA5m \u0111\u01B0\u1EE3c c\xF4ng
+    t\u1EAFc c\u1EE7a m\xECnh v\xE0 ch\u1EC9 xem \u0111\u01B0\u1EE3c c\xF4ng t\u1EAFc
+    \u0111\xF3 \u0111\u1EA3o nh\u1EEFng \u0111\xE8n n\xE0o. Kh\u1EDBp h\xE0ng \u0111\xE8n
+    v\u1EDBi h\xE0ng \u0111\xEDch (kh\xF4ng b\u1EADt qu\xE1 gi\u1EDBi h\u1EA1n c\xF4ng
+    t\u1EAFc)."
+  tripped: "C\u1EA7u dao nh\u1EA3y! B\u1EADt qu\xE1 nhi\u1EC1u c\xF4ng t\u1EAFc,
+    t\u1EA5t c\u1EA3 v\u1EC1 t\u1EAFt."
+  notOwner: "C\xF4ng t\u1EAFc n\xE0y kh\xF4ng ph\u1EA3i c\u1EE7a vai b\u1EA1n \u0111ang
+    \u0111i\u1EC1u khi\u1EC3n."
+  success: "B\u1EA3ng c\u1EA7u dao \u1ED5n \u0111\u1ECBnh!"

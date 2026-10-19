@@ -1,0 +1,9 @@
+{
+  "name": "TheReturn.BreakerPanel",
+  "references": [
+    "TheReturn.Core",
+    "TheReturn.Shared",
+    "Unity.InputSystem",
+    "TheReturn.BreakerPanel.Domain"
+  ]
+}
