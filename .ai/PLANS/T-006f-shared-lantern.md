@@ -1,6 +1,6 @@
 # KẾ HOẠCH T-006f: Hanh_Lang_4 «Đèn lồng chung» (SharedLantern)   (file: .ai/PLANS/T-006f-shared-lantern.md)
 
-Trạng thái: S1, S1b, S2 XONG (Domain + phạt + Presentation + adapter, KHÔNG scene); S3 dựng cảnh CHỜ Scene lock | AI giữ: Claude Sonnet 5.5 (phiên #5) | Cập nhật: 2026-10-17 02:55 UTC
+Trạng thái: S1, S1b, S2, S3 XONG (chờ chủ dự án chơi thật; S4 test tích hợp NUnit/Play Mode chưa làm) | AI giữ: Claude Sonnet 5.5 (phiên #5) | Cập nhật: 2026-10-17 02:55 UTC
 
 ## 1. Mục tiêu và nghiệm thu
 - Thiết kế đã duyệt (PLANS/T-006-mission-designs.md, Hanh_Lang_4): hành lang tối; ĐÚNG 1 đèn lồng, chỉ soi sáng bán kính nhỏ quanh người cầm. 4 biển ký hiệu trên tường chỉ đọc được khi nằm trong vùng sáng. Mỗi người có sổ riêng chỉ ghi biển CHÍNH MÌNH đã đọc. Trao đèn khi đứng gần (≤ 2 m). Ai ở ngoài vùng sáng quá 5 giây thì về điểm đầu hành lang. Cuối hành lang là bảng nhập 4 ký hiệu theo thứ tự biển 1→4; đúng và cả đội tới cổng thì hoàn thành. Số biển cố định 4; ít người hơn thì mỗi người đọc nhiều biển hơn.
@@ -31,7 +31,7 @@ Trạng thái: S1, S1b, S2 XONG (Domain + phạt + Presentation + adapter, KHÔN
 | S1 | Domain + test | LanternRound/Generator/State.cs, SharedLanternTests.cs, 2 asmdef | run_tests EditMode assembly TheReturn.SharedLantern.Domain.Tests | DONE | 33/33 xanh, Console 0 lỗi (mức 3) |
 | S1b | Phạt nhập sai (xóa ô + khóa 10s) | LanternState.cs, SharedLanternTests.cs | run_tests | DONE | 37/37 xanh (đọc TestResults.xml) |
 | S2 | Presentation + adapter + asset settings + nối flow/factory/asmdef (không scene) | SharedLanternPrototype.cs, LanternSign/PanelKey/Symbols, SharedLanternSettings + SharedLantern_VI.asset, SharedLanternMissionAdapter.cs; SchoolFloorFlow (+field), MissionRegistryFactory (+đăng ký), TheReturn.SchoolFloor.asmdef | compile | DONE | Console 0 lỗi (mức 2); chưa Play Mode vì chưa có object trong scene |
-| S3 | Dựng cảnh Hanh_Lang_4: 2 cổng Vao/Ra + khu chuẩn bị, SharedLantern_LogicOnly (4 biển, bảng nhập 6+2 phím, 4 ô, đèn lồng + Light, checkpoint, vùng cổng cuối), gán flow.sharedLantern, cập nhật bảng 22 cổng của MissionFlowController, kiểm Play Mode | scene SchoolFloorPrototype | Play Mode | CHỜ Scene lock (phiên #4 giữ từ 02:46, im lặng ~9,5h); chủ dự án đã cho phép sửa scene cho khu này | |
+| S3 | Dựng cảnh Hanh_Lang_4: nhóm cổng `Hanh_Lang_5_Preparation` (2 cổng Vao/Ra nhân bản từ nhóm Hanh_Lang_2_Preparation, xoay -180° quanh tâm vòng), object `SharedLantern_LogicOnly` (4 biển có số, 2 bảng nhập Panel + Panel_Start, đèn lồng + Light, checkpoint 2 đầu, 2 vùng cổng cuối), gán flow.sharedLantern, bindings (Vao entry Phong_4, Ra entry Phong_5). Hỗ trợ vào từ cả 2 đầu (Begin nhận biết đội ở nửa z+ hay z-) | scene SchoolFloorPrototype (snapshot BeforeLantern_20261018_102719.unity) | Play Mode | DONE (mức 4 mô phỏng) | Tôi (phiên #5, 2026-10-18): registry có Hanh_Lang_4 (chỉ còn HL5/HL6 chưa nhiệm vụ lúc đó), raycast tới 4 biển và phím 2 bảng trúng, cổng armed 4/4 ngoài -> vào trong thì Hanh_Lang_4 bắt đầu và 26 cổng đóng, đọc biển/sổ riêng/trao đèn F/phạt ngoài sáng >5s đưa về checkpoint và giữ sổ, nhập sai xóa ô + khóa 10s, Locked khi còn khóa, đúng sau khóa -> Accepted. Phiên #4 (16:39 UTC) kiểm tiếp: đi bộ thật, 3/4 ở cổng chưa xong, 4/4 Solved + mở 2 cổng hành lang, vào từ Ra cũng bắt đầu, GoalZoneFromEnd đúng, RestartMap đóng lại |
 | S4 | Viết bộ kiểm tích hợp NUnit/Play Mode cho nhiệm vụ | Tests | | TODO | |
 
 ## 6. Bản đồ lỗi
@@ -46,7 +46,9 @@ Trạng thái: S1, S1b, S2 XONG (Domain + phạt + Presentation + adapter, KHÔN
 ## 7. Rủi ro và câu hỏi cho chủ dự án
 - Về điểm đầu có nên xóa sổ riêng (khó hơn) hay giữ (đang làm)? Có tính vào phạt khác không?
 - Bảng cuối: nhập sai có nên có hậu quả (khóa vài giây, đưa về)? Đang là không phạt.
-- Hanh_Lang_4 chưa có cổng/khu chuẩn bị trong scene; cần chủ dự án quyết định bố trí hoặc cho phép tạo (đúng quy tắc: khu chuẩn bị trước mỗi hành lang nhiệm vụ).
+- (Đã xử lý) Cổng/khu chuẩn bị Hanh_Lang_4 do AI tạo theo lệnh chủ dự án; đặt tên theo số CŨ (`Hanh lang 5_Vao/Ra`, nhóm `Hanh_Lang_5_Preparation`) cho khớp quy ước nhóm cổng hiện có (Hanh_Lang_4_Preparation đang là DontLookBack = Hanh_Lang_3 thực).
+- Chưa chơi thật: phím E/F với input thật, cảm nhận bán kính sáng 4 m và vị trí biển (x=±2.62). Đồ họa/bóng tối hành lang là việc của chủ dự án (có sẵn `lanternLight` và bán kính trong asset).
 
 ## 8. Tiến độ
 - 2026-10-17 02:55: S1 xong, 33 test xanh.
+- 2026-10-19 00:15: S3 xong (xem mục S3). Editor đã khởi động lại giữa chừng; phiên #4 kiểm tiếp phần hoàn thành và vào từ đầu Ra.
