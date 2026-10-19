@@ -4,7 +4,11 @@
  * cho SchoolFloorAccessController biết cửa nào mở/khóa. KHÔNG sửa logic từng nhiệm vụ (chỉ gọi qua adapter).
  * Vị trí đội lấy từ preparationZone của cổng trong scene, không hardcode tọa độ.
  * Kiểu: GateBinding, MissionFlowController.
- * Hàm MissionFlowController: Awake; Start; Update; ResetFlow; TryGetGateState; AnyMissionActive; FreeRoam; TryStartFromGates.
+ * LUẬT CỬA (T-016, chủ dự án chốt): lúc đầu MỌI cửa đóng. Cả đội đứng đủ ở khu chuẩn bị NGOÀI cửa (SchoolPreparationGate.CountOutside)
+ * thì cửa đó 'armed' = mở. Cả đội vào đủ vùng chuẩn bị bên trong thì nhiệm vụ bắt đầu và khóa mọi cửa. Xong khu thì cả ba lối của khu mở lại.
+ * Khu chưa có nhiệm vụ: cửa đóng hẳn. Cửa armed tự đóng lại nếu cả đội rời cả hai vùng quá DisarmSeconds giây.
+ * Hàm MissionFlowController: Awake; Start; Update; ResetFlow; TryGetGateState; GateHasMission; AreaOfGate; GateGatherCount; GatherSummary;
+ * AnyMissionActive; FreeRoam; UpdateArming; TryStartFromGates.
  */
 using System;
 using System.Collections.Generic;
@@ -35,6 +39,13 @@ namespace TheReturn
         public MissionRegistry Registry { get; private set; }
         /// <summary>True khi có nhiệm vụ nào đang chạy (kể cả nhiệm vụ do công cụ test bắt đầu ngoài registry).</summary>
         public bool AnyActive { get; private set; }
+
+        /// <summary>Số giây cả đội rời cả hai vùng (ngoài + trong) của cửa đang mở thì cửa đóng lại.</summary>
+        public float disarmSeconds = 3f;
+
+        /// <summary>Cổng đang được mở vì cả đội đã tập hợp ở khu chuẩn bị ngoài cửa (null = chưa cửa nào).</summary>
+        public SchoolPreparationGate ArmedGate { get; private set; }
+        float disarmTimer;
 
         readonly Dictionary<SchoolPreparationGate, GateBinding> byGate = new Dictionary<SchoolPreparationGate, GateBinding>();
 
@@ -68,8 +79,9 @@ namespace TheReturn
             if (Registry == null) return;
             if (Registry.Tick()) PrototypePartyController.SetCursor(true);
             AnyActive = AnyMissionActive();
-            if (AnyActive) return;
+            if (AnyActive) { ArmedGate = null; return; }
             FreeRoam();
+            UpdateArming();
             TryStartFromGates();
         }
 
@@ -79,16 +91,18 @@ namespace TheReturn
             if (Registry == null) return;
             Registry.Reset();
             AnyActive = false;
+            ArmedGate = null;
+            disarmTimer = 0;
         }
 
         /// <summary>
         /// Nhận cổng; trả false nếu cổng không có trong bảng (để AccessController dùng luồng cũ). Ngược lại điền open (cửa mở),
-        /// active (khu của cổng đang làm) và done (khu đã xong). Khu chưa có nhiệm vụ luôn mở; khu đã xong luôn mở;
-        /// khu chưa xong chỉ mở khi không có khu nào đang làm.
+        /// active (khu của cổng đang làm) và done (khu đã xong). Luật: khu chưa có nhiệm vụ luôn ĐÓNG; khu đã xong luôn mở;
+        /// khu chưa xong chỉ mở ở đúng cổng đang armed (cả đội đã tập hợp ngoài cửa) khi chưa có khu nào đang làm; khu đang làm đóng.
         /// </summary>
         public bool TryGetGateState(SchoolPreparationGate gate, out bool open, out bool active, out bool done)
         {
-            open = true; active = false; done = false;
+            open = false; active = false; done = false;
             GateBinding b;
             if (Registry == null || gate == null || !byGate.TryGetValue(gate, out b)) return false;
             AreaInfo area = Registry.Progress.Find(b.areaId);
@@ -96,8 +110,48 @@ namespace TheReturn
             IMissionAdapter adapter = Registry.Find(b.areaId);
             active = Registry.Progress.IsActive(b.areaId) || (adapter != null && adapter.Active);
             done = Registry.Progress.IsDone(b.areaId);
-            open = done || (!AnyActive && Registry.Progress.ActiveAreaId == null);
+            open = done || (ArmedGate == gate && !AnyActive && Registry.Progress.ActiveAreaId == null);
             return true;
+        }
+
+        /// <summary>Nhận cổng; trả true nếu cổng có trong bảng và khu của cổng ĐÃ có nhiệm vụ (dùng cho nhãn cổng, độc lập chỉ số mission cũ).</summary>
+        public bool GateHasMission(SchoolPreparationGate gate)
+        {
+            GateBinding b;
+            if (Registry == null || gate == null || !byGate.TryGetValue(gate, out b)) return false;
+            AreaInfo area = Registry.Progress.Find(b.areaId);
+            return area != null && area.HasMission;
+        }
+
+        /// <summary>Nhận cổng; trả ID khu của cổng hoặc null nếu cổng không có trong bảng.</summary>
+        public string AreaOfGate(SchoolPreparationGate gate)
+        {
+            GateBinding b;
+            return gate != null && byGate.TryGetValue(gate, out b) ? b.areaId : null;
+        }
+
+        /// <summary>Nhận cổng; trả số người đang đứng ở khu chuẩn bị NGOÀI cửa, hoặc -1 nếu cổng không có trong bảng hay khu chưa có nhiệm vụ (dùng cho nhãn cổng).</summary>
+        public int GateGatherCount(SchoolPreparationGate gate)
+        {
+            if (!GateHasMission(gate)) return -1;
+            return gate.CountOutside(flow.attendance.party);
+        }
+
+        /// <summary>Không nhận tham số; trả câu ngắn cho UI: khu đang được tập hợp nhiều người nhất ở khu chuẩn bị ('Khu chuẩn bị Phong 1: 2/4') hoặc câu mặc định.</summary>
+        public string GatherSummary()
+        {
+            PrototypePartyController party = flow.attendance.party;
+            if (Registry == null || bindings == null || party == null) return "";
+            int best = 0; string label = null;
+            foreach (GateBinding b in bindings)
+            {
+                if (b == null || b.gate == null) continue;
+                AreaInfo area = Registry.Progress.Find(b.areaId);
+                if (area == null || !area.HasMission || Registry.Progress.IsDone(b.areaId)) continue;
+                int c = b.gate.CountOutside(party);
+                if (c > best) { best = c; label = b.areaId; }
+            }
+            return label == null ? "Chưa ai ở khu chuẩn bị" : "Khu chuẩn bị " + label.Replace('_', ' ') + ": " + best + "/" + party.PartySize;
         }
 
         /// <summary>Không nhận tham số; trả true nếu có khu đang làm trong registry hoặc bất kỳ adapter nào báo Active.</summary>
@@ -131,22 +185,41 @@ namespace TheReturn
         }
 
         /// <summary>
-        /// Không nhận tham số; duyệt bảng cổng: nếu cả đội (từ 2 người) đứng đủ trong vùng chuẩn bị của một cổng thuộc khu chưa xong,
-        /// nhờ registry kiểm luật (lối vào, một khu một lúc) rồi bắt đầu nhiệm vụ thật. Bắt đầu tối đa một khu mỗi frame.
+        /// Không nhận tham số; khi chưa nhiệm vụ nào chạy: nếu cả đội (từ 2 người) đứng đủ ở khu chuẩn bị NGOÀI một cổng thuộc khu chưa xong thì cổng đó
+        /// 'armed' (cửa mở). Cổng đang armed tự đóng nếu cả đội rời cả hai vùng quá disarmSeconds giây.
         /// </summary>
-        void TryStartFromGates()
+        void UpdateArming()
         {
-            if (bindings == null) return;
             PrototypePartyController party = flow.attendance.party;
-            if (party == null || party.PartySize < 2) return;
+            if (party == null || party.PartySize < 2 || bindings == null) { ArmedGate = null; return; }
             foreach (GateBinding b in bindings)
             {
                 if (b == null || b.gate == null) continue;
                 AreaInfo area = Registry.Progress.Find(b.areaId);
                 if (area == null || !area.HasMission || Registry.Progress.IsDone(b.areaId)) continue;
-                if (b.gate.CountInside(party) != party.PartySize) continue;
-                if (Registry.TryBegin(b.areaId, b.entryFromId, true) == BeginResult.Started) return;
+                if (b.gate.CountOutside(party) != party.PartySize) continue;
+                ArmedGate = b.gate;
+                disarmTimer = 0;
+                break;
             }
+            if (ArmedGate == null) return;
+            if (ArmedGate.CountOutside(party) + ArmedGate.CountInside(party) > 0) { disarmTimer = 0; return; }
+            disarmTimer += Time.deltaTime;
+            if (disarmTimer > disarmSeconds) ArmedGate = null;
+        }
+
+        /// <summary>
+        /// Không nhận tham số; nếu có cổng armed và cả đội (từ 2 người) đã đứng đủ trong vùng chuẩn bị BÊN TRONG của chính cổng đó,
+        /// nhờ registry kiểm luật (lối vào, một khu một lúc) rồi bắt đầu nhiệm vụ thật; thành công thì cửa khóa.
+        /// </summary>
+        void TryStartFromGates()
+        {
+            GateBinding b;
+            if (ArmedGate == null || !byGate.TryGetValue(ArmedGate, out b)) return;
+            PrototypePartyController party = flow.attendance.party;
+            if (party == null || party.PartySize < 2) return;
+            if (ArmedGate.CountInside(party) != party.PartySize) return;
+            if (Registry.TryBegin(b.areaId, b.entryFromId, true) == BeginResult.Started) ArmedGate = null;
         }
     }
 }

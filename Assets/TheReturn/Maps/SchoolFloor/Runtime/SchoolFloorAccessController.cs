@@ -1,8 +1,8 @@
 /*
  * Mục đích: đồng bộ khóa cả ba lối phòng và hai đầu hành lang với tiến trình nhiệm vụ.
  * Awake/LateUpdate: áp dụng quyền cửa lúc tải và sau cập nhật nhiệm vụ.
- * Refresh: nếu có missionFlow (T-004) thì mở/khóa theo MapProgress: khu chưa có nhiệm vụ và khu đã xong luôn mở, khu chưa xong mở khi
- * không có khu nào đang làm, khu đang làm khóa; không có missionFlow thì dùng luồng tuyến tính cũ (mở khu đã xong, chỉ mở lối vào khu kế tiếp).
+ * Refresh: nếu có missionFlow (T-004/T-016) thì mở/khóa theo MissionFlowController.TryGetGateState: mọi cửa đóng từ đầu, khu đã xong mở, khu chưa xong
+ * chỉ mở ở cổng cả đội đã tập hợp ngoài cửa, khu đang làm và khu chưa có nhiệm vụ đóng; không có missionFlow thì dùng luồng tuyến tính cũ (mở khu đã xong, chỉ mở lối vào khu kế tiếp).
  * IsSolved/IsActive: đọc trạng thái nhiệm vụ bằng chỉ số 0..5 (luồng cũ); không sửa đáp án hay trạng thái luật chơi.
  */
 using UnityEngine;
@@ -31,7 +31,7 @@ namespace TheReturn
                 bool flowOpen,flowActive,flowDone;
                 if(useFlow && missionFlow.TryGetGateState(gate,out flowOpen,out flowActive,out flowDone))
                 {
-                    gate.Apply(flowOpen,flowActive,flow.attendance.party,flowDone);
+                    gate.Apply(flowOpen,flowActive,flow.attendance.party,flowDone,missionFlow.GateHasMission(gate),missionFlow.GateGatherCount(gate));
                     continue;
                 }
                 int m=gate.mission;bool active=m>=0 && IsActive(m);
