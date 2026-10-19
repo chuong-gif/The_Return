@@ -1,0 +1,9 @@
+{
+  "name": "TheReturn.Choir",
+  "references": [
+    "TheReturn.Core",
+    "TheReturn.Shared",
+    "Unity.InputSystem",
+    "TheReturn.Choir.Domain"
+  ]
+}
