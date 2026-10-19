@@ -1,6 +1,6 @@
 # Index script / symbol / nơi dùng (TỰ SINH — đừng sửa tay)
 
-Sinh 2026-10-14 bằng execute_code (xem .ai/tools/rebuild_index.snippet.cs). Phạm vi: *.cs ngoài ThirdParty/TutorialInfo. Dùng-bởi = scene/prefab/asset YAML dưới Assets/TheReturn chứa GUID script (bỏ file Before*). Quét 49 file YAML. Bản đồ gần đúng: không thấy tham chiếu tạo bằng code (AddComponent, Find...). Source và Unity là nguồn sự thật.
+Sinh bằng .ai/tools/rebuild_index.snippet.cs. Phạm vi: *.cs ngoài ThirdParty/TutorialInfo. Dùng-bởi = scene/prefab/asset YAML dưới Assets/TheReturn chứa GUID script (bỏ file Before*). Quét 50 file YAML. Bản đồ gần đúng: không thấy tham chiếu tạo bằng code. Source và Unity là nguồn sự thật.
 
 | File | Dòng | Namespace | Kiểu | Dùng-bởi |
 |---|---|---|---|---|
@@ -15,7 +15,7 @@ Sinh 2026-10-14 bằng execute_code (xem .ai/tools/rebuild_index.snippet.cs). Ph
 | Core/Runtime/SceneFlow/SceneTransitionService.cs | 82 | TheReturn | class SceneTransitionService | 1: Sanh_Cho.unity |
 | Features/Attendance/Editor/AttendanceSceneBuilder.cs | 268 | TheReturn.Editor | class AttendanceSceneBuilder | - |
 | Features/Attendance/Editor/AttendanceTextCatalogEditor.cs | 31 | TheReturn.Editor | class AttendanceTextCatalogEditor | - |
-| Features/Attendance/Runtime/Data/AttendanceTextCatalog.cs | 155 | TheReturn | class AttendanceTextEntry, class AttendanceTextCatalog | 1: AttendanceText_VI.asset |
+| Features/Attendance/Runtime/Data/AttendanceTextCatalog.cs | 156 | TheReturn | class AttendanceTextEntry, class AttendanceTextCatalog | 1: AttendanceText_VI.asset |
 | Features/Attendance/Runtime/Domain/AttendanceGenerator.cs | 134 | TheReturn | class AttendanceGenerator | - |
 | Features/Attendance/Runtime/Domain/AttendanceRound.cs | 105 | TheReturn | enum AttendanceRuleKind, class AttendanceRule, class AttendanceRound | - |
 | Features/Attendance/Runtime/Domain/AttendanceState.cs | 88 | TheReturn | class AttendanceState | - |
@@ -23,9 +23,21 @@ Sinh 2026-10-14 bằng execute_code (xem .ai/tools/rebuild_index.snippet.cs). Ph
 | Features/Attendance/Runtime/Presentation/AttendancePrototype.cs | 331 | TheReturn | class AttendancePrototype | 2: SchoolFloorBeforeUserBlockout.unity, SchoolFloorPrototype.unity |
 | Features/Attendance/Runtime/Presentation/AttendanceSeat.cs | 40 | TheReturn | class AttendanceSeat | 3: SchoolFloorBeforeUserBlockout.unity, SchoolFloorPrototype.unity, PF_AttendanceSeat.prefab |
 | Features/Attendance/Tests/Editor/AttendanceChecks.cs | 111 | TheReturn.Editor | class AttendanceChecks | - |
+| Features/BreakerPanel/Runtime/Domain/BreakerGenerator.cs | 75 | TheReturn | class BreakerGenerator | - |
+| Features/BreakerPanel/Runtime/Domain/BreakerRound.cs | 72 | TheReturn | class BreakerRound | - |
+| Features/BreakerPanel/Runtime/Domain/BreakerState.cs | 119 | TheReturn | enum BreakerResult, class BreakerState | - |
+| Features/BreakerPanel/Tests/EditMode/BreakerPanelTests.cs | 247 | TheReturn.Tests | class BreakerPanelTests | - |
+| Features/Choir/Runtime/Domain/ChoirGenerator.cs | 69 | TheReturn | class ChoirGenerator | - |
+| Features/Choir/Runtime/Domain/ChoirRound.cs | 85 | TheReturn | class ChoirRound | - |
+| Features/Choir/Runtime/Domain/ChoirRules.cs | 45 | TheReturn | class ChoirRules | - |
+| Features/Choir/Runtime/Domain/ChoirState.cs | 146 | TheReturn | enum ChoirResult, class ChoirState | - |
+| Features/Choir/Tests/EditMode/ChoirTests.cs | 359 | TheReturn.Tests | class ChoirTests | - |
 | Features/DontLookBack/Runtime/Data/DontLookBackCatalog.cs | 44 | TheReturn | class DontLookBackCatalog | 1: DontLookBack_VI.asset |
 | Features/DontLookBack/Runtime/Domain/DontLookBackState.cs | 83 | TheReturn | enum BackLockResult, class DontLookBackState | - |
 | Features/DontLookBack/Runtime/Presentation/DontLookBackPrototype.cs | 205 | TheReturn | class DontLookBackPrototype | 2: SchoolFloorBeforeUserBlockout.unity, SchoolFloorPrototype.unity |
+| Features/GlassBridge/Runtime/Domain/GlassBridgeGenerator.cs | 51 | TheReturn | class GlassBridgeGenerator | - |
+| Features/GlassBridge/Runtime/Domain/GlassBridgeRound.cs | 49 | TheReturn | class GlassBridgeRound | - |
+| Features/GlassBridge/Runtime/Domain/GlassBridgeState.cs | 164 | TheReturn | enum GlassBridgeResult, class GlassBridgeState | - |
 | Features/GradeRepair/Runtime/Data/GradeRepairCatalog.cs | 71 | TheReturn | class GradeRepairCatalog | 1: GradeRepair_VI.asset |
 | Features/GradeRepair/Runtime/Domain/GradeRepairRound.cs | 51 | TheReturn | class GradeRepairRound | - |
 | Features/GradeRepair/Runtime/Domain/GradeRepairState.cs | 128 | TheReturn | enum GradeResult, class GradeRepairState | - |
@@ -34,11 +46,26 @@ Sinh 2026-10-14 bằng execute_code (xem .ai/tools/rebuild_index.snippet.cs). Ph
 | Features/NavigationExam/Runtime/Data/NavigationExamCatalog.cs | 58 | TheReturn | class NavigationExamCatalog | 1: NavigationExam_VI.asset |
 | Features/NavigationExam/Runtime/Domain/NavigationExamState.cs | 86 | TheReturn | enum ExamResult, class NavigationExamState | - |
 | Features/NavigationExam/Runtime/Presentation/NavigationExamPrototype.cs | 151 | TheReturn | class NavigationExamPrototype | 2: SchoolFloorBeforeUserBlockout.unity, SchoolFloorPrototype.unity |
+| Features/PlankAndKey/Runtime/Data/PlankSettings.cs | 24 | TheReturn | class PlankSettings | 1: PlankAndKey_VI.asset |
+| Features/PlankAndKey/Runtime/Domain/PlankGenerator.cs | 75 | TheReturn | class PlankGenerator | - |
+| Features/PlankAndKey/Runtime/Domain/PlankRound.cs | 68 | TheReturn | class PlankRound | - |
+| Features/PlankAndKey/Runtime/Domain/PlankSession.cs | 164 | TheReturn | enum PlankPhase, enum PlankStartResult, class PlankSession | - |
+| Features/PlankAndKey/Runtime/Domain/PlankSolver.cs | 115 | TheReturn | class PlankPlan, class PlankSolver | - |
+| Features/PlankAndKey/Runtime/Domain/PlankState.cs | 146 | TheReturn | enum PlankBank, enum PlankStatus, enum PlankResult, class PlankState | - |
+| Features/PlankAndKey/Tests/EditMode/PlankAndKeyTests.cs | 417 | TheReturn.Tests | class PlankAndKeyTests | - |
+| Features/PlankAndKey/Tests/EditMode/PlankSessionTests.cs | 211 | TheReturn.Tests | class PlankSessionTests | - |
 | Features/QuietCorridor/Runtime/Data/QuietCorridorSettings.cs | 23 | TheReturn | class QuietCorridorSettings | 1: QuietCorridor_VI.asset |
 | Features/QuietCorridor/Runtime/Domain/QuietCorridorState.cs | 85 | TheReturn | class QuietCorridorState | - |
 | Features/QuietCorridor/Runtime/Presentation/QuietCorridorPrototype.cs | 167 | TheReturn | class QuietCorridorPrototype | 2: SchoolFloorBeforeUserBlockout.unity, SchoolFloorPrototype.unity |
 | Features/QuietCorridor/Runtime/Presentation/QuietHoldStation.cs | 27 | TheReturn | class QuietHoldStation | 3: SchoolFloorBeforeUserBlockout.unity, SchoolFloorPrototype.unity, PF_QuietHoldStation.prefab |
 | Features/QuietCorridor/Runtime/Presentation/QuietSpeakerFeedback.cs | 46 | TheReturn | class QuietSpeakerFeedback | 2: SchoolFloorBeforeUserBlockout.unity, PF_QuietSpeaker.prefab |
+| Features/SharedLantern/Runtime/Domain/LanternGenerator.cs | 40 | TheReturn | class LanternGenerator | - |
+| Features/SharedLantern/Runtime/Domain/LanternRound.cs | 52 | TheReturn | class LanternRound | - |
+| Features/SharedLantern/Runtime/Domain/LanternState.cs | 191 | TheReturn | enum LanternReadResult, enum LanternPassResult, enum LanternSubmitResult, class LanternState | - |
+| Features/SharedLantern/Tests/EditMode/SharedLanternTests.cs | 398 | TheReturn.Tests | class SharedLanternTests | - |
+| Features/TeacherSays/Runtime/Domain/TeacherSaysGenerator.cs | 65 | TheReturn | class TeacherSaysGenerator | - |
+| Features/TeacherSays/Runtime/Domain/TeacherSaysRound.cs | 93 | TheReturn | enum TeacherCommand, class TeacherSaysRound | - |
+| Features/TeacherSays/Runtime/Domain/TeacherSaysRules.cs | 56 | TheReturn | class TeacherSaysRules | - |
 | Features/TeacherTruth/Runtime/Data/TeacherTruthCatalog.cs | 78 | TheReturn | class TeacherTruthCatalog | 1: TeacherTruth_VI.asset |
 | Features/TeacherTruth/Runtime/Domain/TeacherTruthState.cs | 142 | TheReturn | enum ManualConfirmResult, class TeacherTruthState | - |
 | Features/TeacherTruth/Runtime/Presentation/ManualConfirmStation.cs | 24 | TheReturn | class ManualConfirmStation | 3: SchoolFloorBeforeUserBlockout.unity, SchoolFloorPrototype.unity, PF_ManualConfirmStation.prefab |
@@ -60,17 +87,28 @@ Sinh 2026-10-14 bằng execute_code (xem .ai/tools/rebuild_index.snippet.cs). Ph
 | Maps/SchoolFloor/Editor/SchoolFloorObjectsWindow.cs | 76 | TheReturn.Editor | class SchoolFloorObjectsWindow | - |
 | Maps/SchoolFloor/Editor/SchoolLayoutV2Migration.cs | 195 | TheReturn.Editor | class SchoolLayoutV2Migration | - |
 | Maps/SchoolFloor/Editor/TeacherTruthSceneBuilder.cs | 205 | TheReturn.Editor | class TeacherTruthSceneBuilder | - |
+| Maps/SchoolFloor/Runtime/Domain/IMissionAdapter.cs | 30 | TheReturn | interface IMissionAdapter | - |
+| Maps/SchoolFloor/Runtime/Domain/MapProgress.cs | 279 | TheReturn | enum AreaKind, enum BeginResult, class AreaInfo, class MapProgressSnapshot, class MapProgress | - |
+| Maps/SchoolFloor/Runtime/Domain/MissionRegistry.cs | 100 | TheReturn | class MissionRegistry | - |
+| Maps/SchoolFloor/Runtime/Domain/WinSummary.cs | 55 | TheReturn | class WinSummary | - |
 | Maps/SchoolFloor/Runtime/GradeRepairHud.cs | 146 | TheReturn | class GradeRepairHud | 2: SchoolFloorBeforeUserBlockout.unity, SchoolFloorPrototype.unity |
+| Maps/SchoolFloor/Runtime/Missions/MissionAdapters.cs | 196 | TheReturn | class AttendanceMissionAdapter, class QuietCorridorMissionAdapter, class GradeRepairMissionAdapter, class NavigationExamMissionAdapter, class DontLookBackMissionAdapter, class TeacherTruthMissionAdapter | - |
+| Maps/SchoolFloor/Runtime/Missions/MissionFlowController.cs | 153 | TheReturn | class GateBinding, class MissionFlowController | 1: SchoolFloorPrototype.unity |
+| Maps/SchoolFloor/Runtime/Missions/MissionRegistryFactory.cs | 50 | TheReturn | class MissionRegistryFactory | - |
 | Maps/SchoolFloor/Runtime/NavigationExamHud.cs | 112 | TheReturn | class NavigationExamHud | 2: SchoolFloorBeforeUserBlockout.unity, SchoolFloorPrototype.unity |
 | Maps/SchoolFloor/Runtime/QuietCorridorHud.cs | 82 | TheReturn | class QuietCorridorHud | 2: SchoolFloorBeforeUserBlockout.unity, SchoolFloorPrototype.unity |
-| Maps/SchoolFloor/Runtime/SchoolFloorAccessController.cs | 62 | TheReturn | class SchoolFloorAccessController | 1: SchoolFloorPrototype.unity |
-| Maps/SchoolFloor/Runtime/SchoolFloorFlow.cs | 125 | TheReturn | class SchoolFloorFlow | 2: SchoolFloorBeforeUserBlockout.unity, SchoolFloorPrototype.unity |
+| Maps/SchoolFloor/Runtime/SchoolFloorAccessController.cs | 72 | TheReturn | class SchoolFloorAccessController | 1: SchoolFloorPrototype.unity |
+| Maps/SchoolFloor/Runtime/SchoolFloorFlow.cs | 132 | TheReturn | class SchoolFloorFlow | 2: SchoolFloorBeforeUserBlockout.unity, SchoolFloorPrototype.unity |
 | Maps/SchoolFloor/Runtime/SchoolPreparationGate.cs | 43 | TheReturn | class SchoolPreparationGate | 2: SchoolFloorPrototype.unity, PF_PreparationGate.prefab |
-| Maps/SchoolFloor/Runtime/Testing/MissionTestLauncher.cs | 143 | TheReturn | enum MissionTestEntry, class MissionTestLauncher | 2: SchoolFloorBeforeUserBlockout.unity, SchoolFloorPrototype.unity |
+| Maps/SchoolFloor/Runtime/Testing/MissionTestLauncher.cs | 144 | TheReturn | enum MissionTestEntry, class MissionTestLauncher | 2: SchoolFloorBeforeUserBlockout.unity, SchoolFloorPrototype.unity |
 | Maps/SchoolFloor/Runtime/UI/SchoolFloorCanvasPresenter.DontLookBack.cs | 52 | TheReturn | class SchoolFloorCanvasPresenter | - |
 | Maps/SchoolFloor/Runtime/UI/SchoolFloorCanvasPresenter.Puzzles.cs | 63 | TheReturn | class SchoolFloorCanvasPresenter | - |
 | Maps/SchoolFloor/Runtime/UI/SchoolFloorCanvasPresenter.cs | 225 | TheReturn | class SchoolFloorCanvasPresenter | 1: PF_SchoolFloorCanvas.prefab |
 | Maps/SchoolFloor/Runtime/UI/SchoolFloorCanvasView.cs | 38 | TheReturn | class SchoolFloorCanvasView | 1: PF_SchoolFloorCanvas.prefab |
+| Maps/SchoolFloor/Runtime/UI/WinScreenPresenter.cs | 195 | TheReturn | class WinScreenPresenter | 1: SchoolFloorPrototype.unity |
+| Maps/SchoolFloor/Tests/EditMode/MapProgressTests.cs | 278 | TheReturn.Tests | class MapProgressTests | - |
+| Maps/SchoolFloor/Tests/EditMode/MissionRegistryTests.cs | 243 | TheReturn.Tests | class MissionRegistryTests, class FakeAdapter | - |
+| Maps/SchoolFloor/Tests/EditMode/WinSummaryTests.cs | 106 | TheReturn.Tests | class WinSummaryTests | - |
 | Maps/SchoolFloor/Tests/Editor/DontLookBackChecks.cs | 142 | TheReturn.Editor | class DontLookBackChecks | - |
 | Maps/SchoolFloor/Tests/Editor/GradeRepairChecks.cs | 214 | TheReturn.Editor | class GradeRepairChecks | - |
 | Maps/SchoolFloor/Tests/Editor/NavigationExamChecks.cs | 212 | TheReturn.Editor | class NavigationExamChecks | - |

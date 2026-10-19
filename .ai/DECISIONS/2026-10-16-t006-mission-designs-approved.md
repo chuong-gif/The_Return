@@ -6,3 +6,9 @@ Người quyết: chủ dự án (chat với phiên #3, ngày 2026-10-16). Bản
 3. Mặc định chấp nhận (chủ dự án không phản đối, chưa xác nhận rõ): tổng thời lượng map có thể dài hơn mục tiêu 22-30 phút; Hanh_Lang_6 cho đội 2 người giữ bản nhẹ; tên chủ đề phòng ổn.
 4. CHƯA có quyết định về việc AI thêm cổng/khu chuẩn bị cho Hanh_Lang_2/4/5/6 vào scene. Mọi bước sửa scene phải hỏi lại chủ dự án (kèm Scene lock + snapshot).
 5. Thứ tự làm đề xuất: Phong_5, Hanh_Lang_6, Hanh_Lang_5, Phong_6, Hanh_Lang_2, Hanh_Lang_4 (phiên #3 bắt đầu Domain của Phong_5 và Phong_6 vì không cần scene).
+
+## Bổ sung 2026-10-16 10:29 UTC (chủ dự án, chat)
+6. Mục 4 đã được trả lời MỘT PHẦN: cho phép sửa scene để dựng nhiệm vụ Phong_6 (Choir) với Scene lock + snapshot. Chưa cho phép cho các hành lang mới.
+
+## Bổ sung 2026-10-16 10:48 UTC (chủ dự án, chat với phiên #4)
+7. Mục 4 trả lời thêm MỘT PHẦN: cho phép sửa scene để dựng nhiệm vụ Hanh_Lang_5 (TeacherSays) gồm cổng + khu chuẩn bị. Vẫn chưa cho phép Hanh_Lang_2/4/6. Bắt buộc Scene lock + snapshot.

@@ -12,3 +12,4 @@ Nguồn sự thật: file .asmdef. Tạo lại bằng script khi index được 
 
 T-002 (2026-10-15 07:52 UTC): SchoolFloor.Domain (noEngineReferences, refs rỗng) tại Maps/SchoolFloor/Runtime/Domain — CHƯA ai tham chiếu; SchoolFloor.Domain.Tests (Editor, NUnit) -> {SchoolFloor.Domain, UnityEngine.TestRunner, UnityEditor.TestRunner} tại Maps/SchoolFloor/Tests/EditMode.
 T-003 (2026-10-15 08:05 UTC): TheReturn.SchoolFloor nay tham chiếu thêm TheReturn.SchoolFloor.Domain (adapter ở Maps/SchoolFloor/Runtime/Missions dùng IMissionAdapter).
+T-006d (2026-10-16 10:26 UTC): TheReturn.Choir.Domain (noEngineReferences, refs rỗng) tại Features/Choir/Runtime/Domain; TheReturn.Choir.Domain.Tests (Editor, NUnit) -> {Choir.Domain, TestRunner}. CHƯA ai tham chiếu Choir.Domain.
