@@ -21,6 +21,13 @@ namespace TheReturn
         public NavigationExamPrototype navigationExam;
         public DontLookBackPrototype dontLookBack;
         public TeacherTruthPrototype teacherTruth;
+        public ChoirPrototype choir;
+        public BreakerPanelPrototype breakerPanel;
+        public TeacherSaysPrototype teacherSays;
+        [Tooltip("Hanh_Lang_2 «Cầu kính» (T-006e2).")]
+        public GlassBridgePrototype glassBridge;
+        public SharedLanternPrototype sharedLantern;
+        public PlankAndKeyPrototype plankAndKey;
         public int Gathered { get; private set; }
         public BoxCollider[] transitionGatherZones;
         [Tooltip("Nếu có và đang bật: luồng tự chọn khu (T-004) thay chuỗi if tuyến tính trong Update.")]
@@ -105,6 +112,11 @@ namespace TheReturn
             if (missionFlow != null) missionFlow.ResetFlow();
             if (teacherTruth != null) teacherTruth.StopSession();
             if (dontLookBack != null) dontLookBack.StopSession();
+            if (glassBridge != null) glassBridge.StopSession();
+            if (plankAndKey != null) plankAndKey.StopSession();
+            if (choir != null) choir.StopSession();
+            if (breakerPanel != null) breakerPanel.StopSession();
+            if (teacherSays != null) teacherSays.StopSession();
             if (navigationExam != null) navigationExam.StopSession();
             if (gradeRepair != null) gradeRepair.StopSession();
             if (gradeEntrance != null) gradeEntrance.SetOpen(false, true);

@@ -14,8 +14,14 @@ namespace TheReturn
         public const string GradeRepairArea = "Phong_2";
         public const string NavigationExamArea = "Phong_3";
         public const string TeacherTruthArea = "Phong_4";
+        public const string ChoirArea = "Phong_6";
+        public const string BreakerPanelArea = "Phong_5";
+        public const string TeacherSaysArea = "Hanh_Lang_5";
         public const string QuietCorridorArea = "Hanh_Lang_1";
         public const string DontLookBackArea = "Hanh_Lang_3";
+        public const string GlassBridgeArea = "Hanh_Lang_2";
+        public const string SharedLanternArea = "Hanh_Lang_4";
+        public const string PlankAndKeyArea = "Hanh_Lang_6";
 
         /// <summary>
         /// Nhận MapProgress (có đủ các khu trên) và SchoolFloorFlow giữ tham chiếu nhiệm vụ; đăng ký adapter cho mọi nhiệm vụ
@@ -37,6 +43,18 @@ namespace TheReturn
                 registry.Register(new QuietCorridorMissionAdapter(QuietCorridorArea, flow.corridor));
             if (flow.dontLookBack != null)
                 registry.Register(new DontLookBackMissionAdapter(DontLookBackArea, flow.dontLookBack));
+            if (flow.choir != null)
+                registry.Register(new ChoirMissionAdapter(ChoirArea, flow.choir));
+            if (flow.breakerPanel != null)
+                registry.Register(new BreakerPanelMissionAdapter(BreakerPanelArea, flow.breakerPanel));
+            if (flow.teacherSays != null)
+                registry.Register(new TeacherSaysMissionAdapter(TeacherSaysArea, flow.teacherSays));
+            if (flow.glassBridge != null)
+                registry.Register(new GlassBridgeMissionAdapter(GlassBridgeArea, flow.glassBridge));
+            if (flow.sharedLantern != null)
+                registry.Register(new SharedLanternMissionAdapter(SharedLanternArea, flow.sharedLantern));
+            if (flow.plankAndKey != null)
+                registry.Register(new PlankAndKeyMissionAdapter(PlankAndKeyArea, flow.plankAndKey));
             return registry;
         }
 

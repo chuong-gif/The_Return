@@ -17,6 +17,18 @@
     "TheReturn.DontLookBack",
     "TheReturn.DontLookBack.Domain",
     "TheReturn.TeacherTruth",
-    "TheReturn.TeacherTruth.Domain"
+    "TheReturn.TeacherTruth.Domain",
+    "TheReturn.Choir",
+    "TheReturn.BreakerPanel",
+    "TheReturn.TeacherSays",
+    "TheReturn.TeacherSays.Domain",
+    "TheReturn.BreakerPanel.Domain",
+    "TheReturn.Choir.Domain",
+    "TheReturn.GlassBridge",
+    "TheReturn.GlassBridge.Domain",
+    "TheReturn.SharedLantern",
+    "TheReturn.SharedLantern.Domain",
+    "TheReturn.PlankAndKey",
+    "TheReturn.PlankAndKey.Domain"
   ]
 }
