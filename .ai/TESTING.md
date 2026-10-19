@@ -36,3 +36,7 @@ Các bộ còn lại: mọi bộ đều ghi đè một file báo cáo trong `Des
 - Assembly `TheReturn.SchoolFloor.Domain.Tests` (Tests/EditMode/MapProgressTests.cs): 21 test cho MapProgress, chạy 0,63 s, không cần scene/Play Mode, không ghi đè file nào.
 - Chạy qua Unity MCP: `run_tests` (mode EditMode, assembly_names ["TheReturn.SchoolFloor.Domain.Tests"]) rồi `get_test_job`; hoặc Window > General > Test Runner > EditMode. Kết quả 2026-10-15: 21/21 passed.
 - Khuôn mẫu cho test Domain mới: asmdef Editor-only + overrideReferences + nunit.framework.dll + defineConstraints UNITY_INCLUDE_TESTS.
+
+## Cập nhật 2026-10-16 10:26 UTC (T-006d)
+- Thêm assembly NUnit TheReturn.Choir.Domain.Tests (24 test). Hiện có 3 assembly NUnit: TheReturn.SchoolFloor.Domain.Tests, TheReturn.BreakerPanel.Domain.Tests, TheReturn.Choir.Domain.Tests (chạy chung: 83/83 xanh ngày 2026-10-16).
+- Khi dùng Unity MCP run_tests: LUÔN truyền assembly_names; gọi không kèm tên bị timeout phía Unity (gặp ngày 2026-10-16).

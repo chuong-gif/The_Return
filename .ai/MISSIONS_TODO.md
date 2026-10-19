@@ -9,7 +9,7 @@ Quy tắc: mỗi phòng và mỗi hành lang phải có nhiệm vụ cần cả 
 | Phong_3 | Có: NavigationExam | |
 | Phong_4 | Có: TeacherTruth | |
 | Phong_5 | CHƯA CÓ nhiệm vụ | cần thiết kế; đã có 3 cổng, luôn mở |
-| Phong_6 | CHƯA CÓ nhiệm vụ | cần thiết kế; đã có 3 cổng, luôn mở |
+| Phong_6 | ĐÃ DUYỆT thiết kế: Choir (Hợp xướng); Domain xong, chưa Presentation/scene | PLANS/T-006d-choir.md; mốc thời gian giữa hai nốt chỉnh được |
 | Hanh_Lang_1 | Có: QuietCorridor | cổng gắn nhãn «Hanh lang 2» |
 | Hanh_Lang_2 | CHƯA CÓ nhiệm vụ | chưa có cổng/khu chuẩn bị |
 | Hanh_Lang_3 | Có: DontLookBack | cổng gắn nhãn «Hanh lang 4» |
