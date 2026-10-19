@@ -1,0 +1,9 @@
+{
+  "name": "TheReturn.GlassBridge",
+  "references": [
+    "TheReturn.Core",
+    "TheReturn.Shared",
+    "Unity.InputSystem",
+    "TheReturn.GlassBridge.Domain"
+  ]
+}
