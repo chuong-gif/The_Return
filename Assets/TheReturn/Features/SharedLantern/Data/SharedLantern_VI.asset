@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ab4d051ef0fb4b40b2a73a8a2498a38, type: 3}
+  m_Name: SharedLantern_VI
+  m_EditorClassIdentifier: TheReturn.SharedLantern::TheReturn.SharedLanternSettings
+  lightRadius: 4
+  passRange: 2
+  outsideSeconds: 5
+  submitLockSeconds: 10
+  onlyActivePlayerTimed: 1
+  fixedSeed: 0
+  instructions: "H\xE0nh lang t\u1ED1i, ch\u1EC9 c\xF3 m\u1ED9t \u0111\xE8n l\u1ED3ng.
+    Bi\u1EC3n tr\xEAn t\u01B0\u1EDDng ch\u1EC9 \u0111\u1ECDc \u0111\u01B0\u1EE3c
+    khi n\u1EB1m trong v\xF9ng s\xE1ng (b\u1EA5m E). Trao \u0111\xE8n cho ng\u01B0\u1EDDi
+    g\u1EA7n b\u1EA1n b\u1EB1ng F. Cu\u1ED1i h\xE0nh lang nh\u1EADp 4 k\xFD hi\u1EC7u
+    theo th\u1EE9 t\u1EF1 bi\u1EC3n 1-4."
+  readOk: "\u0110\xE3 ghi bi\u1EC3n v\xE0o s\u1ED5 c\u1EE7a b\u1EA1n."
+  readNotInLight: "Bi\u1EC3n n\u1EB1m ngo\xE0i v\xF9ng s\xE1ng, ch\u01B0a \u0111\u1ECDc
+    \u0111\u01B0\u1EE3c."
+  readAlready: "B\u1EA1n \u0111\xE3 \u0111\u1ECDc bi\u1EC3n n\xE0y r\u1ED3i."
+  passed: "\u0110\xE3 trao \u0111\xE8n l\u1ED3ng."
+  passTooFar: "Ng\u01B0\u1EDDi nh\u1EADn \u1EDF qu\xE1 xa \u0111\u1EC3 trao \u0111\xE8n."
+  passNotHolder: "Ch\u1EC9 ng\u01B0\u1EDDi \u0111ang c\u1EA7m \u0111\xE8n m\u1EDBi
+    trao \u0111\u01B0\u1EE3c."
+  sentBack: "\u1EDE ngo\xE0i v\xF9ng s\xE1ng qu\xE1 l\xE2u - b\u1ECB \u0111\u01B0a
+    v\u1EC1 \u0111i\u1EC3m \u0111\u1EA7u h\xE0nh lang."
+  wrongCode: "Sai m\xE3 - b\u1EA3ng b\u1ECB kh\xF3a v\xE0 c\xE1c \xF4 b\u1ECB x\xF3a."
+  locked: "B\u1EA3ng \u0111ang b\u1ECB kh\xF3a."
+  incomplete: "Ch\u01B0a nh\u1EADp \u0111\u1EE7 4 k\xFD hi\u1EC7u."
+  accepted: "\u0110\xFAng m\xE3! C\u1EA3 \u0111\u1ED9i ra c\u1ED5ng cu\u1ED1i h\xE0nh
+    lang."
+  success: "H\xE0nh lang ho\xE0n th\xE0nh!"

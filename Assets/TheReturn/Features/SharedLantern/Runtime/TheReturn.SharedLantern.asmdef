@@ -1,0 +1,9 @@
+{
+  "name": "TheReturn.SharedLantern",
+  "references": [
+    "TheReturn.Core",
+    "TheReturn.Shared",
+    "Unity.InputSystem",
+    "TheReturn.SharedLantern.Domain"
+  ]
+}
