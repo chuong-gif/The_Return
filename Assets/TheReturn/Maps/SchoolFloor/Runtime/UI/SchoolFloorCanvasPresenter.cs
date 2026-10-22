@@ -55,40 +55,21 @@ namespace TheReturn
         }
 
         /// <summary>Nhận ID khu mới; trả dòng trạng thái của nhiệm vụ đó (rỗng nếu chưa có).</summary>
-        string ExtraStatus(string area)
+string ExtraStatus(string area)
         {
-            switch(area)
-            {
-                case "Phong_6": return flow.choir!=null?flow.choir.Status:"";
-                case "Phong_5": return flow.breakerPanel!=null?flow.breakerPanel.Status:"";
-                case "Hanh_Lang_2": return flow.glassBridge!=null?flow.glassBridge.Status:"";
-                case "Hanh_Lang_4": return flow.sharedLantern!=null?flow.sharedLantern.Status:"";
-                case "Hanh_Lang_6": return flow.plankAndKey!=null?flow.plankAndKey.Status:"";
-                case "Hanh_Lang_5": return flow.teacherSays!=null?flow.teacherSays.Status:"";
-                default: return "";
-            }
+            return ExtraModel(area).Objective;
         }
 
         /// <summary>Nhận ID khu mới; trả dòng tiến độ ngắn (nốt đã chơi, công tắc đang bật) hoặc rỗng.</summary>
-        string ExtraInfo(string area)
+string ExtraInfo(string area)
         {
-            if(area=="Phong_6" && flow.choir!=null && flow.choir.State!=null) return "Nốt "+flow.choir.State.Progress+"/"+flow.choir.State.Round.Length;
-            if(area=="Hanh_Lang_5" && flow.teacherSays!=null && flow.teacherSays.State!=null)
-                return "Đoạn "+(Mathf.Min(flow.teacherSays.State.Segment+1,TeacherSaysRound.SegmentCount))+"/"+TeacherSaysRound.SegmentCount+" • Cảnh cáo "+flow.teacherSays.State.Warnings+"/"+flow.teacherSays.State.Rules.MaxWarnings;
-            if(area=="Phong_5" && flow.breakerPanel!=null && flow.breakerPanel.State!=null)
-                return "Công tắc bật "+flow.breakerPanel.State.OnCount+"/"+flow.breakerPanel.State.Round.OverloadLimit;
-            return "";
+            return ExtraModel(area).Progress;
         }
 
         /// <summary>Không nhận tham số; trả sổ tay của vai đang chọn cho nhiệm vụ mới có sổ (Hợp xướng, Cầu dao), rỗng nếu không có.</summary>
-        string ExtraNotebook()
+string ExtraNotebook()
         {
-            string area=ActiveArea;
-            int player=flow.attendance.party.ActivePlayer;
-            if(area=="Phong_6" && flow.choir!=null) return flow.choir.Notebook(player);
-            if(area=="Phong_5" && flow.breakerPanel!=null) return flow.breakerPanel.Notebook(player);
-            if(area=="Hanh_Lang_5" && flow.teacherSays!=null) return flow.teacherSays.Notebook(player);
-            return "";
+            return ExtraModel(ActiveArea).Notebook;
         }
 
         /// <summary>Không nhận tham số; tạo thêm nút test cho nhiệm vụ mới bằng cách nhân bản nút cuối, xếp hai cột và đặt tên theo MissionTestLauncher.</summary>
@@ -126,6 +107,9 @@ namespace TheReturn
             if(flow.choir!=null) flow.choir.drawOnGui=false;
             if(flow.breakerPanel!=null) flow.breakerPanel.drawOnGui=false;
             if(flow.teacherSays!=null) flow.teacherSays.drawOnGui=false;
+            if(flow.glassBridge!=null) flow.glassBridge.drawOnGui=false;
+            if(flow.sharedLantern!=null) flow.sharedLantern.drawOnGui=false;
+            if(flow.plankAndKey!=null) flow.plankAndKey.drawOnGui=false;
             Bind(view.resume,Resume);
             Bind(view.retry,Retry);
             Bind(view.nextCase,NextCase);
@@ -239,7 +223,9 @@ namespace TheReturn
             SchoolFloorCanvasView.SetVisible(view.gradeBoard,grade&&flow.gradeRepair.OpenDocument<0&&!testingMenu);
             SchoolFloorCanvasView.SetVisible(view.document,grade&&flow.gradeRepair.OpenDocument>=0&&!testingMenu);
             SchoolFloorCanvasView.SetVisible(view.examBoard,exam&&!testingMenu);
-            SchoolFloorCanvasView.SetVisible(view.cluePanel,(Phase==0||Phase==3||Phase==4||Phase==5||(Phase==PhaseOther&&ExtraNotebook().Length>0))&&!paused&&!testingMenu);
+            bool notebook=UpdateNotebookKey();
+            SchoolFloorCanvasView.SetVisible(view.cluePanel,notebook&&(Phase==0||Phase==3||Phase==4||Phase==5||(Phase==PhaseOther&&ExtraNotebook().Length>0))&&!paused&&!testingMenu);
+            UpdateMiniMap(Phase==PhaseFree&&!paused&&!testingMenu);
             SchoolFloorCanvasView.SetVisible(view.noisePanel,Phase==1&&!paused&&!testingMenu);
             view.crosshair.enabled=!paused&&!testingMenu&&!grade&&!exam&&!back;
             view.nextCase.gameObject.SetActive(Phase==0||(Phase>=2&&Phase<=5));
@@ -266,7 +252,8 @@ namespace TheReturn
             SchoolFloorCanvasView.SetText(view.title,Phase<=5?titles[Phase]:ExtraTitle());
             SchoolFloorCanvasView.SetText(view.role,(launcher.TestSession?"TEST • ":"")+"VAI "+(a.party.ActivePlayer+1)+" / ĐỘI "+a.PartySize);
             string info="",message="",hint="",help="";
-            if(Phase==0)
+            bool prov=FreeFlow&&ActiveArea!=null&&HasHudProvider(ActiveArea);
+            if(!prov&&Phase==0)
             {
                 info=a.State.Solved?"Đã điểm danh • Tập hợp ngoài lớp: "+flow.Gathered+"/"+a.PartySize :
                     "Đã ngồi "+a.State.OccupiedCount+"/"+a.PartySize+" • 24 ghế";
@@ -275,7 +262,7 @@ namespace TheReturn
                 help="WASD đi • E ngồi/đứng • H gợi ý • 1–4 đổi vai • Tab menu";
                 SchoolFloorCanvasView.SetText(view.clues,a.CluePackets[a.ActivePlayer]);
             }
-            if(Phase==1)
+            if(!prov&&Phase==1)
             {
                 var q=flow.corridor;
                 info="Tiếng ồn "+Mathf.CeilToInt(q.State.Noise)+"/100 • "+(q.State.SpeakerOn?"Loa đang rè":q.State.Held?"Loa đã tắt":"Ân hạn "+q.State.Grace.ToString("0.0")+"s");
@@ -284,7 +271,7 @@ namespace TheReturn
                 help=q.settings.localControls;
                 view.noise.value=q.State.Noise/100f;
             }
-            if(Phase==2)
+            if(!prov&&Phase==2)
             {
                 var g=flow.gradeRepair;
                 info="Tổng cần đạt 32 • Mỗi hồ sơ 6–10";
@@ -293,7 +280,7 @@ namespace TheReturn
                     g.Target.document<0?"[E] Mở bảng sửa":"[E] Hồ sơ của vai "+(g.State.Round.OwnerOf(g.Target.document)+1);
                 help=g.catalog.controls;
             }
-            if(Phase==3)
+            if(!prov&&Phase==3)
             {
                 var e=flow.navigationExam;
                 info=NavigationExamState.Code(e.State.Start)+" → "+NavigationExamState.Code(e.State.Goal)+" • Dấu "+e.State.Stamps+"/2 • Lượt vai "+(e.State.Turn+1);
@@ -302,7 +289,7 @@ namespace TheReturn
                 help=e.catalog.controls;
                 SchoolFloorCanvasView.SetText(view.clues,e.catalog.Packet(e.State,a.ActivePlayer));
             }
-            if(Phase==4)
+            if(!prov&&Phase==4)
             {
                 var b=flow.dontLookBack;
                 info="Ký hiệu đã được đọc "+b.State.WitnessedCount+"/"+a.PartySize+" • Checkpoint "+(b.Checkpoint+1)+" • Lần quay đầu "+b.State.Penalties;
@@ -312,7 +299,7 @@ namespace TheReturn
                 help=b.catalog.controls;
                 SchoolFloorCanvasView.SetText(view.clues,b.catalog.Notebook(b.State,a.ActivePlayer));
             }
-            if(Phase==5)
+            if(!prov&&Phase==5)
             {
                 var teacher=flow.teacherTruth;
                 info=teacher.ResultText();
@@ -340,17 +327,18 @@ namespace TheReturn
                 hint="Cả đội đứng đủ trong khu chuẩn bị trước cổng của khu muốn chơi để bắt đầu";
                 help="WASD đi • 1–4 đổi vai • Tab menu";
             }
-            if(Phase==PhaseOther)
+            if(prov||Phase==PhaseOther)
             {
                 string area=ActiveArea;
                 info=ExtraInfo(area);
                 message=ExtraStatus(area);
-                hint="";
-                help="WASD đi • E tương tác • R làm lại • 1–4 đổi vai • Tab menu";
+                hint=ExtraModel(area).Prompt;
+                help=ExtraModel(area).Controls.Length>0?ExtraModel(area).Controls:"WASD đi • E tương tác • R làm lại • 1–4 đổi vai • Tab menu";
+                if(Phase==1&&flow.corridor.State!=null)view.noise.value=flow.corridor.State.Noise/100f;
                 SchoolFloorCanvasView.SetText(view.clues,ExtraNotebook());
             }
             bool solved=Phase==0?a.State.Solved:Phase==1?flow.corridor.State.Solved:Phase==2?flow.gradeRepair.State.Solved:Phase==3?flow.navigationExam.State.Solved:Phase==4&&flow.dontLookBack.State.Solved;
-            if(solved && Phase<5 && flow.transitionGatherZones!=null && flow.transitionGatherZones.Length>Phase && flow.transitionGatherZones[Phase]!=null)
+            if(!prov && solved && Phase<5 && flow.transitionGatherZones!=null && flow.transitionGatherZones.Length>Phase && flow.transitionGatherZones[Phase]!=null)
             {
                 float distance=Vector3.Distance(a.party.players[a.ActivePlayer].position,flow.transitionGatherZones[Phase].transform.position);
                 info="Đến phòng "+(Phase+2)+" • Đã tập hợp "+flow.Gathered+"/"+a.PartySize;
@@ -360,6 +348,7 @@ namespace TheReturn
             SchoolFloorCanvasView.SetText(view.objective,info);
             SchoolFloorCanvasView.SetText(view.status,message);
             SchoolFloorCanvasView.SetText(view.prompt,hint);
+            if(Phase!=PhaseFree && Phase!=1 && Phase!=2) help+=" • N sổ tay";
             SchoolFloorCanvasView.SetText(view.controls,help+(MissionTestLauncher.Available()?" • F8 chọn bài test":""));
         }
     }

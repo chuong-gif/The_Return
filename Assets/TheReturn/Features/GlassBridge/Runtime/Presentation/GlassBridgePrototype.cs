@@ -36,6 +36,8 @@ namespace TheReturn
 
         public GlassBridgeState State { get; private set; }
         public bool Active { get; private set; }
+        /// <summary>Tắt khi Canvas của SchoolFloor vẽ HUD thay cho hộp OnGUI.</summary>
+        public bool drawOnGui = true;
         public string Status { get; private set; }
 
         GlassBridgeRound round;
@@ -210,17 +212,24 @@ namespace TheReturn
         }
 
         /// <summary>Không nhận tham số; vẽ thông tin vai đang điều khiển, vị trí trên cầu và trạng thái.</summary>
-        void OnGUI()
+/// <summary>Nhận chỉ số vai; trả sổ tay của vai: vị trí trên cầu và có xem được sơ đồ không (rỗng nếu chưa chạy).</summary>
+        public string Notebook(int playerIndex)
         {
-            if (!Active || State == null) return;
-            int player = Mathf.Min(party.ActivePlayer, round.PlayerCount - 1);
+            if (!Active || State == null) return "";
+            int player = Mathf.Min(playerIndex, round.PlayerCount - 1);
             int row = State.RowOf(player);
             string where = row < 0 ? "đài đầu" : (row >= round.Rows ? "đài cuối" : "hàng " + (row + 1) + "/" + round.Rows);
+            return "Vai " + (player + 1) + " đang ở " + where + "\n" + (State.CanSeeDiagram(player) ? "Đang ở đài: xem được bảng sơ đồ" : "Đang trên cầu: không xem được sơ đồ") + "\n[R] làm lại  [1-4] đổi vai";
+        }
+
+        /// <summary>Không nhận tham số; vẽ hộp thông tin cũ khi drawOnGui bật.</summary>
+        void OnGUI()
+        {
+            if (!drawOnGui || !Active || State == null) return;
             var sb = new StringBuilder();
-            sb.Append("CẦU KÍNH - Vai ").Append(player + 1).Append(" đang ở ").Append(where).Append('\n');
+            sb.Append("CẦU KÍNH\n");
             sb.Append("Đã qua: ").Append(State.AcrossCount).Append('/').Append(round.PlayerCount).Append("  Số lần té: ").Append(State.Falls).Append('\n');
-            sb.Append(State.CanSeeDiagram(player) ? "Đang ở đài: xem được bảng sơ đồ\n" : "Đang trên cầu: không xem được sơ đồ\n");
-            sb.Append(Status).Append("\n[R] làm lại  [1-4] đổi vai");
+            sb.Append(Notebook(party.ActivePlayer)).Append('\n').Append(Status);
             GUI.Box(new Rect(16, 16, 460, 130), sb.ToString());
         }
 

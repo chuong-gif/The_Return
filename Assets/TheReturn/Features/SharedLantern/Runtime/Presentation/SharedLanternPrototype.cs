@@ -38,6 +38,8 @@ namespace TheReturn
 
         public LanternState State { get; private set; }
         public bool Active { get; private set; }
+        /// <summary>Tắt khi Canvas của SchoolFloor vẽ HUD thay cho hộp OnGUI.</summary>
+        public bool drawOnGui = true;
         public string Status { get; private set; }
         LanternRound round;
         bool reversed;
@@ -262,21 +264,27 @@ namespace TheReturn
         }
 
         /// <summary>Không nhận tham số; vẽ HUD: người cầm đèn, sổ riêng của vai đang điều khiển, giờ ngoài vùng sáng, khóa bảng, trạng thái.</summary>
-        void OnGUI()
+/// <summary>Nhận chỉ số vai và thời điểm; trả sổ riêng của vai (biển đã đọc), giờ ngoài vùng sáng, khóa bảng và phím. Rỗng nếu chưa chạy.</summary>
+        public string Notebook(int player, double now)
         {
-            if (!Active || State == null) return;
-            double now = Time.timeAsDouble;
-            int player = party.ActivePlayer;
+            if (!Active || State == null) return "";
             var sb = new System.Text.StringBuilder();
-            sb.Append("ĐÈN LỒNG CHUNG - Vai ").Append(player + 1).Append(State.Holder == player ? "  (đang cầm đèn)" : "  (đèn: vai " + (State.Holder + 1) + ")").Append('\n');
+            sb.Append("Vai ").Append(player + 1).Append(State.Holder == player ? "  (đang cầm đèn)" : "  (đèn: vai " + (State.Holder + 1) + ")").Append('\n');
             for (int s = 0; s < LanternRound.SignCount; s++)
                 sb.Append("Sổ - biển ").Append(s + 1).Append(": ").Append(State.HasRead(player, s) ? LanternSymbols.Name(State.SymbolSeen(player, s)) : "chưa đọc").Append('\n');
             double outside = State.OutsideSeconds(player, now);
             if (outside > 0) sb.Append("Ngoài vùng sáng: ").Append(outside.ToString("0.0")).Append("/").Append(State.OutsideLimit.ToString("0")).Append(" giây\n");
             double lockLeft = State.LockRemaining(now);
             if (lockLeft > 0) sb.Append("Bảng khóa còn ").Append(lockLeft.ToString("0.0")).Append(" giây\n");
-            sb.Append(Status).Append("\n[E] đọc biển / bấm phím  [F] trao đèn  [R] làm lại  [1-4] đổi vai");
-            GUI.Box(new Rect(16, 16, 460, 190), sb.ToString());
+            sb.Append("[E] đọc biển / bấm phím  [F] trao đèn  [R] làm lại  [1-4] đổi vai");
+            return sb.ToString();
+        }
+
+        /// <summary>Không nhận tham số; vẽ hộp HUD cũ khi drawOnGui bật.</summary>
+        void OnGUI()
+        {
+            if (!drawOnGui || !Active || State == null) return;
+            GUI.Box(new Rect(16, 16, 460, 190), "ĐÈN LỒNG CHUNG\n" + Notebook(party.ActivePlayer, Time.timeAsDouble) + "\n" + Status);
         }
 
         /// <summary>Nhận cờ reset; ngừng input, tắt đèn; reset=false giữ kết quả đã giải khi chuyển nhiệm vụ.</summary>

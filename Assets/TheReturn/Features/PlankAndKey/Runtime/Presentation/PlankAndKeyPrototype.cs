@@ -44,6 +44,8 @@ namespace TheReturn
 
         public PlankSession Session { get; private set; }
         public bool Active { get; private set; }
+        /// <summary>Tắt khi Canvas của SchoolFloor vẽ HUD thay cho hộp OnGUI.</summary>
+        public bool drawOnGui = true;
         public string Status { get; private set; }
 
         bool nearIsA = true;
@@ -372,20 +374,27 @@ namespace TheReturn
         }
 
         /// <summary>Không nhận tham số; vẽ đồng hồ, tốc độ riêng của vai đang điều khiển, thẻ, người trên ván, trạng thái và phím.</summary>
-        void OnGUI()
+/// <summary>Nhận chỉ số vai; trả dòng đồng hồ qua khe và sổ riêng (thời gian qua của cặp sách vai đó, chỗ thẻ từ, phím). Rỗng nếu chưa chạy.</summary>
+        public string Notebook(int playerIndex)
         {
-            if (!Active || Session == null || !ReferencesOk()) return;
+            if (!Active || Session == null || !ReferencesOk()) return "";
             PlankRound round = Session.State.Round;
-            int me = Mathf.Min(party.ActivePlayer, round.PlayerCount - 1);
+            int me = Mathf.Min(playerIndex, round.PlayerCount - 1);
             var sb = new StringBuilder();
-            sb.Append(settings != null ? settings.title : "CẦU VÁN VÀ THẺ TỪ").Append("  (lần ").Append(Session.State.Attempts).Append(")\n");
             sb.Append("Thời gian qua khe: ").Append(Session.DisplayUsedSeconds.ToString("0.0")).Append(" / ").Append(Session.DeadlineSeconds.ToString("0"))
               .Append(" giây (còn ").Append(Session.DisplayRemainingSeconds.ToString("0.0")).Append(")\n");
             sb.Append("Vai ").Append(me + 1).Append(": cặp sách của bạn mất ").Append((round.CrossUnits(me) * Session.SecondsPerUnit).ToString("0"))
               .Append(" giây để qua (đi đôi thì tính người chậm hơn). Chỉ bạn biết, hãy hỏi đồng đội.\n");
             sb.Append("Thẻ từ: ").Append(CardText()).Append('\n');
-            sb.Append(Status).Append("\n[E] nhặt thẻ / gạt cần  [G] thả thẻ  [R] làm lại  [1-4] đổi vai");
-            GUI.Box(new Rect(16, 16, 640, 150), sb.ToString());
+            sb.Append("[E] nhặt thẻ / gạt cần  [G] thả thẻ  [R] làm lại  [1-4] đổi vai");
+            return sb.ToString();
+        }
+
+        /// <summary>Không nhận tham số; vẽ hộp thông tin cũ khi drawOnGui bật.</summary>
+        void OnGUI()
+        {
+            if (!drawOnGui || !Active || Session == null || !ReferencesOk()) return;
+            GUI.Box(new Rect(16, 16, 640, 150), (settings != null ? settings.title : "CẦU VÁN VÀ THẺ TỪ") + "  (lần " + Session.State.Attempts + ")\n" + Notebook(party.ActivePlayer) + "\n" + Status);
             if (hintTimer > 0f && settings != null) GUI.Box(new Rect(16, 176, 640, 90), settings.instructions);
         }
     }
