@@ -1,0 +1,12 @@
+{
+  "name": "TheReturn.MainMenu",
+  "references": [
+    "TheReturn.Core",
+    "TheReturn.Party",
+    "TheReturn.Party.Domain",
+    "TheReturn.GameSettings",
+    "TheReturn.GameSettings.Domain",
+    "Unity.ugui",
+    "Unity.InputSystem"
+  ]
+}

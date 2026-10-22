@@ -24,6 +24,8 @@ namespace TheReturn
         public float sprintMultiplier = 1.5f;
         public bool IsSprinting { get; private set; }
         public float lookSensitivity = .10f;
+        /// <summary>Hệ số nhân độ nhạy chuột từ Settings (T-008); 1 = giữ nguyên lookSensitivity.</summary>
+        public static float SensitivityScale = 1f;
         public int ActivePlayer { get; private set; }
         public int PartySize { get; private set; }
         CharacterController[] controllers;
@@ -76,7 +78,7 @@ namespace TheReturn
             var mouse = Mouse.current;
             if (mouse != null)
             {
-                Vector2 delta = mouse.delta.ReadValue() * lookSensitivity;
+                Vector2 delta = mouse.delta.ReadValue() * lookSensitivity * SensitivityScale;
                 players[ActivePlayer].Rotate(0, delta.x, 0);
                 pitches[ActivePlayer] = Mathf.Clamp(pitches[ActivePlayer] - delta.y, -75, 75);
                 viewCamera.transform.localRotation = Quaternion.Euler(pitches[ActivePlayer], 0, 0);

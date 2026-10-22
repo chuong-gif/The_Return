@@ -1,0 +1,6 @@
+{
+  "name": "TheReturn.Party",
+  "references": [
+    "TheReturn.Party.Domain"
+  ]
+}

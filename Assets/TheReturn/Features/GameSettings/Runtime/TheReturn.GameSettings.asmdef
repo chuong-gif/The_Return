@@ -1,0 +1,7 @@
+{
+  "name": "TheReturn.GameSettings",
+  "references": [
+    "TheReturn.GameSettings.Domain",
+    "TheReturn.Core"
+  ]
+}

@@ -2,6 +2,8 @@
   "name": "TheReturn.Lobby",
   "references": [
     "TheReturn.Core",
+    "TheReturn.Party",
+    "TheReturn.Party.Domain",
     "Unity.ugui",
     "Unity.InputSystem"
   ]

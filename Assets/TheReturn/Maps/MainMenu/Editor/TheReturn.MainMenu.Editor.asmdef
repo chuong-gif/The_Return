@@ -1,0 +1,13 @@
+{
+  "name": "TheReturn.MainMenu.Editor",
+  "references": [
+    "TheReturn.MainMenu",
+    "TheReturn.Party.Domain",
+    "TheReturn.GameSettings.Domain",
+    "Unity.ugui",
+    "Unity.InputSystem"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

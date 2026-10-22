@@ -46,6 +46,7 @@ namespace TheReturn
         {
             Application.runInBackground = true;
             party.Initialize();
+            if (PartySession.HasStartedParty) participantCount = PartySession.PlayerCount;
             SetPartySize(participantCount);
             party.SwitchRole(0, false);
             PrototypePartyController.SetCursor(false);

@@ -51,7 +51,11 @@ namespace TheReturn
         }
 
         /// <summary>Không nhận tham số; bật chế độ nối tiếp để cửa lớp không kết thúc bản thử.</summary>
-        void Start() { attendance.continueIntoMap = true; }
+        void Start()
+        {
+            attendance.continueIntoMap = true;
+            if (PartySession.HasStartedParty) attendance.SetParticipantCount(PartySession.PlayerCount);
+        }
 
         /// <summary>Không nhận tham số; kiểm điều kiện hoàn thành và chuyển quyền điều khiển tuần tự qua sáu nhiệm vụ.</summary>
         void Update()

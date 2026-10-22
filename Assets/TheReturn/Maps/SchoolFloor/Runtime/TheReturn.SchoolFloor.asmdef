@@ -5,6 +5,8 @@
     "TheReturn.Attendance",
     "TheReturn.Attendance.Domain",
     "TheReturn.Core",
+    "TheReturn.Party",
+    "TheReturn.Party.Domain",
     "TheReturn.Shared",
     "TheReturn.QuietCorridor",
     "TheReturn.QuietCorridor.Domain",
