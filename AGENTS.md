@@ -2,7 +2,10 @@
 
 Unity 6000.3.7f1, URP 17.3, Input System 1.18, Windows. Gốc dự án: `E:\kho model 3D\Project Unity\The Return`.
 
-## Bắt đầu phiên (≈ 5 file; KHÔNG quét dự án) — chi tiết: `.ai/PROTOCOL.md`
+## Bắt đầu phiên — ĐỌC `.ai/START_HERE.md` TRƯỚC (cập nhật 2026-10-21 để giảm token)
+Chỉ đọc: START_HERE.md + `.ai/CURRENT.md` + 8 mục cuối `.ai/LOG.md` (≲ 6.000 token). KHÔNG mở cả PLANS/SYSTEM_CARDS/TOOLING/PROTOCOL/MAPS/PROJECT_STATE nếu task không trỏ tới. «Tìm việc rảnh» chỉ cần mục FREE trong START_HERE. LOG cũ ở `.ai/SESSIONS/`. Danh sách cũ bên dưới chỉ để tham khảo.
+
+### (cũ) Danh sách 5 file — chi tiết: `.ai/PROTOCOL.md`
 1. `AGENTS.md` (file này). 2. `.ai/CURRENT.md` (trạng thái, khóa scene, cảnh báo). 3. `.ai/LOG.md` — 15 mục cuối. 4. `.ai/OWNER_UPDATES.md` — mục mới hơn mục LOG cuối. 5. `.ai/TASKS.md` — chỉ dòng task của bạn (cột Đọc cho biết file cần mở).
 Rồi PREFLIGHT (PROTOCOL mục 3): task đã có người giữ/đã xong chưa, file nào đổi mà chưa ghi (`.ai/tools/changed_since.snippet.cs`, Git nếu có terminal), Console, khóa scene. Chỉ sau đó mới đọc ngữ cảnh liên quan.
 Source code và Unity Editor là nguồn sự thật; file `.ai/` chỉ là bản đồ. `PROJECT_STATE.md` là mô tả triển khai dài của chủ dự án — đọc khi task cần.

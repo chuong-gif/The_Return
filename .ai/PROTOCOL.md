@@ -17,6 +17,7 @@ Mục tiêu: AI mới vào dự án hiểu việc cần làm mà KHÔNG đọc c
 Nguyên tắc nguồn sự thật: code + Unity thực tế > LOG/OWNER_UPDATES > TASKS/CURRENT > PLANS/MAPS. Khi mâu thuẫn, tin cái ở trái và sửa cái ở phải.
 
 ## 2. Bắt đầu phiên (≈ 5 file, không quét dự án)
+**CẬP NHẬT 2026-10-21 (giảm token): đọc `.ai/START_HERE.md` + CURRENT + 8 mục LOG cuối; bỏ qua danh sách dưới trừ khi cần. TASKS đầy đủ chỉ mở khi sửa dòng task; DONE ở TASKS_DONE.md; LOG cũ ở SESSIONS/.**
 1. `AGENTS.md`  2. `.ai/CURRENT.md`  3. `.ai/LOG.md` — 15 mục cuối  4. `.ai/OWNER_UPDATES.md` — các mục mới hơn mục LOG cuối cùng  5. `.ai/TASKS.md` — dòng task của bạn (hoặc task chủ dự án giao).
 Rồi làm PREFLIGHT (mục 3). Chỉ sau đó mới đọc ngữ cảnh WARM mà brief task chỉ ra. Không đọc `Design/`, `Backups/`, Git history, ThirdParty nếu task không cần.
 

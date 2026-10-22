@@ -42,3 +42,4 @@ Trạng thái: XONG (chờ chủ dự án xem) | AI giữ: Claude Sonnet 5.5 | C
 
 ## 7. Tiến độ
 - 2026-10-15 07:34 UTC: S1-S3 xong; chưa chạy Play Mode (không cần cho task tài liệu).
+- 2026-10-22 01:40 (phiên #5, tiếp quản): bổ sung README cho 6 nhiệm vụ mới (BreakerPanel, Choir, GlassBridge, PlankAndKey, SharedLantern, TeacherSays) + mục «Nhiệm vụ mới» cuối PREFAB_GUIDE.md. Cấu trúc object đo lại trên scene 2026-10-21 (6 gốc *_LogicOnly khớp bản đo 2026-10-19). Chỉ ghi tài liệu, không đụng scene/prefab/code.

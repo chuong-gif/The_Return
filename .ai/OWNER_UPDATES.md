@@ -50,3 +50,12 @@ AI khi xử lý xong mục nào thì ghi LOG `OWNER-CHANGE-PROCESSED` (không s�
 
 ### 2026-10-18 | OWNER (qua chat với Claude phiên #3, AI ghi hộ)
 - Bảo AI làm Hanh_Lang_5 (Cô nói); CHO PHÉP dùng/sửa scene; nói các AI khác đang tạm nghỉ. => Phiên #3 tiếp quản T-006c từ phiên #4 (im từ 2026-10-16) và nhận Scene lock từ phiên #5 khi tới bước scene.
+
+### 2026-10-19 | OWNER (qua chat với Claude phiên MCP #2, AI ghi hộ)
+- Nói: «nếu cần sửa scene thì cứ làm, tôi cho phép, không phải đợi». AI hiểu: tiếp tục phép sửa scene cho Hanh_Lang_6 (T-006b2) đã có từ 2026-10-16, KHÔNG cần chờ phiên khác khi khóa scene đã trống; vẫn nhận Scene lock + snapshot theo giao thức, chỉ phạm vi Hanh_Lang_6. Nếu hiểu sai, chủ dự án nói lại.
+
+### 2026-10-19 | OWNER (qua chat với Claude phiên #3, AI ghi hộ)
+- Duyệt kế hoạch T-011: CHO PHÉP sửa scene (Canvas); sổ tay vai chỉ hiện khi bấm phím; sân dùng bản đồ nhỏ.
+
+### 2026-10-20 | OWNER (qua chat với Claude phiên #3, AI ghi hộ)
+- «Mở khóa scene làm đi, tôi cho phép»: phiên #3 được lấy Scene lock từ MCP #2 cho T-011.

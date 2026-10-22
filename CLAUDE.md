@@ -1,6 +1,6 @@
 # CLAUDE.md — hướng dẫn riêng cho Claude
 
-Đọc `AGENTS.md` trước; file này chỉ bổ sung phần riêng cho Claude.
+Đọc `.ai/START_HERE.md` trước (ngắn, có ngân sách đọc và danh sách việc rảnh), rồi `AGENTS.md` khi cần; file này chỉ bổ sung phần riêng cho Claude.
 
 ## Công cụ thực tế (đã quan sát 2026-10-14)
 - Unity MCP (`unityMCP`) hoạt động khi Unity đang mở và đã Start Session trong cửa sổ MCP for Unity.

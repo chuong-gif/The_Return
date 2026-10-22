@@ -17,10 +17,10 @@ Trạng thái: ĐANG LÀM (S1-S3 XONG; S4-S6 chờ Scene lock của phiên #3) |
 | S1 | Ghi quyết định chủ dự án + kế hoạch | DECISIONS, OWNER_UPDATES, PLANS | Đọc lại | DONE | Đã ghi 2026-10-16 11:08 UTC |
 | S2 | PlankSession (Domain) + test thời gian thực | Runtime/Domain, Tests/EditMode | run_tests xanh | DONE | run_tests EditMode: 38/38 passed (25 test T-006b + 13 test PlankSession), mức 3 |
 | S3 | asmdef Runtime + PlankSettings + asset PlankAndKey_VI | Runtime, Runtime/Data | Compile + Console 0 lỗi | DONE | Compile sạch (mức 2); asset Features/PlankAndKey/Data/PlankAndKey_VI.asset tạo và tải lại đúng giá trị (3 giây/đơn vị, 25%) |
-| S4 | Presentation + adapter + đăng ký (CẦN Scene lock) | Runtime/Presentation, Maps/SchoolFloor/Runtime/Missions | Compile + test | TODO | |
-| S5 | Dựng scene Hanh_Lang_6: cổng, khu chuẩn bị, ván, thẻ, HUD (CẦN Scene lock + snapshot) | scene, prefab | Đọc scene + screenshot được phép | TODO | |
-| S6 | Kiểm Play Mode (mức 4): vòng thắng, hết giờ thử lại, đổi vai, đội 2-4 người (chủ dự án đang chơi thử: xin phép trước) | - | Chơi thật | TODO | |
-| S7 | README feature, thẻ hệ thống, TASKS, LOG | .ai/**, Features/PlankAndKey | Đọc lại | TODO | |
+| S4 | Presentation + adapter + đăng ký (CẦN Scene lock) | Runtime/Presentation, Maps/SchoolFloor/Runtime/Missions | Compile + test | DONE | Unity tự compile: assembly nạp, Console 0 lỗi; registry Find(Hanh_Lang_6) = PlankAndKeyMissionAdapter; test 81/81 (mức 3) |
+| S5 | Dựng scene Hanh_Lang_6: cổng, khu chuẩn bị, ván, thẻ, HUD (CẦN Scene lock + snapshot) | scene, prefab | Đọc scene + screenshot được phép | DONE | Đã dựng + lưu scene (snapshot BeforePlankScene_20261019_002341): PlankAndKey_LogicOnly (14 con), nhóm Hanh_Lang_1_Preparation + 2 cổng, gates 28->30, bindings 28->30, flow.plankAndKey nối, 0 tham chiếu null, không chạm collider khác |
+| S6 | Kiểm Play Mode (mức 4): vòng thắng, hết giờ thử lại, đổi vai, đội 2-4 người (chủ dự án đang chơi thử: xin phép trước) | - | Chơi thật | PARTIAL | Play Mode thật (4 người): các ca từ chối, nhặt/thả thẻ, Retry, 1 vòng tối ưu 5 lượt (33/42 giây) đạt 0 lỗi. CHƯA kiểm: hết hạn tự về đầu khe, phím E/G/R, HUD, tia ngắm ngang |
+| S7 | README feature, thẻ hệ thống, TASKS, LOG | .ai/**, Features/PlankAndKey | Đọc lại | PARTIAL | TASKS/LOG/CURRENT đã ghi; thẻ hệ thống và index-scripts CHƯA cập nhật |
 ## 5. Bản đồ lỗi
 | Triệu chứng | Nơi xem | Cách kiểm |
 |---|---|---|
@@ -36,3 +36,6 @@ Trạng thái: ĐANG LÀM (S1-S3 XONG; S4-S6 chờ Scene lock của phiên #3) |
 - 2026-10-16 11:08 UTC: S1 xong; nhận task; bắt đầu S2-S3.
 - 2026-10-17 02:20 UTC: S2-S3 xong. Tạo PlankSession.cs (Domain), PlankSessionTests.cs, TheReturn.PlankAndKey.asmdef (Runtime: Domain + Core + Shared + Unity.InputSystem), Data/PlankSettings.cs, Data/PlankAndKey_VI.asset. 38/38 test xanh, Console 0 lỗi/cảnh báo. Scene không đụng (24 root, không dirty).
 - 2026-10-17 02:20 UTC: S4-S6 CHƯA làm: Scene lock vẫn do phiên #3 giữ từ 2026-10-16 10:29 UTC (T-006d2, chưa có tiến độ ghi sau START); chưa quá 24 giờ nên chưa coi là bỏ dở. Lần gọi ghi file đầu tiên của S2-S3 bị treo 4 phút (nghi hộp thoại phê duyệt của Claude Desktop chưa bấm); không file nào được ghi, đã chạy lại thành công.
+- 2026-10-19 07:45 UTC: S4-S5 xong (xem bảng). Việc kế tiếp: S6 chơi thử Play Mode (mức 4) rồi S7 ghi nhận, nhả Scene lock.
+- Thiết kế đã dựng: khe = khối chắn vô hình (GapBlocker, 16,8 x 4,4 x 8 m) + mặt tối GapVoid, KHÔNG cắt kiến trúc của chủ dự án; ván 4 x 3 m chạy giữa hai điểm đậu (z = -5,5 và +5,5 m trong hệ lane); 2 cần gạt (E), thẻ từ trên bệ ở mỗi bờ (E nhặt, G thả); nhãn quay về camera. Cổng đặt tại hai đầu hành lang (x = 14,55 và -37,45), tên theo số cũ «Hanh lang 1», mission = -1.
+- 2026-10-21 16:12 UTC: S6 một phần (xem bảng). Việc còn: (1) kiểm đường hết hạn thật (Update + failTimer) và phím/HUD khi chơi tay, (2) cân nhắc nâng cần gạt/bệ thẻ lên gần tầm mắt (mắt cao 1,65 m, cần cúi 13-16 độ), (3) cập nhật thẻ PlankAndKey và dựng lại index-scripts, (4) chủ dự án duyệt hình thức tạm.
