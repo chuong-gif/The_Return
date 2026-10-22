@@ -103,3 +103,20 @@ Nguồn: đọc trực tiếp từng prefab và scene `SchoolFloorPrototype` ng�
 - Tầm tương tác của ghế điểm danh chưa đọc (xem `AttendancePrototype` quanh dòng 243).
 - Chưa đối chiếu override của từng instance trong scene với prefab nguồn.
 - Chưa kiểm shader/material của model thật có `_BaseColor`.
+
+## Nhiệm vụ mới (6 nhiệm vụ dựng bằng khối cơ bản trong scene, CHƯA là prefab)
+
+Sáu nhiệm vụ làm sau (T-006) nằm trực tiếp trong scene `SchoolFloorPrototype` dưới các object gốc `*_LogicOnly`, ghép từ cube/capsule/TextMesh, nên hiện không có prefab để thay. Mỗi nhiệm vụ có README riêng ghi luật, cấu trúc object, phần PHẢI giữ và phần THAY ĐƯỢC khi đổi asset 3D:
+
+| Nhiệm vụ | Khu | Object gốc | Tài liệu |
+|---|---|---|---|
+| BreakerPanel (bảng cầu dao) | Phong_5 | `Breaker_LogicOnly` | `Features/BreakerPanel/README.md` |
+| Choir (hợp xướng) | Phong_6 | `Choir_LogicOnly` | `Features/Choir/README.md` |
+| GlassBridge (cầu kính) | Hanh_Lang_2 | `GlassBridge_LogicOnly` | `Features/GlassBridge/README.md` |
+| SharedLantern (đèn lồng chung) | Hanh_Lang_4 | `SharedLantern_LogicOnly` | `Features/SharedLantern/README.md` |
+| TeacherSays (cô nói) | Hanh_Lang_5 | `TeacherSays_LogicOnly` | `Features/TeacherSays/README.md` |
+| PlankAndKey (cầu ván và thẻ từ) | Hanh_Lang_6 | `PlankAndKey_LogicOnly` | `Features/PlankAndKey/README.md` |
+
+**Cách đổi asset 3D khi chưa có prefab:** mở scene, chọn đối tượng cần đổi, thay mesh/material của MeshRenderer hoặc thêm model làm con rồi tắt MeshRenderer cũ. KHÔNG xóa object có script hoặc collider, KHÔNG đổi tên object, KHÔNG đổi thứ tự các mảng đã gán trên prototype (`switches`, `pads`, `tiles`, `signs`, `segmentZones`...). Các điểm chỉ có Transform (`Checkpoint*`, `StartPoint*`, `Anchor*`...) là mốc logic: chỉ dời khi biết rõ tác dụng.
+
+**Nếu muốn chuyển thành prefab** (đúng quy tắc: vật có tương tác/logic nhiệm vụ mới làm prefab): đây là việc riêng cần Scene lock và snapshot scene; các vật nên làm prefab trước là công tắc/đèn (BreakerPanel), bục hợp xướng (Choir), ô kính (GlassBridge), biển và phím bảng (SharedLantern), cần gạt/thẻ (PlankAndKey). Chưa làm.
