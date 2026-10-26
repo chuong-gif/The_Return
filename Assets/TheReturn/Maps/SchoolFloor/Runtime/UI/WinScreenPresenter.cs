@@ -101,6 +101,7 @@ namespace TheReturn
             title.rectTransform.anchoredPosition = new Vector2(0f, -24f);
 
             bodyText = MakeText(panel.transform, "Body", 28, TextAnchor.UpperLeft, FontStyle.Normal, Color.white);
+            bodyText.verticalOverflow = VerticalWrapMode.Overflow; // danh sách 12 khu cao hơn khung 440px, tránh mất dòng cuối
             bodyText.rectTransform.anchorMin = Vector2.zero;
             bodyText.rectTransform.anchorMax = Vector2.one;
             bodyText.rectTransform.offsetMin = new Vector2(60f, 130f);
