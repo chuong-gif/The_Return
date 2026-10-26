@@ -118,5 +118,52 @@ namespace TheReturn
             t.color = color; t.text = value; t.raycastTarget = false;
             return t;
         }
+
+        readonly List<TextMesh> nameTags = new List<TextMesh>();
+        Font tagFont;
+
+        /// <summary>Không nhận tham số; trả ' • Tên' của vai đang điều khiển (tên từ đề Điểm danh) hoặc rỗng nếu chưa có đề.</summary>
+        string RoleNameSuffix()
+        {
+            var a = flow.attendance;
+            if (a == null || a.State == null || a.party == null) return "";
+            var names = a.State.Round.Names; int p = a.party.ActivePlayer;
+            return p >= 0 && p < names.Count ? " • " + names[p] : "";
+        }
+
+        /// <summary>Không nhận tham số; hiện biển tên ('số • tên') trên đầu các đồng đội đang trong đội (không hiện cho vai đang điều khiển), xoay theo camera. Để người chơi đối chiếu manh mối 'Minh ngồi cạnh An' với nhân vật thật.</summary>
+        void UpdateNameTags()
+        {
+            var a = flow.attendance;
+            if (a == null || a.State == null || a.party == null || a.party.players == null) return;
+            var players = a.party.players; var names = a.State.Round.Names;
+            Camera cam = a.party.viewCamera != null ? a.party.viewCamera : Camera.main;
+            if (tagFont == null) tagFont = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            while (nameTags.Count < players.Length) nameTags.Add(null);
+            for (int i = 0; i < players.Length; i++)
+            {
+                Transform pl = players[i]; if (pl == null) continue;
+                var tag = nameTags[i];
+                if (tag == null)
+                {
+                    var go = new GameObject("NameTag_" + (i + 1), typeof(TextMesh), typeof(MeshRenderer));
+                    tag = go.GetComponent<TextMesh>();
+                    tag.font = tagFont; tag.fontSize = 64; tag.characterSize = 0.09f;
+                    tag.anchor = TextAnchor.MiddleCenter; tag.alignment = TextAlignment.Center;
+                    tag.color = new Color(1f, 0.95f, 0.6f);
+                    go.GetComponent<MeshRenderer>().sharedMaterial = tagFont.material;
+                    nameTags[i] = tag;
+                }
+                bool show = cam != null && i < names.Count && i < a.PartySize && i != a.party.ActivePlayer && pl.gameObject.activeInHierarchy;
+                if (tag.gameObject.activeSelf != show) tag.gameObject.SetActive(show);
+                if (!show) continue;
+                string label = (i + 1) + " • " + names[i];
+                if (tag.text != label) tag.text = label;
+                var cc = pl.GetComponent<CharacterController>();
+                float top = cc != null ? cc.center.y + cc.height * 0.5f + 0.35f : 2.2f;
+                tag.transform.position = pl.position + Vector3.up * top;
+                tag.transform.rotation = Quaternion.LookRotation(tag.transform.position - cam.transform.position);
+            }
+        }
     }
 }

@@ -236,8 +236,36 @@ namespace TheReturn
             if (keyboard.digit4Key.wasPressedThisFrame) SwitchRole(3);
         }
 
-        /// <summary>Không nhận tham số; raycast từ camera, lưu ID ghế trong tầm 3,2 m hoặc -1.</summary>
+        /// <summary>Không nhận tham số; chọn ghế đang nhắm: tia trúng ghế thì lấy ghế đó, nếu không thì lấy ghế gần hướng nhìn nhất (trong 3 m, lệch ≤ 45°) để không phải ngắm chính xác vào thân ghế (T-019).</summary>
+/// <summary>Không nhận tham số; chọn ghế đang nhắm: tia trúng ghế thì lấy ghế đó, nếu không thì lấy ghế gần nhất trước mặt theo mặt phẳng ngang (cách ≤ 2,6 m, lệch hướng nhìn ≤ 55°, bỏ qua độ cao nên đứng sát ghế vẫn chọn được) để không phải cúi nhìn xuống đúng thân ghế (T-019).</summary>
         void UpdateTarget()
+        {
+            UpdateTargetRaycast();
+            if (TargetSeat >= 0 || seats == null || party == null || party.players == null || ActivePlayer < 0 || ActivePlayer >= party.players.Length) return;
+            Transform body = party.players[ActivePlayer];
+            if (body == null) return;
+            Vector3 fwd = party.viewCamera != null ? party.viewCamera.transform.forward : body.forward;
+            fwd.y = 0f;
+            if (fwd.sqrMagnitude < 0.0001f) { fwd = body.forward; fwd.y = 0f; }
+            fwd.Normalize();
+            float best = float.MaxValue;
+            for (int i = 0; i < seats.Length; i++)
+            {
+                if (seats[i] == null || seats[i].sitPoint == null) continue;
+                Vector3 to = seats[i].sitPoint.position - body.position;
+                if (Mathf.Abs(to.y) > 2.5f) continue;
+                to.y = 0f;
+                float dist = to.magnitude;
+                if (dist > 2.6f) continue;
+                float angle = dist < 0.3f ? 0f : Vector3.Angle(fwd, to);
+                if (angle > 55f) continue;
+                float score = angle / 55f + dist / 2.6f;
+                if (score < best) { best = score; TargetSeat = seats[i].index; }
+            }
+        }
+
+        /// <summary>Không nhận tham số; raycast từ camera, lưu ID ghế trong tầm 3,2 m hoặc -1.</summary>
+        void UpdateTargetRaycast()
         {
             TargetSeat = -1;
             RaycastHit hit;
