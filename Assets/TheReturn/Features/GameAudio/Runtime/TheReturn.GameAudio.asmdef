@@ -1,0 +1,6 @@
+{
+  "name": "TheReturn.GameAudio",
+  "references": [
+    "TheReturn.GameAudio.Domain"
+  ]
+}

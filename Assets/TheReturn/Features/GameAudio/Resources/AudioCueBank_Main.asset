@@ -1,0 +1,416 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80cc774ca283725409220eea6a6114c5, type: 3}
+  m_Name: AudioCueBank_Main
+  m_EditorClassIdentifier: TheReturn.GameAudio::TheReturn.AudioCueBank
+  entries:
+  - cue: ui.click
+    clips:
+    - {fileID: 8300000, guid: 9251bde627c4e424081f936e499ba173, type: 3}
+    volume: 0.6
+    pitchMin: 0.95
+    pitchMax: 1.05
+    bus: 1
+    spatial: 0
+    cooldown: 0.03
+    loop: 0
+  - cue: ui.switch_player
+    clips:
+    - {fileID: 8300000, guid: d168869ae5702c94c8ee17cf42deb3ba, type: 3}
+    volume: 0.6
+    pitchMin: 1
+    pitchMax: 1
+    bus: 1
+    spatial: 0
+    cooldown: 0.1
+    loop: 0
+  - cue: area.start
+    clips:
+    - {fileID: 8300000, guid: 8dd9f62059e24b8458f07fe315555461, type: 3}
+    volume: 0.7
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 0
+    cooldown: 0.5
+    loop: 0
+  - cue: area.done
+    clips:
+    - {fileID: 8300000, guid: 6f9093b302195ee458f0373a49563eb5, type: 3}
+    volume: 0.8
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 0
+    cooldown: 1
+    loop: 0
+  - cue: area.fail
+    clips:
+    - {fileID: 8300000, guid: 4095fb5df227d254b98159e80b5cb632, type: 3}
+    volume: 0.8
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 0
+    cooldown: 0.5
+    loop: 0
+  - cue: area.warning
+    clips:
+    - {fileID: 8300000, guid: 8a78d594e10e05a4486819503113d34a, type: 3}
+    volume: 0.7
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 0
+    cooldown: 0.5
+    loop: 0
+  - cue: game.win
+    clips:
+    - {fileID: 8300000, guid: 9880448ab7c62e3429ea08b2efdfed21, type: 3}
+    volume: 0.9
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 0
+    cooldown: 2
+    loop: 0
+  - cue: door.open
+    clips:
+    - {fileID: 8300000, guid: 44b63b0db16ce624b97e45ebde0a0971, type: 3}
+    volume: 0.7
+    pitchMin: 0.95
+    pitchMax: 1.05
+    bus: 0
+    spatial: 1
+    cooldown: 0.3
+    loop: 0
+  - cue: door.close
+    clips:
+    - {fileID: 8300000, guid: bc37ad25465405a428a26ff0facd9a7b, type: 3}
+    volume: 0.7
+    pitchMin: 0.95
+    pitchMax: 1.05
+    bus: 0
+    spatial: 1
+    cooldown: 0.3
+    loop: 0
+  - cue: gate.open
+    clips:
+    - {fileID: 8300000, guid: c17945237450b704a9dc69b3e6d17b98, type: 3}
+    volume: 0.7
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 1
+    cooldown: 0.5
+    loop: 0
+  - cue: gate.lock
+    clips:
+    - {fileID: 8300000, guid: cf31b42a918428545b95fe66547982cc, type: 3}
+    volume: 0.8
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 1
+    cooldown: 0.5
+    loop: 0
+  - cue: step.floor
+    clips:
+    - {fileID: 8300000, guid: c7166df4ec2946a4aa8f59c1eb1cb5f7, type: 3}
+    - {fileID: 8300000, guid: 96749367f64df6b4391939adda34799a, type: 3}
+    volume: 0.35
+    pitchMin: 0.9
+    pitchMax: 1.1
+    bus: 0
+    spatial: 0
+    cooldown: 0.28
+    loop: 0
+  - cue: p1.sit
+    clips:
+    - {fileID: 8300000, guid: 453e33e1ef8c98c4688e37c54b9df8c7, type: 3}
+    volume: 0.7
+    pitchMin: 0.95
+    pitchMax: 1.05
+    bus: 0
+    spatial: 1
+    cooldown: 0.2
+    loop: 0
+  - cue: p1.stand
+    clips:
+    - {fileID: 8300000, guid: b30e4a9bc969f454488deb812a82e1ef, type: 3}
+    volume: 0.7
+    pitchMin: 0.95
+    pitchMax: 1.05
+    bus: 0
+    spatial: 1
+    cooldown: 0.2
+    loop: 0
+  - cue: hl1.buzz
+    clips:
+    - {fileID: 8300000, guid: c433e771b621a5843a02aec6ab708f21, type: 3}
+    volume: 0.5
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 1
+    cooldown: 0.5
+    loop: 0
+  - cue: hl1.hold
+    clips:
+    - {fileID: 8300000, guid: 519e29869f908cb4aaf07c37153ae9b1, type: 3}
+    volume: 0.6
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 1
+    cooldown: 0.2
+    loop: 0
+  - cue: p2.paper
+    clips:
+    - {fileID: 8300000, guid: d8855eb31ea0bbe489fe07938eea58d3, type: 3}
+    volume: 0.6
+    pitchMin: 0.9
+    pitchMax: 1.1
+    bus: 0
+    spatial: 1
+    cooldown: 0.1
+    loop: 0
+  - cue: p3.stamp
+    clips:
+    - {fileID: 8300000, guid: 1976a12bcef94e74688b9a81226b0d23, type: 3}
+    volume: 0.8
+    pitchMin: 0.95
+    pitchMax: 1.05
+    bus: 0
+    spatial: 1
+    cooldown: 0.1
+    loop: 0
+  - cue: hl3.wrong_turn
+    clips:
+    - {fileID: 8300000, guid: cb04428c8c42c174eb4bd85f156909ae, type: 3}
+    volume: 0.7
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 0
+    cooldown: 0.5
+    loop: 0
+  - cue: p4.voice
+    clips:
+    - {fileID: 8300000, guid: 9530c5b50343d24438f3f9168710f686, type: 3}
+    volume: 0.8
+    pitchMin: 0.9
+    pitchMax: 1.1
+    bus: 3
+    spatial: 1
+    cooldown: 0.3
+    loop: 0
+  - cue: p5.switch_on
+    clips:
+    - {fileID: 8300000, guid: 1995e0d82e3dfa743837166acbb46d20, type: 3}
+    volume: 0.7
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 1
+    cooldown: 0.05
+    loop: 0
+  - cue: p5.switch_off
+    clips:
+    - {fileID: 8300000, guid: c4617e028b987f34bab6ce143c71fc94, type: 3}
+    volume: 0.7
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 1
+    cooldown: 0.05
+    loop: 0
+  - cue: p5.overload
+    clips:
+    - {fileID: 8300000, guid: de2d40ddb276a6046927694f4adcf6cf, type: 3}
+    volume: 0.8
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 0
+    cooldown: 0.5
+    loop: 0
+  - cue: p6.note1
+    clips:
+    - {fileID: 8300000, guid: e975c78a072ad5c4fa1353935855ac62, type: 3}
+    volume: 0.8
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 1
+    cooldown: 0.05
+    loop: 0
+  - cue: p6.note2
+    clips:
+    - {fileID: 8300000, guid: ce704738453c0734e81d313608b92446, type: 3}
+    volume: 0.8
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 1
+    cooldown: 0.05
+    loop: 0
+  - cue: p6.note3
+    clips:
+    - {fileID: 8300000, guid: 9e5a620475f4f104f939d4b092d64bbf, type: 3}
+    volume: 0.8
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 1
+    cooldown: 0.05
+    loop: 0
+  - cue: p6.note4
+    clips:
+    - {fileID: 8300000, guid: 88896b35fff385c4e80488564273d07a, type: 3}
+    volume: 0.8
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 1
+    cooldown: 0.05
+    loop: 0
+  - cue: p6.wrong
+    clips:
+    - {fileID: 8300000, guid: ade7ac2045bebfb498fff44ee622ec27, type: 3}
+    volume: 0.7
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 0
+    cooldown: 0.3
+    loop: 0
+  - cue: hl2.glass_step
+    clips:
+    - {fileID: 8300000, guid: efe3ed6700f7fd048a0732dd6780cf4c, type: 3}
+    volume: 0.5
+    pitchMin: 0.95
+    pitchMax: 1.05
+    bus: 0
+    spatial: 1
+    cooldown: 0.15
+    loop: 0
+  - cue: hl2.glass_crack
+    clips:
+    - {fileID: 8300000, guid: c683ee8cbc1851245bd74e9a75b7086a, type: 3}
+    volume: 0.9
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 1
+    cooldown: 0.5
+    loop: 0
+  - cue: hl4.pass
+    clips:
+    - {fileID: 8300000, guid: 60aceef6f62b1184ea78e07ba6192624, type: 3}
+    volume: 0.6
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 0
+    cooldown: 0.3
+    loop: 0
+  - cue: hl4.code_wrong
+    clips:
+    - {fileID: 8300000, guid: 928c62ea56867884da26100bd4988810, type: 3}
+    volume: 0.7
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 0
+    cooldown: 0.3
+    loop: 0
+  - cue: hl5.teacher_says
+    clips:
+    - {fileID: 8300000, guid: d600c950f7e408446bafec1eb70355f0, type: 3}
+    volume: 0.8
+    pitchMin: 1
+    pitchMax: 1
+    bus: 3
+    spatial: 0
+    cooldown: 0.3
+    loop: 0
+  - cue: hl5.step
+    clips:
+    - {fileID: 8300000, guid: bb215c6a5ffa06a4d9f1ca9af8ca8dea, type: 3}
+    volume: 0.7
+    pitchMin: 1
+    pitchMax: 1
+    bus: 3
+    spatial: 0
+    cooldown: 0.3
+    loop: 0
+  - cue: hl5.stand
+    clips:
+    - {fileID: 8300000, guid: b5d09f63f84f209499abf7eb5cb2c9a3, type: 3}
+    volume: 0.7
+    pitchMin: 1
+    pitchMax: 1
+    bus: 3
+    spatial: 0
+    cooldown: 0.3
+    loop: 0
+  - cue: hl6.plank
+    clips:
+    - {fileID: 8300000, guid: e3338d767a45b4147bd8f42be9ae36f7, type: 3}
+    volume: 0.8
+    pitchMin: 0.95
+    pitchMax: 1.05
+    bus: 0
+    spatial: 1
+    cooldown: 0.2
+    loop: 0
+  - cue: hl6.card
+    clips:
+    - {fileID: 8300000, guid: ae5f33c5b929406489b03fd1e54f6057, type: 3}
+    volume: 0.7
+    pitchMin: 1
+    pitchMax: 1
+    bus: 0
+    spatial: 1
+    cooldown: 0.2
+    loop: 0
+  - cue: music.yard
+    clips:
+    - {fileID: 8300000, guid: 9ef57a1989c8b4847bef7a2677520fd1, type: 3}
+    volume: 0.5
+    pitchMin: 1
+    pitchMax: 1
+    bus: 2
+    spatial: 0
+    cooldown: 0
+    loop: 1
+  - cue: music.mission
+    clips:
+    - {fileID: 8300000, guid: 8307964625d511747b13e9618676461d, type: 3}
+    volume: 0.5
+    pitchMin: 1
+    pitchMax: 1
+    bus: 2
+    spatial: 0
+    cooldown: 0
+    loop: 1
+  - cue: amb.school
+    clips:
+    - {fileID: 8300000, guid: b2e1fca5e769c9246bed61244a979f74, type: 3}
+    volume: 0.4
+    pitchMin: 1
+    pitchMax: 1
+    bus: 4
+    spatial: 0
+    cooldown: 0
+    loop: 1

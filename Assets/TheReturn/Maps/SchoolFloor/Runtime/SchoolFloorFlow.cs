@@ -53,6 +53,8 @@ namespace TheReturn
         /// <summary>Không nhận tham số; bật chế độ nối tiếp để cửa lớp không kết thúc bản thử.</summary>
         void Start()
         {
+            if (GetComponent<SchoolFloorAudioDirector>() == null) gameObject.AddComponent<SchoolFloorAudioDirector>().flow = this;
+            if (GetComponent<MissionAudioDirector>() == null) gameObject.AddComponent<MissionAudioDirector>().flow = this;
             attendance.continueIntoMap = true;
             if (PartySession.HasStartedParty) attendance.SetParticipantCount(PartySession.PlayerCount);
         }
