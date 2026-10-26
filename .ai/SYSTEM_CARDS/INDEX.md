@@ -9,6 +9,7 @@ Tìm lỗi/việc theo KHU hoặc TỪ KHÓA -> mở đúng 1 thẻ -> đọc b�
 | Phong_3 | NavigationExam | bài thi dẫn đường, NavigationExam |
 | Phong_4 | TeacherTruth | sự thật giáo viên, TeacherTruth |
 | Hanh_Lang_1 | QuietCorridor | hành lang im lặng, loa, checkpoint, QuietCorridor |
+| MainMenu | MainMenu, menu bắt đầu, nhóm chơi, phòng chờ, mã phòng, Settings, âm lượng, độ nhạy chuột, toàn màn hình, PartySession |
 | Hanh_Lang_2 | GlassBridge | cầu kính, ô kính, sơ đồ, đài, ô vỡ, GlassBridge |
 | Hanh_Lang_3 | DontLookBack | không nhìn lại, DontLookBack |
 | Hanh_Lang_4 | SharedLantern | đèn lồng, biển ký hiệu, sổ riêng, vùng sáng, SharedLantern |

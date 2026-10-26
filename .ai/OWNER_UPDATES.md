@@ -59,3 +59,15 @@ AI khi xử lý xong mục nào thì ghi LOG `OWNER-CHANGE-PROCESSED` (không s�
 
 ### 2026-10-20 | OWNER (qua chat với Claude phiên #3, AI ghi hộ)
 - «Mở khóa scene làm đi, tôi cho phép»: phiên #3 được lấy Scene lock từ MCP #2 cho T-011.
+
+### 2026-10-22 | OWNER (qua chat với Claude phiên MCP #2, AI ghi hộ)
+- Giao T-009 (online co-op). Trả lời 3 câu: kết nối qua Internet bằng mã phòng; một người chơi làm chủ phòng; quy mô dưới ~20 người online. AI đề xuất NGO + Unity Relay (chi tiết: DECISIONS/2026-10-22-t009-network-choice.md). Cài gói vào project cần phép riêng.
+
+### 2026-10-22 | OWNER (qua chat với Claude phiên #3, AI ghi hộ)
+- T-018 Âm thanh: (1) bản thử dùng công cụ sinh âm, chủ dự án sẽ tự tìm asset thật để thay sau; (2) phong cách kinh dị trường học nhẹ; (3) CÓ nhạc nền; (4) lời nói dùng giọng thật, bản demo dùng tiếng bất kỳ, thay sau; (5) CHO PHÉP sửa scene (AudioService + nguồn nền). Mọi clip phải thay được qua AudioCueBank không sửa code.
+
+### 2026-10-22 | OWNER (qua chat với Claude phiên #3, AI ghi hộ)
+- Duyệt kế hoạch T-018 Âm thanh: (1) dùng công cụ sinh âm cho BẢN THỬ, sau khi mọi thứ ổn chủ dự án tự tìm asset để AI thay vào; (2) phong cách kinh dị trường học nhẹ; (3) CÓ nhạc nền; (4) giọng thật (demo dùng âm gì cũng được, chủ dự án thay sau); (5) CHO PHÉP sửa scene (AudioService + nguồn nền).
+
+### 2026-10-23 | OWNER (qua chat với Claude phiên #3, AI ghi hộ)
+- T-018 Âm thanh duyệt: (1) dùng generate_audio sinh bản THỬ, chủ dự án sẽ tìm asset thật thay sau; (2) phong cách kinh dị trường học nhẹ; (3) CÓ nhạc nền; (4) dùng giọng thật, demo dùng giọng tạm, thay sau; (5) CHO PHÉP sửa scene (AudioService + nguồn nền), vẫn cần Scene lock + snapshot.
