@@ -217,6 +217,7 @@ namespace TheReturn.Tests
             float until = Time.realtimeSinceStartup + 30f;
             while (ctrl.ArmedGate != null && Time.realtimeSinceStartup < until) yield return null;
             Assert.IsNull(ctrl.ArmedGate, "cửa armed phải tự đóng sau " + ctrl.disarmSeconds + "s khi đội rời cả hai vùng");
+            yield return Frames(3);
             Assert.AreEqual(0, OpenGateNames().Count);
         }
 
