@@ -104,19 +104,41 @@ Nguồn: đọc trực tiếp từng prefab và scene `SchoolFloorPrototype` ng�
 - Chưa đối chiếu override của từng instance trong scene với prefab nguồn.
 - Chưa kiểm shader/material của model thật có `_BaseColor`.
 
-## Nhiệm vụ mới (6 nhiệm vụ dựng bằng khối cơ bản trong scene, CHƯA là prefab)
+## Prefab nhiệm vụ mới (T-020, 2026-10-29)
 
-Sáu nhiệm vụ làm sau (T-006) nằm trực tiếp trong scene `SchoolFloorPrototype` dưới các object gốc `*_LogicOnly`, ghép từ cube/capsule/TextMesh, nên hiện không có prefab để thay. Mỗi nhiệm vụ có README riêng ghi luật, cấu trúc object, phần PHẢI giữ và phần THAY ĐƯỢC khi đổi asset 3D:
+Sáu nhiệm vụ làm sau (T-006) trước đây nằm trực tiếp trong scene `SchoolFloorPrototype` dưới các object gốc `*_LogicOnly`. Từ T-020 mỗi object gốc là MỘT prefab instance; file nguồn nằm ở `Features/<Tên>/Prefabs/`. Tên object trong scene GIỮ NGUYÊN (`*_LogicOnly`), chỉ file prefab mang tiền tố `PF_`. Cấu trúc con, giá trị và tham chiếu đã đối chiếu trước/sau khi chuyển: giống hệt (T-020). Mỗi nhiệm vụ có README riêng ghi luật, cấu trúc object, phần PHẢI giữ và phần THAY ĐƯỢC:
 
-| Nhiệm vụ | Khu | Object gốc | Tài liệu |
+| Nhiệm vụ | Khu | Object trong scene | Prefab | Tài liệu |
+|---|---|---|---|---|
+| BreakerPanel (bảng cầu dao) | Phong_5 | `Breaker_LogicOnly` | `Features/BreakerPanel/Prefabs/PF_BreakerPanel.prefab` | `Features/BreakerPanel/README.md` |
+| Choir (hợp xướng) | Phong_6 | `Choir_LogicOnly` | `Features/Choir/Prefabs/PF_Choir.prefab` | `Features/Choir/README.md` |
+| GlassBridge (cầu kính) | Hanh_Lang_2 | `GlassBridge_LogicOnly` | `Features/GlassBridge/Prefabs/PF_GlassBridge.prefab` | `Features/GlassBridge/README.md` |
+| SharedLantern (đèn lồng chung) | Hanh_Lang_4 | `SharedLantern_LogicOnly` | `Features/SharedLantern/Prefabs/PF_SharedLantern.prefab` | `Features/SharedLantern/README.md` |
+| TeacherSays (cô nói) | Hanh_Lang_5 | `TeacherSays_LogicOnly` | `Features/TeacherSays/Prefabs/PF_TeacherSays.prefab` | `Features/TeacherSays/README.md` |
+| PlankAndKey (cầu ván và thẻ từ) | Hanh_Lang_6 | `PlankAndKey_LogicOnly` | `Features/PlankAndKey/Prefabs/PF_PlankAndKey.prefab` | `Features/PlankAndKey/README.md` |
+
+**Đặc điểm của 6 prefab này (khác prefab nhỏ ở trên):**
+- Mỗi prefab là TOÀN BỘ cảnh nhiệm vụ của một khu (bục/bảng/ô/HUD logic...), chỉ có đúng 1 instance trong scene. Vị trí/xoay của root trong file prefab là vị trí trong scene lúc tạo; muốn dời cả cảnh thì dời root của instance trong scene.
+- Ô `party` trên `*Prototype` trỏ tới `LocalParty` trong scene. Prefab không giữ được tham chiếu tới object scene nên đây là override trên instance (cố ý). Đặt thêm instance mới thì phải gán lại `party` -> `LocalParty`.
+- `SchoolFloor_Flow/SchoolFloorFlow` giữ tham chiếu tới Prototype của từng nhiệm vụ (`choir`, `breakerPanel`, `teacherSays`, `glassBridge`, `sharedLantern`, `plankAndKey`). Xóa instance rồi đặt bản mới thì phải gán lại các ô này.
+- Sửa trong chế độ Open Prefab ghi vào file prefab; sửa trên instance trong scene thành override (Apply để ghi về prefab).
+
+**Cách đổi asset 3D:** mở prefab (hoặc chọn đối tượng con trong instance), thay mesh/material của MeshRenderer hoặc thêm model làm con rồi tắt MeshRenderer cũ. KHÔNG xóa object có script hoặc collider, KHÔNG đổi tên object, KHÔNG đổi thứ tự các mảng đã gán trên prototype (`switches`, `pads`, `tiles`, `signs`, `segmentZones`...). Các điểm chỉ có Transform (`Checkpoint*`, `StartPoint*`, `Anchor*`...) là mốc logic: chỉ dời khi biết rõ tác dụng.
+
+### 5 nhiệm vụ cũ (T-021, 2026-10-29)
+
+Năm root nhiệm vụ làm trước cũng đã là prefab instance (dùng cùng cách và cùng quy tắc như 6 prefab trên). Khác ở chỗ mỗi prefab chứa NHIỀU prefab lồng (PF_GB_Block, PF_GB_SlidingDoor, các prefab nhỏ ở mục 2, đồ nội thất `Props_*`, `Table01`, `Chair01`, `Closet12`...); chúng vẫn là prefab lồng nên sửa prefab nhỏ gốc thì mọi nơi dùng đều đổi.
+
+| Nhiệm vụ | Khu | Object trong scene | Prefab |
 |---|---|---|---|
-| BreakerPanel (bảng cầu dao) | Phong_5 | `Breaker_LogicOnly` | `Features/BreakerPanel/README.md` |
-| Choir (hợp xướng) | Phong_6 | `Choir_LogicOnly` | `Features/Choir/README.md` |
-| GlassBridge (cầu kính) | Hanh_Lang_2 | `GlassBridge_LogicOnly` | `Features/GlassBridge/README.md` |
-| SharedLantern (đèn lồng chung) | Hanh_Lang_4 | `SharedLantern_LogicOnly` | `Features/SharedLantern/README.md` |
-| TeacherSays (cô nói) | Hanh_Lang_5 | `TeacherSays_LogicOnly` | `Features/TeacherSays/README.md` |
-| PlankAndKey (cầu ván và thẻ từ) | Hanh_Lang_6 | `PlankAndKey_LogicOnly` | `Features/PlankAndKey/README.md` |
+| QuietCorridor (giữ trật tự) | Hanh_Lang_1 | `QuietCorridor_LogicOnly` | `Features/QuietCorridor/Prefabs/PF_QuietCorridor.prefab` |
+| GradeRepair (sửa bảng điểm) | Phong_2 | `GradeRepair_LogicOnly` | `Features/GradeRepair/Prefabs/PF_GradeRepair.prefab` |
+| NavigationExam (bài kiểm tra) | Phong_3 | `NavigationExam_LogicOnly` | `Features/NavigationExam/Prefabs/PF_NavigationExam.prefab` |
+| DontLookBack (không được quay đầu) | Hanh_Lang_3 | `DontLookBack_LogicOnly` | `Features/DontLookBack/Prefabs/PF_DontLookBack.prefab` |
+| TeacherTruth (giáo viên nói thật/dối) | Phong_4 | `TeacherTruth_LogicOnly` | `Features/TeacherTruth/Prefabs/PF_TeacherTruth.prefab` |
 
-**Cách đổi asset 3D khi chưa có prefab:** mở scene, chọn đối tượng cần đổi, thay mesh/material của MeshRenderer hoặc thêm model làm con rồi tắt MeshRenderer cũ. KHÔNG xóa object có script hoặc collider, KHÔNG đổi tên object, KHÔNG đổi thứ tự các mảng đã gán trên prototype (`switches`, `pads`, `tiles`, `signs`, `segmentZones`...). Các điểm chỉ có Transform (`Checkpoint*`, `StartPoint*`, `Anchor*`...) là mốc logic: chỉ dời khi biết rõ tác dụng.
+- Tham chiếu ra ngoài (override trên instance, prefab không giữ được): ô `party` -> `LocalParty` trên 5 prototype; riêng `DontLookBackPrototype` còn `badges` (4 phần tử -> `BackCard_1..4`) và `backLabels` (4 phần tử -> `BackSymbol`) là object trong scene, ngoài prefab. Đặt instance mới phải gán lại các ô này.
+- `SchoolFloorFlow` giữ tham chiếu vào prototype của từng nhiệm vụ (`corridor`, `gradeRepair`, `navigationExam`, `dontLookBack`, `teacherTruth`) và vào `GradeRoom_Entrance` (trong `GradeRepair_LogicOnly`): xóa instance rồi đặt lại thì phải gán lại.
+- Prefab lớn (200+ object mỗi cái): mở Open Prefab có thể chậm; muốn thay một vật nhỏ thì sửa prefab nhỏ gốc (mục 2) cho gọn.
 
-**Nếu muốn chuyển thành prefab** (đúng quy tắc: vật có tương tác/logic nhiệm vụ mới làm prefab): đây là việc riêng cần Scene lock và snapshot scene; các vật nên làm prefab trước là công tắc/đèn (BreakerPanel), bục hợp xướng (Choir), ô kính (GlassBridge), biển và phím bảng (SharedLantern), cần gạt/thẻ (PlankAndKey). Chưa làm.
+**Chưa làm prefab:** `Environment_LogicOnly`, `TmpPoint` và `Puzzle_Attendance` (đã dùng `PF_AttendanceSeat` ở mục 2) vẫn là object thường trong scene.
