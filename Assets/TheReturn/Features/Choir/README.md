@@ -17,7 +17,7 @@ Gốc `Choir_LogicOnly` (script `ChoirPrototype`: party, settings, `pads[4]`, `s
 - Giữ: tên `ChoirPad_n`, CapsuleCollider, thứ tự mảng `pads`, con `Label`, và các con `Note_1..6`, `StatusText` của `ScoreBoard`.
 - Thay được: mesh/material của bục (script đổi màu theo nhịp qua renderer) và hình nền của `ScoreBoard`.
 
-**Quy tắc chung khi đổi asset 3D (đối tượng dựng trong scene, CHƯA là prefab):** giữ nguyên tên object, collider, script cùng các tham chiếu đã gán trên prototype, và tên con mà script dùng (ghi bên dưới). Chỉ thay phần hình: đổi mesh/material của MeshRenderer hoặc thêm model làm con rồi tắt MeshRenderer cũ. Đừng xóa object nào có script hay collider. Chi tiết chung và bảng prefab cũ: `Assets/TheReturn/PREFAB_GUIDE.md`.
+**Quy tắc chung khi đổi asset 3D (đối tượng là prefab instance của `PF_Choir` trong scene từ T-020; file nguồn `Features/Choir/Prefabs/PF_Choir.prefab`, xem thêm `Assets/TheReturn/PREFAB_GUIDE.md`):** giữ nguyên tên object, collider, script cùng các tham chiếu đã gán trên prototype, và tên con mà script dùng (ghi bên dưới). Chỉ thay phần hình: đổi mesh/material của MeshRenderer hoặc thêm model làm con rồi tắt MeshRenderer cũ. Đừng xóa object nào có script hay collider. Chi tiết chung và bảng prefab cũ: `Assets/TheReturn/PREFAB_GUIDE.md`.
 
 ## Kiểm
 Test NUnit Domain: `Features/Choir/Tests/EditMode`. Chưa kiểm bằng người chơi thật.

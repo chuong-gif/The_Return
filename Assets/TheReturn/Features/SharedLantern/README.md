@@ -22,7 +22,7 @@ Gốc `SharedLantern_LogicOnly` (script `SharedLanternPrototype`; yaw 30°, z+ t
 - Thay được: mesh/material của biển, `Backing`, phím, `Lantern`; ký hiệu A-F là chữ, có thể đổi sang hình (giữ TextMesh hoặc sửa `LanternSign.Show`).
 - Tối hành lang và ánh sáng: việc đồ họa của chủ dự án; có sẵn `Light` của đèn lồng và bán kính trong asset.
 
-**Quy tắc chung khi đổi asset 3D (đối tượng dựng trong scene, CHƯA là prefab):** giữ nguyên tên object, collider, script cùng các tham chiếu đã gán trên prototype, và tên con mà script dùng (ghi bên dưới). Chỉ thay phần hình: đổi mesh/material của MeshRenderer hoặc thêm model làm con rồi tắt MeshRenderer cũ. Đừng xóa object nào có script hay collider. Chi tiết chung và bảng prefab cũ: `Assets/TheReturn/PREFAB_GUIDE.md`.
+**Quy tắc chung khi đổi asset 3D (đối tượng là prefab instance của `PF_SharedLantern` trong scene từ T-020; file nguồn `Features/SharedLantern/Prefabs/PF_SharedLantern.prefab`, xem thêm `Assets/TheReturn/PREFAB_GUIDE.md`):** giữ nguyên tên object, collider, script cùng các tham chiếu đã gán trên prototype, và tên con mà script dùng (ghi bên dưới). Chỉ thay phần hình: đổi mesh/material của MeshRenderer hoặc thêm model làm con rồi tắt MeshRenderer cũ. Đừng xóa object nào có script hay collider. Chi tiết chung và bảng prefab cũ: `Assets/TheReturn/PREFAB_GUIDE.md`.
 
 ## Kiểm
 Test NUnit Domain: `Features/SharedLantern/Tests/EditMode` (37 test). Play Mode mô phỏng: đọc biển, sổ riêng, trao đèn, phạt ngoài sáng, phạt nhập sai, hoàn thành, vào từ hai đầu.

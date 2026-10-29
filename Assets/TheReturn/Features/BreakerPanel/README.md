@@ -18,7 +18,7 @@ Scene dựng đủ 6 phần tử; nhiệm vụ dùng S phần tử đầu theo s
 - Giữ: tên `BreakerSwitch_n`/`BreakerLamp_n`, BoxCollider của công tắc, thứ tự trong mảng `switches`/`lamps`, và các con `Label`, `Bulb`, `Target`.
 - Thay được: mesh/material của công tắc và của `Bulb`/`Target` (script đổi màu qua renderer).
 
-**Quy tắc chung khi đổi asset 3D (đối tượng dựng trong scene, CHƯA là prefab):** giữ nguyên tên object, collider, script cùng các tham chiếu đã gán trên prototype, và tên con mà script dùng (ghi bên dưới). Chỉ thay phần hình: đổi mesh/material của MeshRenderer hoặc thêm model làm con rồi tắt MeshRenderer cũ. Đừng xóa object nào có script hay collider. Chi tiết chung và bảng prefab cũ: `Assets/TheReturn/PREFAB_GUIDE.md`.
+**Quy tắc chung khi đổi asset 3D (đối tượng là prefab instance của `PF_BreakerPanel` trong scene từ T-020; file nguồn `Features/BreakerPanel/Prefabs/PF_BreakerPanel.prefab`, xem thêm `Assets/TheReturn/PREFAB_GUIDE.md`):** giữ nguyên tên object, collider, script cùng các tham chiếu đã gán trên prototype, và tên con mà script dùng (ghi bên dưới). Chỉ thay phần hình: đổi mesh/material của MeshRenderer hoặc thêm model làm con rồi tắt MeshRenderer cũ. Đừng xóa object nào có script hay collider. Chi tiết chung và bảng prefab cũ: `Assets/TheReturn/PREFAB_GUIDE.md`.
 
 ## Kiểm
 Test NUnit Domain: `Features/BreakerPanel/Tests/EditMode`. Runtime: chưa kiểm bằng người chơi thật.

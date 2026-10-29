@@ -21,7 +21,7 @@ Gốc `PlankAndKey_LogicOnly` (script `PlankAndKeyPrototype`: party, laneOrigin,
 - Giữ: tên và vị trí các điểm `DeckRest*`, `Anchor*`, `CardHome*` (mốc logic), BoxCollider của `GapBlocker`, trigger `Deck`, `PlankInteractable.kind` trên từng cần gạt và thẻ, con `Label` (TextMesh).
 - Thay được: mesh/material của `GapVoid`, `DeckSurface`, `PedestalA/B`, `Handle`, hình thẻ (giữ collider).
 
-**Quy tắc chung khi đổi asset 3D (đối tượng dựng trong scene, CHƯA là prefab):** giữ nguyên tên object, collider, script cùng các tham chiếu đã gán trên prototype, và tên con mà script dùng (ghi bên dưới). Chỉ thay phần hình: đổi mesh/material của MeshRenderer hoặc thêm model làm con rồi tắt MeshRenderer cũ. Đừng xóa object nào có script hay collider. Chi tiết chung và bảng prefab cũ: `Assets/TheReturn/PREFAB_GUIDE.md`.
+**Quy tắc chung khi đổi asset 3D (đối tượng là prefab instance của `PF_PlankAndKey` trong scene từ T-020; file nguồn `Features/PlankAndKey/Prefabs/PF_PlankAndKey.prefab`, xem thêm `Assets/TheReturn/PREFAB_GUIDE.md`):** giữ nguyên tên object, collider, script cùng các tham chiếu đã gán trên prototype, và tên con mà script dùng (ghi bên dưới). Chỉ thay phần hình: đổi mesh/material của MeshRenderer hoặc thêm model làm con rồi tắt MeshRenderer cũ. Đừng xóa object nào có script hay collider. Chi tiết chung và bảng prefab cũ: `Assets/TheReturn/PREFAB_GUIDE.md`.
 
 ## Kiểm
 Test NUnit Domain + PlankSession: `Features/PlankAndKey/Tests/EditMode`. Hạn chế đã biết: đội 2 người gần như không có thử thách (xem `.ai/PLANS/T-006-mission-designs.md`, mục Hanh_Lang_6).

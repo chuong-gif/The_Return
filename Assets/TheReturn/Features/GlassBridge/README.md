@@ -20,7 +20,7 @@ Gốc `GlassBridge_LogicOnly` (script `GlassBridgePrototype`: laneOrigin, startP
 - Thay được: mesh/material của `Glass`, `LaneFloor`, `Rail_*` (giữ collider cùng kích thước).
 - Lưu ý đã biết: hành lang có 2 rãnh bên thấp hơn lối giữa 0,4 m; ai bước xuống rãnh ở khu đài sẽ không leo lại được.
 
-**Quy tắc chung khi đổi asset 3D (đối tượng dựng trong scene, CHƯA là prefab):** giữ nguyên tên object, collider, script cùng các tham chiếu đã gán trên prototype, và tên con mà script dùng (ghi bên dưới). Chỉ thay phần hình: đổi mesh/material của MeshRenderer hoặc thêm model làm con rồi tắt MeshRenderer cũ. Đừng xóa object nào có script hay collider. Chi tiết chung và bảng prefab cũ: `Assets/TheReturn/PREFAB_GUIDE.md`.
+**Quy tắc chung khi đổi asset 3D (đối tượng là prefab instance của `PF_GlassBridge` trong scene từ T-020; file nguồn `Features/GlassBridge/Prefabs/PF_GlassBridge.prefab`, xem thêm `Assets/TheReturn/PREFAB_GUIDE.md`):** giữ nguyên tên object, collider, script cùng các tham chiếu đã gán trên prototype, và tên con mà script dùng (ghi bên dưới). Chỉ thay phần hình: đổi mesh/material của MeshRenderer hoặc thêm model làm con rồi tắt MeshRenderer cũ. Đừng xóa object nào có script hay collider. Chi tiết chung và bảng prefab cũ: `Assets/TheReturn/PREFAB_GUIDE.md`.
 
 ## Kiểm
 Test NUnit Domain: `Features/GlassBridge/Tests/EditMode`. Play Mode: đi thật qua 6 hàng, ô sai vỡ và về đài đầu, đủ 4 người qua thì Solved (phiên mô phỏng 2026-10-17).

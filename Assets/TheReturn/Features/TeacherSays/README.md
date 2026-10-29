@@ -19,7 +19,7 @@ Gốc `TeacherSays_LogicOnly` (script `TeacherSaysPrototype`: party, settings, `
 - Giữ: trigger `SegmentZone_n` (cỡ và vị trí quyết định đoạn nào), thứ tự `ZonePad_n`, `StartPoint_n`, hai TextMesh `Command` và `Progress`.
 - Thay được: mesh/material của `ZonePad_n` và khung loa `SpeakerBoard` (giữ hai TextMesh con).
 
-**Quy tắc chung khi đổi asset 3D (đối tượng dựng trong scene, CHƯA là prefab):** giữ nguyên tên object, collider, script cùng các tham chiếu đã gán trên prototype, và tên con mà script dùng (ghi bên dưới). Chỉ thay phần hình: đổi mesh/material của MeshRenderer hoặc thêm model làm con rồi tắt MeshRenderer cũ. Đừng xóa object nào có script hay collider. Chi tiết chung và bảng prefab cũ: `Assets/TheReturn/PREFAB_GUIDE.md`.
+**Quy tắc chung khi đổi asset 3D (đối tượng là prefab instance của `PF_TeacherSays` trong scene từ T-020; file nguồn `Features/TeacherSays/Prefabs/PF_TeacherSays.prefab`, xem thêm `Assets/TheReturn/PREFAB_GUIDE.md`):** giữ nguyên tên object, collider, script cùng các tham chiếu đã gán trên prototype, và tên con mà script dùng (ghi bên dưới). Chỉ thay phần hình: đổi mesh/material của MeshRenderer hoặc thêm model làm con rồi tắt MeshRenderer cũ. Đừng xóa object nào có script hay collider. Chi tiết chung và bảng prefab cũ: `Assets/TheReturn/PREFAB_GUIDE.md`.
 
 ## Kiểm
 Test NUnit Domain: `Features/TeacherSays/Tests/EditMode` (số test: xem LOG T-006c). Chưa chơi thật.
