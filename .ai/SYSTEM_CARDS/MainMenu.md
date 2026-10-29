@@ -23,5 +23,7 @@ Khu / vai trò: scene MainMenu (đầu Build Settings) + hai hệ thống dùng 
 ## C. Ghi chú đã xác minh
 - 2026-10-23 03:56 UTC: Play Mode mô phỏng cả luồng MainMenu -> Sanh_Cho (3 người) -> SchoolFloor (PartySize 3), Settings đổi và lưu được. Chưa bấm chuột thật, chưa nhìn panel Settings.
 
+- 2026-10-29 04:22 UTC (phiên #9): đã nhìn tận mắt panel Settings và phòng chờ nhóm qua screenshot Play Mode (đúng, tiếng Việt không vỡ); MainMenu -> Sanh_Cho participantCount 3 đúng. Vẫn chưa bấm chuột thật / build thật. PlayerPrefs Editor có thể còn giá trị thử (35%, x2.4).
+
 ## D. Task liên quan
 - T-008 REVIEW. Chưa làm: kết nối mạng thật (T-009, chờ chọn công nghệ), trở về MainMenu và Settings trong lúc chơi.

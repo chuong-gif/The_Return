@@ -71,3 +71,9 @@ AI khi xử lý xong mục nào thì ghi LOG `OWNER-CHANGE-PROCESSED` (không s�
 
 ### 2026-10-23 | OWNER (qua chat với Claude phiên #3, AI ghi hộ)
 - T-018 Âm thanh duyệt: (1) dùng generate_audio sinh bản THỬ, chủ dự án sẽ tìm asset thật thay sau; (2) phong cách kinh dị trường học nhẹ; (3) CÓ nhạc nền; (4) dùng giọng thật, demo dùng giọng tạm, thay sau; (5) CHO PHÉP sửa scene (AudioService + nguồn nền), vẫn cần Scene lock + snapshot.
+
+### 2026-10-29 | OWNER (qua chat với Claude phiên #8, AI ghi hộ)
+- (1) CHO PHÉP sửa scene SchoolFloorPrototype để chuyển vật tương tác sang prefab (T-012 tiếp). (2) Luật giữ/nhả Scene lock là thừa: chủ dự án chạy AI nối tiếp (hết limit mới chuyển AI khác), không chạy song song => BỎ Scene lock. PROTOCOL.md / START_HERE.md / PLANS/_TEMPLATE.md / tools/status.snippet.cs đã được sửa theo ý này lúc 00:17 giờ máy. Chủ dự án CHƯA nói bỏ snapshot nên snapshot trước khi sửa scene vẫn giữ.
+
+### 2026-10-29 | OWNER (qua chat với Claude phiên #6, AI ghi hộ)
+- Nhắc lại: luật Scene lock đã bỏ (AI chạy nối tiếp), CHO PHÉP phiên #6 lấy scene làm việc. AI hiểu: được sửa SchoolFloorPrototype cho việc sửa cổng Hanh lang 1_* (khu Hanh_Lang_6); vẫn chụp snapshot trước khi sửa.

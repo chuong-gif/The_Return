@@ -100,3 +100,85 @@ Không sửa/xóa mục cũ; sai thì thêm mục đính chính. Bản đầy đ
 - Chủ dự án báo Phong_1: N không mở sổ, ghế không tương tác, không thấy tên vai. Gốc: SchoolFloorCanvasPresenter.cs lỗi biên dịch từ 2026-10-23 04:39 UTC (UpdateNameTags/RoleNameSuffix do phiên khác sửa dở, không log) + chọn ghế theo góc 3D hỏng khi đứng sát ghế. Sửa: SchoolFloorCanvasHud.cs (UpdateNameTags, RoleNameSuffix: biển 'số • tên' trên đầu đồng đội, 'VAI n • Tên' ở HUD), AttendancePrototype.UpdateTarget (chọn ghế theo mặt phẳng ngang, ≤2,6 m, ≤55°).
 - Play Mode mô phỏng cổng thật Phong 1_Cua 3 (tập hợp ngoài -> cổng mở -> vào trong -> Phong_1 bắt đầu): N mở sổ (có tên An/Chi...), đứng cách ghế 1 m: targetSeat=8, E -> 'Minh đã ngồi H3-C1' (1/4). 256/256 test, Console 0 lỗi. Không sửa scene (dirty=False).
 - Chưa: chơi thật bằng chuột-phím; kiểm tên khi đội 2-3 người; chữ biển tên đủ to khi ở xa.
+
+### 2026-10-28 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #6) | TAKEOVER + START | T-005
+- Chủ dự án yêu cầu tiếp quản việc của phiên #5. Phiên #5 ghi TAKEOVER+START T-005 lúc 2026-10-22 08:45, không có mục LOG nào sau đó cho T-005 (6 ngày = STALE); T-012 và T-006f của #5 đang REVIEW chờ chủ dự án, không làm thêm. Chưa có kết quả chạy bộ SchoolFloorFlowPlayTests (11 test).
+- PREFLIGHT: không Play Mode, không compile, scene SchoolFloorPrototype không dirty, Scene lock TRỐNG, 0 file .cs đổi sau LOG cuối. Cây git có file chưa commit không thuộc T-005 (Features/Audio trùng GameAudio, Assets/Screenshots, snapshot BeforeAreaHud_20261020_002029) — không đụng.
+- Việc: chạy run_tests PlayMode assembly TheReturn.SchoolFloor.PlayTests; hỏng thì chẩn đoán từng test; ghi kết quả vào TESTING.md/TASKS/LOG. Không sửa scene, không lưu scene.
+
+### 2026-10-28 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #7) | TAKEOVER + START | T-009
+- Chủ dự án yêu cầu tiếp quản việc dở của phiên MCP #2. Phiên MCP #2: T-006b2 đã REVIEW (không làm thêm); T-009 IN-PROGRESS từ 2026-10-22 01:56, chỉ có kế hoạch (mức 1), S0 chưa làm, S1 chờ phép cài gói. Không có mục LOG nào sau đó cho T-009 (6 ngày = STALE).
+- PREFLIGHT: không Play Mode, không compile, SchoolFloorPrototype không dirty, Scene lock TRỐNG. UNLOGGED-CHANGE: Packages/manifest.json + packages-lock.json đổi 2026-10-23 04:05 UTC (sau LOG cuối của T-009): đã có NGO 2.13.3, Transport 2.6.0, Services.Multiplayer 2.4.1, Authentication 3.8.1, Vivox 16.12.1 (nghi chủ dự án cài qua Multiplayer Center). 0 script dùng Netcode. Unity 6000.3.7f1.
+- Việc: S0 (kiểm tương thích, đã khớp phiên bản) rồi hỏi chủ dự án xác nhận phép S1. Chưa sửa scene/gói/code.
+
+### 2026-10-28 17:12 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #8) | START | dọn tài liệu .ai (không có ID task)
+- Chủ dự án chọn việc này, rồi tới chuyển vật tương tác sang prefab (T-012 tiếp). Chỉ sửa tài liệu: sinh lại BOARD, ghi đè CURRENT.md, viết lại mục FREE trong START_HERE.md. Không đụng code/scene/Play Mode, không giữ Scene lock.
+- PREFLIGHT: play=False, compiling=False, SchoolFloorPrototype dirty=False, Scene lock TRỐNG, 0 file .cs đổi sau LOG cuối. #6 (T-005) và #7 (T-009) đang chạy: không đụng dòng của họ trong TASKS.
+
+### 2026-10-28 17:24 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #8) | DONE | dọn tài liệu .ai
+- Sinh lại BOARD (15 dòng khớp TASKS: T-018/T-008 REVIEW, thêm T-019), ghi đè CURRENT.md (Scene lock TRỐNG, #6/#7 đang chạy, cảnh báo Features/Audio trùng GameAudio), viết lại mục FREE + ngày trong START_HERE.md. Mức xác minh 1-2: đọc lại file, BOARD khớp số dòng TASKS, không lỗi mã hóa; không chạy test vì không đụng code.
+- Tiếp theo (chủ dự án đã đồng ý): chuyển vật tương tác sang prefab (T-012 tiếp); sẽ ghi START riêng và lấy Scene lock + snapshot.
+
+### 2026-10-28 17:25 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #9, tiếp T-008 từ #4) | START | T-008
+- Chủ dự án bảo «tiếp T-008». Việc CÒN theo PLANS/T-008: nhìn tận mắt panel Settings (chụp màn hình Play Mode), kiểm lại luồng MainMenu sau các sửa của phiên khác (T-019, GameAudio). Bấm chuột thật + build thật là việc của chủ dự án.
+- PREFLIGHT: play=False, compiling=False, SchoolFloorPrototype dirty=False. Chỉ đọc/Play bằng LoadSceneInPlayMode, KHÔNG sửa scene, KHÔNG giữ Scene lock. #6 (T-005) có thể cũng cần Play Mode: không chạy song song.
+
+### 2026-10-29 04:22 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #9, tiếp T-008 từ #4) | DONE (mức 4 mô phỏng, bổ sung) | T-008
+- XÁC MINH Play Mode (gọi hàm bằng code, không bấm chuột): panel CÀI ĐẶT đã NHÌN TẬN MẮT qua screenshot: tiêu đề, thanh Âm lượng 35%, Độ nhạy chuột x2.4, ô Toàn màn hình, nút MẶC ĐỊNH / QUAY LẠI, dòng 'Thay đổi được lưu ngay', gợi ý Esc đều đúng, tiếng Việt không vỡ. Phòng chờ nhóm cũng đúng (mã phòng, 3 người, CHỦ PHÒNG, SẴN SÀNG, nút BẮT ĐẦU). Bắt đầu -> nạp Sanh_Cho với participantCount = 3 (khớp). Console 0 lỗi/cảnh báo sau khi Play Mode kết thúc.
+- CHƯA: đoạn Sanh_Cho -> SchoolFloorPrototype lần này KHÔNG xác nhận (đã gọi StartCountdown, nhưng Play Mode đã tắt trước khi tôi kiểm lại; scene editor quay về SchoolFloorPrototype, dirty=False). Đoạn này đã chạy qua ở lần 2026-10-23 (PartySize 3). Vẫn CHƯA: bấm chuột thật, build thật, online (T-009), đường quay lại MainMenu/Settings trong game.
+- Lưu ý: PlayerPrefs trong Editor còn giá trị từ lần thử trước (âm lượng 35%, độ nhạy x2.4, cửa sổ) nên menu không hiện mặc định; bấm MẶC ĐỊNH để về 100% / x1.0. Tác dụng phụ: thêm 2 ảnh Assets/Screenshots/T008_settings_check.png, T008_partyroom_check.png (chủ dự án xóa tay cùng các ảnh cũ). Không sửa scene/code. Không giữ Scene lock.
+
+### 2026-10-29 04:28 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #8) | DONE | bỏ luật Scene lock (dọn .ai, tiếp)
+- Chủ dự án nói luật giữ/nhả Scene lock là thừa (AI chạy nối tiếp). Thấy PROTOCOL.md, START_HERE.md, PLANS/_TEMPLATE.md, tools/status.snippet.cs đã được sửa lúc 00:17 giờ máy (không rõ cửa sổ nào) nên KHÔNG sửa lại. Phiên #8 bổ sung phần còn thiếu: ghi lời chủ dự án vào OWNER_UPDATES, ghi đè CURRENT.md (bỏ dòng Scene lock cũ), sửa mục FREE trong START_HERE.md. Các PLANS/DECISIONS cũ còn chữ Scene lock là lịch sử, để nguyên. Mức xác minh 1-2 (đọc lại file); không đụng code/scene.
+
+### 2026-10-29 04:29 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #8) | START | T-020
+- Chủ dự án cho phép sửa scene (OWNER_UPDATES 2026-10-29) để chuyển vật tương tác sang prefab. Phạm vi: CHỈ 6 root nhiệm vụ mới, mỗi root chỉ có 1 ref ra ngoài (party -> LocalParty). Kế hoạch: PLANS/T-020-mission-prefabs.md. Snapshot trước khi sửa; không có Scene lock.
+- PREFLIGHT: play=False, compiling=False, SchoolFloorPrototype dirty=False (kiểm 04:27 UTC). LOG cuối trước đó: #9 DONE T-008 04:22 UTC.
+
+### 2026-10-29 04:35 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #8) | DONE | T-020
+- Đã chuyển 6 root nhiệm vụ mới thành prefab (SaveAsPrefabAssetAndConnect): PF_BreakerPanel, PF_Choir, PF_GlassBridge, PF_PlankAndKey, PF_SharedLantern, PF_TeacherSays tại Features/<Tên>/Prefabs. Tên object trong scene giữ nguyên. Snapshot: Scenes/BeforeMissionPrefabs_20261029_043005.unity. File sửa: scene SchoolFloorPrototype (lưu), 6 prefab mới, PREFAB_GUIDE.md, 6 README feature, .ai/*.
+- XÁC MINH (mức 3-4): dump thuộc tính 6 root trước = sau (0 dòng khác, tổng 10214 dòng); 6 tham chiếu từ SchoolFloorFlow vào Prototype y hệt; mỗi instance chỉ 1 override (party -> LocalParty); EditMode 256/256; Console 0 lỗi/cảnh báo; scene lưu, dirty=False. PlayMode (T-005): 10/11 xanh; EveryGate_OfEveryMissionArea_StartsItsArea FAIL 2 cổng «Hanh lang 1_Vao/Ra» (khu Hanh_Lang_6) và CÓ SẴN trước T-020: thử tháo prefab root PlankAndKey, lưu, chạy lại vẫn fail y hệt, rồi nối lại prefab (dump = trước, overrides=1). Chưa chẩn đoán nguyên nhân: để phiên T-005.
+- CÒN: chủ dự án mở scene xem 6 object đã là prefab (biểu tượng xanh) và chơi thử. 5 root nhiệm vụ cũ + Environment_LogicOnly + TmpPoint chưa chuyển (hỏi chủ dự án). File tạm Temp/T020_*.txt (ngoài Assets).
+
+### 2026-10-29 04:41 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #8) | START | T-021
+- Chủ dự án bảo «làm tiếp» sau T-020: chuyển 5 root nhiệm vụ cũ thành prefab. Phạm vi: CHỈ 5 root này. Kế hoạch: PLANS/T-021-old-mission-prefabs.md. Snapshot trước khi sửa; không Scene lock.
+- PREFLIGHT: play=False, compiling=False, SchoolFloorPrototype dirty=False. Không có lightmap/ContributeGI. LOG cuối trước đó là DONE T-020 của chính phiên #8.
+
+### 2026-10-29 04:44 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #8) | DONE | T-021
+- Đã chuyển 5 root nhiệm vụ cũ thành prefab: PF_QuietCorridor, PF_GradeRepair, PF_NavigationExam, PF_DontLookBack, PF_TeacherTruth tại Features/<Tên>/Prefabs (tên object trong scene giữ nguyên, prefab lồng giữ nguyên). Snapshot: Scenes/BeforeOldMissionPrefabs_20261029_044208.unity. File sửa: scene SchoolFloorPrototype (lưu), 5 prefab mới, PREFAB_GUIDE.md, .ai/*.
+- XÁC MINH (mức 3-4): dump thuộc tính từng root trước = sau (0 dòng khác; 12011/12041/11116/11023/12415 dòng); 6 tham chiếu từ SchoolFloorFlow vào y hệt; ref ra ngoài (party; DontLookBack thêm badges, backLabels) y hệt; mỗi instance chỉ 1 override (Prototype); EditMode 256/256; Console 0 lỗi; scene lưu, dirty=False; không có lightmap nên không mất ánh sáng. PlayMode T-005: 10/11, cùng lỗi EveryGate (Hanh lang 1_Vao/Ra) có sẵn từ trước, các cổng của 5 khu cũ vẫn pass.
+- CÒN: chủ dự án mở scene xem và chơi thử 5 khu cũ. Chưa làm prefab: Environment_LogicOnly, TmpPoint, Puzzle_Attendance. File tạm Temp/T021_*.txt (ngoài Assets).
+
+### 2026-10-28 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #7) | START S1 | T-009
+- Chủ dự án đã đồng ý làm S1. Phạm vi: TẠO MỚI Assets/TheReturn/Features/Network/ (Runtime asmdef TheReturn.Network, scene thử NetworkS1Test, prefab PF_NetworkTestPlayer, NetworkPrefabsList). KHÔNG sửa scene/prefab/script có sẵn.
+- Có chế độ LAN (127.0.0.1) để test 1 máy + chế độ Relay (Sessions API, mã phòng). Relay cần dự án liên kết Unity Cloud.
+
+### 2026-10-28 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #7) | START S1 | T-009
+- Chủ dự án đồng ý làm S1. Tạo MỚI (không sửa file cũ): Assets/TheReturn/Features/Network/{Runtime/*.cs + TheReturn.Network.asmdef, Prefabs/PF_NetworkPlayer.prefab, Scenes/NetworkS1Test.unity}.
+- Phạm vi: host/join bằng mã phòng (Relay qua Multiplayer Services) + chế độ Local (127.0.0.1) dự phòng, đồng bộ vị trí capsule. Không đụng SchoolFloorPrototype hay scene map.
+
+### 2026-10-29 04:56 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #7b) | YIELD | T-009
+- ĐÍNH CHÍNH: các mục LOG của mình ghi ngày 2026-10-28 (TAKEOVER, START S1) thực ra là 2026-10-29. Mục START S1 thứ 2 (của mình) VÔ HIỆU: mình CHƯA tạo file nào.
+- PHÁT HIỆN TRÙNG: có phiên khác cũng tự nhận #7, đã ghi START S1 T-009 trước và vừa tạo Features/Network/Runtime/{NetworkSessionService,NetworkTestHud,NetworkTestPlayer}.cs + TheReturn.Network.asmdef (04:52 UTC). Mình không sửa/ghi đè; chờ chủ dự án chọn 1 phiên làm tiếp, mình chỉ review nếu được yêu cầu.
+
+### 2026-10-29 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #7) | ĐÍNH CHÍNH | T-009
+- Mục YIELD 04:56 là NHẦM: chủ dự án xác nhận các file Features/Network/Runtime/* và START S1 (PF_NetworkTestPlayer) là của chính phiên #7. Không có phiên trùng. Tiếp tục S1 từ file hiện có, không viết lại.
+
+### 2026-10-29 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #7) | PROGRESS | T-009 S1
+- Sửa: NetworkS1Test.unity gỡ DefaultNetworkPrefabs khỏi NetworkManager (trùng đăng ký PF_NetworkTestPlayer, cảnh báo duplicate GlobalObjectIdHash); giữ NetworkPrefabsList_S1; scene đã lưu. Không đụng file ngoài Features/Network.
+- XÁC MINH (mức 4, 1 Editor): Host LAN OK (spawn 1 player, owner=host, shutdown sạch). Relay: tạo phòng OK (mã 79WPPN, Unity Cloud/Multiplayer bật) NHƯNG nối Relay server lỗi 'Failed to establish connection with the Relay server' -> Transport failure, host tự tắt. Nghi UDP/DTLS bị chặn ở mạng; chưa thử WSS/region khác.
+- CHƯA xác minh: 2 người thấy nhau (cần build hoặc Editor thứ 2), đồng bộ OwnerNetworkTransform. Editor hiện: play=False, scene NetworkS1Test, dirty=False.
+
+### 2026-10-29 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #7) | START | T-009 S1 test LAN 2 người
+- Chủ dự án chọn phương án 2: build bản thử để test LAN 2 người. KHÔNG sửa Relay/NetworkSessionService.cs.
+- Sẽ TẠO MỚI: Features/Network/Runtime/NetworkAutoTest.cs (công cụ test: tham số -netauto host|client, -netmove, -netquit; ghi log vị trí) + gắn vào NetworkRoot trong NetworkS1Test.unity (lưu scene). Build ra Builds/NetworkS1/ (NGOÀI Assets, KHÔNG sửa Build Settings; chỉ build scene NetworkS1Test).
+
+### 2026-10-28 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #6) | DONE (mức 4, Play Mode thật) | T-005
+- Chạy run_tests PlayMode TheReturn.SchoolFloor.PlayTests: lần 1 9/11, sau sửa 10/11. Sửa test ArmedGate_ClosesAgain_WhenTeamLeavesBothZones: thêm chờ 3 khung hình trước khi đếm cổng mở (AccessController cập nhật sau MissionFlowController, đọc ngay thì còn 1 cổng mở = race trong test, không phải lỗi game). File test: Maps/SchoolFloor/Tests/PlayMode/SchoolFloorFlowPlayTests.cs.
+- CÒN ĐỎ 1: EveryGate_OfEveryMissionArea_StartsItsArea = lỗi scene thật, xem BUGS/gate-hanh-lang-1-vung-chuan-bi-mac-dinh.md. Không sửa scene (không có Scene lock/ý kiến chủ dự án). Không lưu scene.
+- T-012 và T-006f của phiên #5 giữ nguyên REVIEW (chờ chủ dự án chơi thật).
+
+### 2026-10-29 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #6) | DONE (mức 4, Play Mode thật) | T-005 / sửa cổng Hanh lang 1_*
+- Chủ dự án nói luật Scene lock đã đổi (AI chạy nối tiếp) và cho phép lấy scene làm việc. PREFLIGHT: play=False, compiling=False, editor đang ở scene NetworkS1Test (dirty=False); LOG cuối là của phiên #7/#8, không có việc dở trên SchoolFloorPrototype. Snapshot Scenes/BeforeHL6GateZones_20261029_055540.unity.
+- Sửa scene SchoolFloorPrototype (lưu): vùng chuẩn bị + blocker + VisualRoot của 2 cổng `Hanh lang 1_Vao/_Ra` (khu Hanh_Lang_6) theo thông số cổng hành lang chuẩn. Chi tiết: BUGS/gate-hanh-lang-1-vung-chuan-bi-mac-dinh.md.
+- XÁC MINH: SchoolFloorFlowPlayTests 11/11 (trước đó 10/11), EditMode 256/256. Chưa chơi tay; chủ dự án nên thử đi từ Phong_6/Phong_1 vào Hanh_Lang_6 để xem hình cổng và vị trí vùng đứng chờ.

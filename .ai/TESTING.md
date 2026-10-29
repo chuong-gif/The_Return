@@ -40,3 +40,7 @@ Các bộ còn lại: mọi bộ đều ghi đè một file báo cáo trong `Des
 ## Cập nhật 2026-10-16 10:26 UTC (T-006d)
 - Thêm assembly NUnit TheReturn.Choir.Domain.Tests (24 test). Hiện có 3 assembly NUnit: TheReturn.SchoolFloor.Domain.Tests, TheReturn.BreakerPanel.Domain.Tests, TheReturn.Choir.Domain.Tests (chạy chung: 83/83 xanh ngày 2026-10-16).
 - Khi dùng Unity MCP run_tests: LUÔN truyền assembly_names; gọi không kèm tên bị timeout phía Unity (gặp ngày 2026-10-16).
+
+## Play Mode NUnit SchoolFloorFlowPlayTests (2026-10-28, phiên #6)
+- Chạy: run_tests mode=PlayMode assembly_names=[TheReturn.SchoolFloor.PlayTests], init_timeout 120000; ~25s, 11 test. Kết quả: 10 qua, 1 đỏ (EveryGate_OfEveryMissionArea_StartsItsArea) do lỗi scene, xem BUGS/gate-hanh-lang-1-vung-chuan-bi-mac-dinh.md.
+- Lưu ý: sau khi sửa file test, chờ Unity biên dịch xong rồi mới chạy; chạy ngay thì job bị mất do domain reload (Unknown job_id).

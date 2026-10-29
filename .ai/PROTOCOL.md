@@ -6,7 +6,7 @@ Mục tiêu: AI mới vào dự án hiểu việc cần làm mà KHÔNG đọc c
 | File | Ai ghi | Nội dung | Cách ghi |
 |---|---|---|---|
 | `AGENTS.md` | chủ dự án/AI (hiếm) | quy tắc cứng + thứ tự đọc | sửa khi quy tắc đổi |
-| `.ai/CURRENT.md` | AI cuối cùng làm việc | trạng thái tổng, khóa scene, cảnh báo — ≤ 30 dòng | GHI ĐÈ |
+| `.ai/CURRENT.md` | AI cuối cùng làm việc | trạng thái tổng, cảnh báo — ≤ 30 dòng | GHI ĐÈ |
 | `.ai/TASKS.md` | AI nhận/hoàn thành task | bảng task, trạng thái, ai giữ, bằng chứng | SỬA ĐÚNG DÒNG của task |
 | `.ai/LOG.md` | MỌI AI | nhật ký sự kiện, mới nhất ở CUỐI file | CHỈ THÊM, không sửa/xóa mục cũ |
 | `.ai/OWNER_UPDATES.md` | chủ dự án (hoặc AI ghi hộ) | thay đổi do chủ dự án tự làm ngoài AI | CHỈ THÊM |
@@ -26,7 +26,7 @@ a. Task đã có người giữ? Xem trạng thái ở TASKS + mục LOG gần n
 b. Việc của bạn có thể đã được làm: kiểm bằng CODE/Unity thực tế (không tin mô tả). Nếu đã xong -> ghi LOG `ALREADY-DONE`, cập nhật TASKS, dừng, không làm trùng.
 c. Phát hiện thay đổi chưa ghi: chạy `.ai/tools/changed_since.snippet.cs` (đổi mốc `since` = thời điểm UTC của mục LOG cuối mà bạn đã đọc). Có terminal thì thêm `git status --short` và `git log --oneline -10`. File bạn sắp sửa có mtime mới hơn mục LOG nhắc tới nó = ai đó (chủ dự án hoặc AI khác) đã đổi mà chưa ghi: đọc nội dung hiện tại, ghi LOG `UNLOGGED-CHANGE` (file, giờ, nghi ngờ do ai), KHÔNG ghi đè.
 d. Kiểm tra Console không có lỗi compile; Unity không ở Play Mode.
-e. Khóa scene: CURRENT.md có dòng `Scene lock:`. Nếu AI khác đang giữ -> không sửa `.unity`/`.prefab`; chọn việc khác hoặc hỏi chủ dự án.
+e. Scene: KHÔNG còn Scene lock (chủ dự án bỏ 2026-10-29: AI chạy nối tiếp, không song song). Trước khi sửa `.unity`/`.prefab`: chủ dự án đã cho phép (OWNER_UPDATES), chụp snapshot, và nếu scene đang dirty lúc bắt đầu thì đó là thay đổi chưa lưu của phiên trước hoặc chủ dự án - kiểm/hỏi trước khi lưu, đừng ghi đè.
 
 ## 4. Vòng đời task (trạng thái trong TASKS.md)
 `TODO` -> `CLAIMED` -> `IN-PROGRESS` -> `REVIEW` (xong, chờ chủ dự án xem) -> `DONE`; nhánh: `PAUSED` (dừng giữa chừng có chủ ý), `BLOCKED` (cần thông tin/quyết định/quyền), `STALE` (bị bỏ dở).
@@ -37,7 +37,7 @@ e. Khóa scene: CURRENT.md có dòng `Scene lock:`. Nếu AI khác đang giữ -
 ## 5. Kết thúc hoặc tạm dừng (bắt buộc, kể cả khi chưa xong)
 1. Sửa dòng task trong TASKS.md: trạng thái mới + bằng chứng + bước kế tiếp.
 2. Thêm mục LOG `DONE` hoặc `PAUSED` hoặc `BLOCKED` (mẫu ở LOG.md): đã làm gì, file đã đụng, mức xác minh (1 tạo file / 2 compile / 3 test chạy / 4 runtime xác nhận / 5 chưa xác nhận), việc dở, bước kế tiếp CỤ THỂ, câu hỏi cho chủ dự án.
-3. Cập nhật CURRENT.md nếu trọng tâm hoặc cảnh báo đổi; nhả `Scene lock`.
+3. Cập nhật CURRENT.md nếu trọng tâm hoặc cảnh báo đổi.
 4. Có tri thức lâu dài -> `DECISIONS/` (quyết định + lý do) hoặc `BUGS/` (lỗi + nguyên nhân gốc + cách sửa). Đổi cấu trúc/hệ thống -> sửa `ARCHITECTURE.md`/`SYSTEMS.md` và bản đồ liên quan; chạy lại index nếu thêm/xóa/đổi tên script (`.ai/tools/rebuild_index.snippet.cs`).
 5. Báo cáo cuối trong chat cho chủ dự án (mục 9). Không tạo báo cáo dài cho từng thao tác nhỏ.
 
@@ -80,6 +80,6 @@ Làm gì | mức xác minh (1-5) | file đã đổi | việc dở + bước kế
 
 ## 11. Giới hạn đã biết
 - Thẻ hệ thống mới chỉ có phần A (tự sinh) cho hầu hết hệ thống; bảng «Triệu chứng -> nơi xem» chỉ có nội dung cho SchoolFloor và QuietCorridor (từ lỗi đã gặp). Hiệu quả tiết kiệm token phụ thuộc vào việc AI ghi lại sau mỗi lần sửa lỗi.
-- Không có khóa thật: hai AI chạy đồng thời vẫn có thể giẫm chân; chủ dự án nên chỉ định phạm vi file/scene cho từng AI chạy song song. Quy ước `Scene lock` chỉ có hiệu lực khi mọi AI tuân thủ.
+- Không có khóa: chủ dự án chạy AI nối tiếp (hết limit mới chuyển AI khác) nên đã bỏ Scene lock (2026-10-29). Nếu có lúc chạy song song, chủ dự án chỉ định phạm vi file/scene cho từng AI.
 - Mốc thời gian dùng UTC (giờ file trên đĩa cũng là UTC khi đọc bằng changed_since).
 - AI không có terminal/Git chỉ dựa được vào changed_since và LOG; thay đổi chủ dự án làm mà không ghi sẽ chỉ phát hiện qua mtime, không có nội dung diff.

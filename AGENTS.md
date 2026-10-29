@@ -6,8 +6,8 @@ Unity 6000.3.7f1, URP 17.3, Input System 1.18, Windows. Gốc dự án: `E:\kho 
 Chỉ đọc: START_HERE.md + `.ai/CURRENT.md` + 8 mục cuối `.ai/LOG.md` (≲ 6.000 token). KHÔNG mở cả PLANS/SYSTEM_CARDS/TOOLING/PROTOCOL/MAPS/PROJECT_STATE nếu task không trỏ tới. «Tìm việc rảnh» chỉ cần mục FREE trong START_HERE. LOG cũ ở `.ai/SESSIONS/`. Danh sách cũ bên dưới chỉ để tham khảo.
 
 ### (cũ) Danh sách 5 file — chi tiết: `.ai/PROTOCOL.md`
-1. `AGENTS.md` (file này). 2. `.ai/CURRENT.md` (trạng thái, khóa scene, cảnh báo). 3. `.ai/LOG.md` — 15 mục cuối. 4. `.ai/OWNER_UPDATES.md` — mục mới hơn mục LOG cuối. 5. `.ai/TASKS.md` — chỉ dòng task của bạn (cột Đọc cho biết file cần mở).
-Rồi PREFLIGHT (PROTOCOL mục 3): task đã có người giữ/đã xong chưa, file nào đổi mà chưa ghi (`.ai/tools/changed_since.snippet.cs`, Git nếu có terminal), Console, khóa scene. Chỉ sau đó mới đọc ngữ cảnh liên quan.
+1. `AGENTS.md` (file này). 2. `.ai/CURRENT.md` (trạng thái, cảnh báo). 3. `.ai/LOG.md` — 15 mục cuối. 4. `.ai/OWNER_UPDATES.md` — mục mới hơn mục LOG cuối. 5. `.ai/TASKS.md` — chỉ dòng task của bạn (cột Đọc cho biết file cần mở).
+Rồi PREFLIGHT (PROTOCOL mục 3): task đã có người giữ/đã xong chưa, file nào đổi mà chưa ghi (`.ai/tools/changed_since.snippet.cs`, Git nếu có terminal), Console, scene có đang dirty không. Chỉ sau đó mới đọc ngữ cảnh liên quan.
 Source code và Unity Editor là nguồn sự thật; file `.ai/` chỉ là bản đồ. `PROJECT_STATE.md` là mô tả triển khai dài của chủ dự án — đọc khi task cần.
 
 ## Quy tắc an toàn (bắt buộc)
@@ -39,7 +39,7 @@ HOT = `.ai/CURRENT.md` + file đang sửa. WARM = kiến trúc/README của hệ
 
 ## Trước khi sửa và sau khi làm (bắt buộc, cả khi chưa xong)
 - Trước: ghi `START` vào `.ai/LOG.md` + đổi trạng thái dòng task ở `.ai/TASKS.md`, liệt kê file định đụng.
-- Sau hoặc khi dừng: LOG (`DONE`/`PAUSED`/`BLOCKED`) + TASKS + CURRENT (nếu đổi trọng tâm, nhả khóa scene) + `DECISIONS/`/`BUGS/` nếu có tri thức lâu dài + báo cáo chat ≤ 8 dòng (PROTOCOL mục 9).
+- Sau hoặc khi dừng: LOG (`DONE`/`PAUSED`/`BLOCKED`) + TASKS + CURRENT (nếu đổi trọng tâm) + `DECISIONS/`/`BUGS/` nếu có tri thức lâu dài + báo cáo chat ≤ 8 dòng (PROTOCOL mục 9).
 - Việc dở của AI khác: tiếp quản theo PROTOCOL mục 6, không làm trùng, không hoàn tác khi chưa chắc.
 - Chủ dự án báo thay đổi ở `.ai/OWNER_UPDATES.md`; nghe họ nói «ghi vào OWNER_UPDATES» thì phải ghi vào file đó.
 

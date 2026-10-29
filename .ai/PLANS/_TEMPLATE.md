@@ -7,7 +7,7 @@ Trạng thái: DRAFT | CHỜ DUYỆT | ĐANG LÀM | XONG   | AI giữ: ... | C�
 
 ## 2. Phạm vi
 - Được đụng: file/thư mục/object cụ thể. KHÔNG được đụng: ... (gameplay/bố cục của chủ dự án, builder cũ...).
-- Cần Scene lock? có/không. Cần snapshot scene? có/không.
+- Cần snapshot scene? có/không (Scene lock đã bỏ 2026-10-29).
 
 ## 3. Ngữ cảnh đã đọc (để AI sau KHÔNG đọc lại)
 | File/thư mục (+ngày đọc) | Kết luận 1 dòng |
