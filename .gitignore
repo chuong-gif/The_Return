@@ -33,3 +33,11 @@ Thumbs.db
 # Licensed Unity Asset Store content stays local. See Design/ThirdParty-manifest.md.
 /Assets/ThirdParty/
 /Assets/ThirdParty.meta
+
+# Ảnh chụp màn hình tạm
+/Assets/Screenshots/
+/Assets/Screenshots.meta
+
+# Snapshot scene do AI chụp trước khi sửa (mỗi file ~16 MB, chỉ để backup cục bộ; git đã giữ lịch sử)
+/Assets/TheReturn/Maps/SchoolFloor/Scenes/Before*.unity
+/Assets/TheReturn/Maps/SchoolFloor/Scenes/Before*.unity.meta
