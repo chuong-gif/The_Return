@@ -1,0 +1,13 @@
+{
+  "name": "TheReturn.Network",
+  "rootNamespace": "TheReturn.Network",
+  "references": [
+    "Unity.Netcode.Runtime",
+    "Unity.Networking.Transport",
+    "Unity.Collections",
+    "Unity.Services.Core",
+    "Unity.Services.Authentication",
+    "Unity.Services.Multiplayer",
+    "Unity.InputSystem"
+  ]
+}
