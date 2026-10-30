@@ -3,7 +3,7 @@
  * Danh sách hàm:
  * - Initialize: lưu vị trí xuất hiện và bộ điều khiển va chạm.
  * - SetPartySize: bật đúng số mô hình người trong đội.
- * - SwitchRole: chuyển camera và độ cao mắt sang một vai.
+ * - SwitchRole: chuyển camera và độ cao mắt sang một vai, ẩn thân mô hình của vai đang điều khiển.
  * - TickInput: xử lý nhìn/di chuyển của vai hiện tại.
  * - TryGetInteractionHit: tìm va chạm gần nhất, bỏ qua chính người đang điều khiển.
  * - Teleport: đổi vị trí có tắt va chạm tạm thời.
@@ -29,6 +29,7 @@ namespace TheReturn
         public int ActivePlayer { get; private set; }
         public int PartySize { get; private set; }
         CharacterController[] controllers;
+        PlayerAnimationDriver[] drivers;
         Vector3[] spawns;
         Quaternion[] spawnRotations;
         float[] pitches;
@@ -38,6 +39,7 @@ namespace TheReturn
         public void Initialize()
         {
             controllers = new CharacterController[players.Length];
+            drivers = new PlayerAnimationDriver[players.Length];
             spawns = new Vector3[players.Length];
             spawnRotations = new Quaternion[players.Length];
             pitches = new float[players.Length];
@@ -45,6 +47,7 @@ namespace TheReturn
             for (int i = 0; i < players.Length; i++)
             {
                 controllers[i] = players[i].GetComponent<CharacterController>();
+                drivers[i] = players[i].GetComponentInChildren<PlayerAnimationDriver>(true);
                 spawns[i] = players[i].position;
                 spawnRotations[i] = players[i].rotation;
             }
@@ -62,7 +65,8 @@ namespace TheReturn
         {
             if (index < 0 || index >= PartySize) return false;
             ActivePlayer = index;
-            for (int i = 0; i < bodies.Length; i++) bodies[i].enabled = i != index;
+            for (int i = 0; i < bodies.Length; i++) if (bodies[i] != null) bodies[i].enabled = i != index;
+            for (int i = 0; i < drivers.Length; i++) if (drivers[i] != null) drivers[i].SetBodyVisible(i != index);
             viewCamera.transform.SetParent(players[index], false);
             viewCamera.transform.localPosition = Vector3.up * (seated ? 1.18f : 1.65f);
             viewCamera.transform.localRotation = Quaternion.Euler(pitches[index], 0, 0);
@@ -73,7 +77,9 @@ namespace TheReturn
         public void TickInput(bool seated)
         {
             IsSprinting = false;
-            if (PartySize == 0 || Cursor.lockState != CursorLockMode.Locked) return;
+            if (PartySize == 0) return;
+            if (drivers != null && drivers[ActivePlayer] != null) drivers[ActivePlayer].Seated = seated;
+            if (Cursor.lockState != CursorLockMode.Locked) return;
             var keyboard = Keyboard.current;
             var mouse = Mouse.current;
             if (mouse != null)
@@ -140,6 +146,7 @@ namespace TheReturn
             {
                 Teleport(i, spawns[i]);
                 players[i].rotation = spawnRotations[i];
+                if (drivers[i] != null) drivers[i].Seated = false;
             }
         }
 
