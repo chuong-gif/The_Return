@@ -26,3 +26,5 @@ Thẻ còn trống phần B/C nghĩa là chưa ai ghi kinh nghiệm: sau khi b�
 - BreakerPanel (Phong_5, MỚI, đã có scene): SYSTEM_CARDS/BreakerPanel.md — từ khóa: cầu dao, công tắc, đèn, quá tải, BreakerPanel.
 
 - TeacherSays.md — Hanh_Lang_5 «Cô nói» (REVIEW)
+
+- NetworkFramework (khung mạng online, MỚI): SYSTEM_CARDS/NetworkFramework.md — từ khóa: host-authoritative, HostAuthority, ClientReplica, TeamRoster, lệnh client, trạng thái host, thông tin riêng, StaleSequence.

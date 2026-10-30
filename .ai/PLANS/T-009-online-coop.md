@@ -26,3 +26,12 @@ Trạng thái: LẬP KẾ HOẠCH (chưa code, chưa cài gói) | AI giữ: Clau
 - Kiểm thử mạng cần 2 bản chạy cùng lúc (build + Editor, hoặc Multiplayer Play Mode nếu dùng được); AI không tự kiểm được mức 4 nếu chỉ có một Editor: sẽ báo rõ.
 - Nhân vật dùng CharacterController: đồng bộ vị trí/ván/thang di chuyển cần thiết kế (đề xuất host quyết định vị trí các vật chuyển động).
 - Chưa quyết: chat giọng nói, vào lại giữa chừng, nền tảng phát hành (Steam hay không), mức chi tối đa mỗi tháng.
+
+## 8. Cập nhật 2026-10-29: quyết định của chủ dự án + chia task
+- Quyết định: xem DECISIONS/2026-10-29-t009-owner-answers.md (chỉ gửi build cho bạn bè; có voice; có chuyển host; đội 2-4 người cố định lúc lập đội).
+- T-009 giờ là UMBRELLA + S1 (nền LAN). Các subtask S2..S6 ở mục 3 được thay bằng task riêng T-022..T-032 trong TASKS.md; mỗi task có phiếu PLANS/T-0xx-brief.md.
+- Phụ thuộc: T-022 + T-024 -> T-025 -> T-027 -> T-028 -> (T-030, T-031); T-026 -> T-029; T-023 + T-028 -> T-032.
+- Làm NGAY được (không chờ ai): T-022 (tài liệu), T-023 (Relay), T-024 (khung), T-026 (phòng, chạy LAN), phần tài liệu của T-030.
+- Quy tắc test mạng chung: cổng LAN 7777 chỉ MỘT phiên dùng tại một thời điểm; ghi LOG 'NET-TEST START/END' quanh mỗi lần chạy; công cụ test tự động dùng tham số -s1auto/-s1join/-s1walk/-s1quit (NetworkS1AutoRun.cs) hoặc -netauto (NetworkAutoTest.cs): đang gộp về một (việc của T-009).
+- File dùng chung dễ đụng nhau: NetworkSessionService.cs (T-023 giữ phần Relay, T-026 thêm lớp phòng bằng file mới), PrototypePartyController.cs (T-025), prefab nhân vật (T-010 của phiên #6).
+- (2026-10-29, sau câu trả lời về cỡ đội) KHÔNG đổi vai, nhân vật = số người, nhiệm vụ co giãn theo đội 2/3/4. Phụ thuộc mới: T-025 KHÔNG còn chờ T-022 (T-025 làm ngay được); T-022 giờ chỉ chặn T-031 và thông số T-027.
