@@ -28,3 +28,5 @@ Thẻ còn trống phần B/C nghĩa là chưa ai ghi kinh nghiệm: sau khi b�
 - TeacherSays.md — Hanh_Lang_5 «Cô nói» (REVIEW)
 
 - NetworkFramework (khung mạng online, MỚI): SYSTEM_CARDS/NetworkFramework.md — từ khóa: host-authoritative, HostAuthority, ClientReplica, TeamRoster, lệnh client, trạng thái host, thông tin riêng, StaleSequence.
+
+- OnlineAvatars (nhân vật online, MỚI): SYSTEM_CARDS/OnlineAvatars.md — từ khóa: nhân vật online, ô cố định, SlotAllocator, OnlineAvatar, EnterOnlineMode, BindSlot, NetworkPartyTest.
