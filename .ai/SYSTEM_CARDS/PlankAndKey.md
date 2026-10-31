@@ -26,5 +26,7 @@ Khu / vai trò: Hanh_Lang_6 (nhiệm vụ MỚI, T-006b). Cập nhật: 2026-10-
 - 2026-10-16 11:00 UTC: 25/25 test xanh (mức 3); bộ giải khớp số liệu duyệt 8/17/17/11 và bộ kiểm vét cạn độc lập. Chưa chạy trong scene (mức 4 chưa có).
 - Đơn vị thời gian là «đơn vị», chưa phải giây; đồng hồ chỉ tính thời gian các lượt qua cầu (chưa xác nhận với chủ dự án).
 
+- 2026-10-31 05:04 UTC (phiên #9, T-027): thêm lớp mạng thuần C# Runtime/Network (asmdef TheReturn.PlankAndKey.Network: PlankCommand, IPlankWorld, PlankPublicState/PlankPrivateState, PlankHostRules) + 21 test EditMode xanh (Tests/EditModeNet). Domain KHÔNG đổi. CHƯA có cầu nối NGO, IPlankWorld cho Unity, Presentation online (PLANS/T-027-plank-network-pattern.md mục 6-8).
+
 ## D. Task liên quan
 - T-006b DONE (Domain). T-006b2 IN-PROGRESS: S2-S3 xong (PlankSession, PlankSettings, asset); S4-S6 (Presentation, adapter, đăng ký, dựng scene, Play Mode) chờ Scene lock của phiên #3.

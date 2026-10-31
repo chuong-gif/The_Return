@@ -77,3 +77,6 @@ AI khi xử lý xong mục nào thì ghi LOG `OWNER-CHANGE-PROCESSED` (không s�
 
 ### 2026-10-29 | OWNER (qua chat với Claude phiên #6, AI ghi hộ)
 - Nhắc lại: luật Scene lock đã bỏ (AI chạy nối tiếp), CHO PHÉP phiên #6 lấy scene làm việc. AI hiểu: được sửa SchoolFloorPrototype cho việc sửa cổng Hanh lang 1_* (khu Hanh_Lang_6); vẫn chụp snapshot trước khi sửa.
+
+### 2026-10-29 | OWNER (qua chat với Claude phiên #8, AI ghi hộ) | BÁO BUG khi chơi thật
+- (1) Cả đội tập hợp ở cửa các phòng 1-6, vào trong, cửa đóng rồi nhưng nhiệm vụ KHÔNG bắt đầu. (2) Hành lang 1 «giữ trật tự»: cả đội đứng ở vùng đích mà cửa không mở và nhiệm vụ không kết thúc. (3) Sau khi xong phòng 1, vào khu chuẩn bị của hành lang 6: cửa mở, cả đội vào, cửa đóng lại nhưng nhiệm vụ không bắt đầu; nghi mọi hành lang còn lại cũng vậy. (4) Phòng «hòa nhạc» (hợp xướng) không có chữ gợi ý bấm E để tương tác với nút.
