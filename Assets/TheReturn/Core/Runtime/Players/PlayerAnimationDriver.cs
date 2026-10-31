@@ -22,7 +22,7 @@ namespace TheReturn
         public float moveThreshold = 0.15f;
         public float smoothing = 12f;
         /// <summary>Thời gian rời mặt đất (giây) trước khi phát animation nhảy/rơi.</summary>
-        public float airborneDelay = 0.25f;
+        public float airborneDelay = 0.06f;
         public bool Seated { get; set; }
         public bool BodyVisible { get; private set; } = true;
 
@@ -67,7 +67,7 @@ namespace TheReturn
             smoothSpeed = Mathf.Lerp(smoothSpeed, speed, k);
             smoothForward = Mathf.Lerp(smoothForward, forward, k);
 
-            bool grounded = Physics.Raycast(motionRoot.position + Vector3.up * 0.1f, Vector3.down, 0.5f, ~0, QueryTriggerInteraction.Ignore);
+            bool grounded = Physics.Raycast(motionRoot.position + Vector3.up * 0.1f, Vector3.down, 0.3f, ~0, QueryTriggerInteraction.Ignore);
             airTime = grounded ? 0f : airTime + dt;
 
             animator.SetFloat(SpeedId, smoothSpeed);
