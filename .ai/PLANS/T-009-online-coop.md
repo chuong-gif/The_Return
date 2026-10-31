@@ -36,3 +36,4 @@ Trạng thái: LẬP KẾ HOẠCH (chưa code, chưa cài gói) | AI giữ: Clau
 - File dùng chung dễ đụng nhau: NetworkSessionService.cs (T-023 giữ phần Relay, T-026 thêm lớp phòng bằng file mới), PrototypePartyController.cs (T-025), prefab nhân vật (T-010 của phiên #6).
 - (2026-10-29, sau câu trả lời về cỡ đội) KHÔNG đổi vai, nhân vật = số người, nhiệm vụ co giãn theo đội 2/3/4. Phụ thuộc mới: T-025 KHÔNG còn chờ T-022 (T-025 làm ngay được); T-022 giờ chỉ chặn T-031 và thông số T-027.
 - (2026-10-30) T-023 DONE: Relay chạy thật qua Internet (DTLS, UDP, WSS đều tạo/vào được chéo nhau; chủ dự án + bạn khác tỉnh). Phụ thuộc mới: T-032 chỉ còn chờ T-028. Chưa thử: 4G/CGNAT, nước ngoài, 3-4 người, đo độ trễ.
+- (2026-10-31, phiên #6) T-022: bản đề xuất bảng 12 nhiệm vụ x 2/3/4 người đã viết ở PLANS/T-022-design-2to4.md, chờ chủ dự án duyệt 8 câu hỏi (mục 2 của file đó); câu quan trọng nhất cho T-027 là PlankAndKey với đội 2 người (mặc định: giữ nguyên).

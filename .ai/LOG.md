@@ -185,3 +185,6 @@
 
 ### 2026-10-31 UTC | Claude Sonnet 5.5 (chat, phiên #6) | START | T-022
 - Chủ dự án bảo tự tìm task rảnh. T-022 (chỉ tài liệu, không đụng code/scene) và T-030 đều chưa ai giữ; chọn T-022 vì mở khóa T-031 và chốt thông số cho T-027. Sẽ tạo PLANS/T-022-design-2to4.md và cập nhật PLANS/T-009 mục 8; câu hỏi gameplay mơ hồ ghi cho chủ dự án.
+
+### 2026-10-31 UTC | Claude Sonnet 5.5 (chat, phiên #6) | DONE (chỉ tài liệu, chờ duyệt) | T-022
+- Tạo PLANS/T-022-design-2to4.md: bảng 12 nhiệm vụ x N=2/3/4 (nhãn [CÓ] / [THEO THIẾT KẾ] / [CẦN KIỂM] / [ĐỀ XUẤT]), 8 câu hỏi cho chủ dự án có mặc định, cách dùng cho T-027/T-031. Chỉ đọc code/README/thẻ hệ thống (không chạy test, không đo scene). Phát hiện: cả 12 Domain đã nhận 2-4 người; không nhiệm vụ nào đòi vai cố định ngoài người số 0; PlankAndKey N=2 cần quyết định. Cập nhật PLANS/T-009 mục 8. Không sửa code/scene.
