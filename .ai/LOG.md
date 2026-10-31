@@ -214,3 +214,26 @@
 
 ### 2026-10-31 UTC | Claude Sonnet 5.5 (chat, phiên #6) | DONE (chỉ tài liệu, chờ duyệt) | T-030 bước 1
 - Tạo PLANS/T-030-host-migration-design.md: sự thật đã tra (NGO không có chuyển host; Sessions chỉ có bầu host + IMigrationDataHandler mặc định cho Entities; Relay hết hiệu lực khi host mất), hiện trạng repo (đọc code), 6 kịch bản, 4 phương án (khuyến nghị C: nhật ký sự kiện + bầu ô nhỏ nhất), cái sẽ mất, 9 rủi ro, kế hoạch S0-S6 (9-16 phiên AI ước lượng), 7 câu hỏi cho chủ dự án. Không chạy thử mạng, không sửa code/scene/Domain. Việc cần chủ dự án: duyệt hướng và giúp chạy S0 với 2 máy.
+
+### 2026-10-31 10:54 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #9) | PROGRESS (chẩn đoán T-pose bản build) | T-025
+- Chủ dự án thử 2 bản (T-025): nhân vật vào phòng đúng, host trong Editor có animation, nhưng client chạy bằng chay_client.bat chỉ hiện dáng chữ T. Log client_*.log xác nhận mạng đúng (local=1/2/3, vị trí nhân vật khác đổi theo), không có cảnh báo về Animator. Tĩnh: AC_Player/clip FBX 660 đường cong, Player.fbx Generic không optimize, controller/avatar hợp lệ, GPU skinning bật, Quality PC FourBones => chưa thấy nguyên nhân.
+- Thêm chẩn đoán TẠM Features/Network/Online/OnlineAnimDiag.cs, gắn vào PF_OnlineAvatar.prefab (ghi [AnimDiag] vào log mỗi 1,5 giây, 12 lần) và build lại Builds/NetworkParty (development, 89s, 0 lỗi). Chờ chủ dự án chạy lại rồi đọc Builds/NetworkParty/client_*.log. Gỡ OnlineAnimDiag khi xong. Chủ dự án CHO PHÉP sửa scene map (ghi nhận để làm T-027 phần Hanh_Lang_6).
+- Build Settings hiện: MainMenu.unity | Sanh_Cho.unity | SchoolFloorPrototype.unity | NetworkS1Test.unity | NetworkPartyTest.unity (NetworkS1Test/NetworkPartyTest có mặt, chưa xác định ai thêm, không tự sửa).
+
+### 2026-10-31 11:01 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #9) | PROGRESS (T-pose đã hết ở bản build mới) | T-025
+- Chủ dự án chạy lại: nhân vật trong bản build có animation như Editor. Log client_9771: slot 0 (không phải owner) và slot 1 (owner) đều Idle rồi Walking (speedParam 3.16), hipsRot đổi => Animator chạy đúng trên cả nhân vật của mình lẫn nhân vật người khác.
+- NGUYÊN NHÂN CHƯA XÁC ĐỊNH. Khác biệt giữa hai bản build chỉ là: prefab PF_OnlineAvatar được lưu lại (thêm OnlineAnimDiag) và biên dịch lại. Không khẳng định được cái nào sửa. Giữ OnlineAnimDiag trong prefab đến khi chủ dự án đồng ý gỡ; nếu dáng chữ T tái xuất thì đọc [AnimDiag] trong client_*.log.
+- Chủ dự án đã CHO PHÉP sửa scene map: T-027 phần Hanh_Lang_6 có thể tiếp (mẫu: PLANS/T-027-plank-network-pattern.md mục 6-8). Chưa bắt đầu.
+
+### 2026-10-31 11:06 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #9) | START | T-027 (S3)
+- Chủ dự án: «làm đi» sau khi thử 2 bản T-025 xong và CHO PHÉP sửa scene map. Làm theo thứ tự: (1) bổ sung luật host: vị trí thẻ (PlankCardMode + toạ độ làn) để mọi máy vẽ thẻ giống nhau; (2) PlankCodec thuần C# (lệnh/trạng thái <-> chuỗi) + test; (3) MissionNetBridge (NGO, dùng chung, Features/Network/Online); (4) PlankOnlineHost/PlankOnlineClient (asmdef mới TheReturn.PlankAndKey.Online); (5) scene thử RIÊNG NetworkPlankTest; (6) CHỈ SAU ĐÓ mới đụng SchoolFloorPrototype (sẽ tạo bản Before... và kiểm Scene lock trước).
+- Tránh đụng phiên #8 (T-033 Voice) và #7 (T-026 Room): KHÔNG sửa NetworkSessionService.cs, Runtime/Room, Runtime/Voice. Chỉ file mới trong Features/Network/Online và Features/PlankAndKey. Sẽ ghi NET-TEST START/END trước khi vào Play Mode / cổng 7777.
+
+### 2026-10-31 15:30 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #7) | NET-TEST END + REVIEW (mức 3 + mức 4 một phần: vào kênh thoại qua Relay thật) | T-029
+- TẠO MỚI: Features/Network/Runtime/Voice/{TheReturn.Network.Voice.asmdef, VoiceChatService.cs, VoiceHud.cs}; gắn vào scene NetworkRoomTest (mở Additive, scene đang mở của phiên khác không đụng). Không sửa manifest/Relay/luật phòng. Compile sạch 0 lỗi; build Builds/NetworkRoom 0 lỗi 0 cảnh báo.
+- ĐÃ XÁC MINH (voice_host.log + voice_client.log, 2 tiến trình thật qua Relay WSS, Vivox đã BẬT trong dự án): phòng 7J7QJH -> mỗi bên tự vào kênh 'room-7J7QJH' (Vivox InitializeAsync/LoginAsync/JoinGroupChannelAsync OK), micDevices=5, activeMic='Default System Device'; host thấy n=2 (Chu(tôi), Khach); client thấy n=2 (Chu, Khach(tôi)); khi host thoát client thấy n=1 rồi về Off + 'LEFT channel'. 0 Exception, 0 cảnh báo.
+- CHƯA XÁC MINH (cần 2 người thật + micro/loa): nghe/nói thật, chất lượng/độ trễ, chấm 'đang nói', nút Mic tắt/bật và Tắt tiếng từng người có hiệu quả đúng, quyền micro Windows ở máy bạn bè, đội 3-4 người. Phòng LAN không có thoại (không có mã phòng). Ghi chú: mic lúc vào kênh mặc định BẬT.
+- Đã tạo Builds/TheReturn_PhongThoai_BanBe.zip (89 MB, bản có cửa sổ NetworkRoom.exe + HUONG_DAN.txt tiếng Việt, đã bỏ .bat/.log/DoNotShip). T-029 -> REVIEW; T-032 (build bạn bè) nên gộp nội dung hướng dẫn này.
+
+### 2026-10-31 UTC | Claude Sonnet 5.5 (chat, phiên #6) | HỦY | T-030
+- Chủ dự án bỏ chuyển host (host off thì cả đám rời phòng) để game xong nhanh. Ghi DECISIONS/2026-10-31-t030-no-host-migration.md (ghi đè câu 3 của 2026-10-29); T-030 sang TASKS_DONE trạng thái HỦY; đánh dấu HỦY đầu PLANS/T-030-host-migration-design.md; sửa brief T-028, PLANS/T-009; BOARD sinh lại. Không đụng code. Mặc định AI (chưa được xác nhận): ai rời giữa ván thì ván kết thúc, không vào lại.

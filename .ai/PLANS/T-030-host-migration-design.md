@@ -1,3 +1,5 @@
+> ĐÃ HỦY 2026-10-31: chủ dự án bỏ chuyển host (host off thì cả phòng rời). KHÔNG thực hiện tài liệu này; giữ để tham khảo. Xem DECISIONS/2026-10-31-t030-no-host-migration.md.
+
 # T-030 bước 1: rớt mạng, vào lại, chuyển host — TÀI LIỆU THIẾT KẾ   (file: .ai/PLANS/T-030-host-migration-design.md)
 
 Trạng thái: ĐỀ XUẤT, CHƯA CODE, CHỜ CHỦ DỰ ÁN DUYỆT HƯỚNG (mục 8) | Tác giả: Claude Sonnet 5.5 (phiên #6) | Viết: 2026-10-31 UTC | Phạm vi: chỉ tài liệu; không sửa code/scene/Domain.

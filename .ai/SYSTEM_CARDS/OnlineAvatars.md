@@ -24,5 +24,7 @@ Khu / vai trò: mỗi người chơi online có đúng MỘT nhân vật cố đ
 - CHƯA xác minh: 2 bản (host + client) mỗi người một nhân vật và thấy nhau; 3-4 người; vào lại sau khi mất kết nối (T-028: hiện người vào lại bị coi là người mới và lấy ô nhỏ nhất còn trống, có thể KHÁC ô cũ); chạy trong scene SchoolFloor thật (T-027, cần phép sửa scene map).
 - Cách chủ dự án thử 2 bản: mở scene NetworkPartyTest, bấm Play, bấm nút Host LAN (localhost) trong bảng thử; rồi bấm đúp Builds/NetworkParty/chay_client.bat ĐÚNG 1 LẦN mỗi client (chạy nhiều lần để thêm người, tối đa 4). Mỗi cửa sổ: bấm Tab để khóa chuột, WASD đi, chuột nhìn quanh.
 
+- 2026-10-31 11:01 UTC: CHỦ DỰ ÁN ĐÃ THỬ 2 BẢN (host trong Editor + client bằng chay_client.bat): các nhân vật vào phòng đúng, thấy nhau. Lần build đầu client chỉ hiện dáng chữ T (nguyên nhân CHƯA rõ; Editor luôn có animation); sau khi thêm OnlineAnimDiag vào PF_OnlineAvatar và build lại thì client có animation đúng như Editor (log client_9771: Idle -> Walking, xương hông đổi xoay). Nếu dáng chữ T quay lại: xem dòng [AnimDiag] trong Builds/NetworkParty/client_*.log. OnlineAnimDiag còn gắn trong prefab (chỉ ghi log, 12 lần/nhân vật); gỡ khi chủ dự án đồng ý.
+
 ## D. Task liên quan
 - T-025 (REVIEW). Dựa trên T-024 (SlotAllocator dùng TeamRoster) và T-009 S1 (OwnerNetworkTransform, NetworkSessionService). Kế tiếp: T-027 (nối nhiệm vụ mẫu qua mạng, cần phép sửa scene map), T-026 (phòng online quyết định số người), T-028 (vào lại/đồng bộ), T-010 (prefab nhân vật, đã được lồng chứ không sửa).
