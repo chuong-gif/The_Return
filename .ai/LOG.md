@@ -188,3 +188,23 @@
 
 ### 2026-10-31 UTC | Claude Sonnet 5.5 (chat, phiên #6) | DONE (chỉ tài liệu, chờ duyệt) | T-022
 - Tạo PLANS/T-022-design-2to4.md: bảng 12 nhiệm vụ x N=2/3/4 (nhãn [CÓ] / [THEO THIẾT KẾ] / [CẦN KIỂM] / [ĐỀ XUẤT]), 8 câu hỏi cho chủ dự án có mặc định, cách dùng cho T-027/T-031. Chỉ đọc code/README/thẻ hệ thống (không chạy test, không đo scene). Phát hiện: cả 12 Domain đã nhận 2-4 người; không nhiệm vụ nào đòi vai cố định ngoài người số 0; PlankAndKey N=2 cần quyết định. Cập nhật PLANS/T-009 mục 8. Không sửa code/scene.
+
+### 2026-10-31 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #7) | NET-TEST START (Relay, chỉ bản build) | T-026
+- Đã build lại Builds/NetworkRoom (0 lỗi, 0 cảnh báo; sửa thông báo mất kết nối + -roomcodefile). Chạy kịch bản Relay đội 3 người: host WSS, khách A DTLS, khách B UDP vào bằng mã, khách C (WSS) vào sau phải bị từ chối. Đi qua Internet, KHÔNG dùng cổng LAN 7777, KHÔNG dùng Editor/Play Mode.
+
+### 2026-10-31 10:05 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #7) | NET-TEST END + REVIEW (mức 4: 4 tiến trình qua Relay thật) | T-026
+- ĐÃ XÁC MINH (Builds/NetworkRoom/relay_*.log, Internet thật, không dùng Editor): host tạo phòng ĐỘI 3 bằng WSS (mã HJGTPW); khách A vào bằng DTLS, khách B bằng UDP (3 giao thức khác nhau trong cùng phòng); cả 3 thấy cùng danh sách 3 ô (Chu (H), KhachA, KhachB); host auto Bắt đầu khi đủ 3 -> hai khách thấy started=True; khách C (WSS) vào sau bị từ chối đúng ('SessionException: session is full' -> trạng thái Lỗi); khi khách thoát host thấy rows 3 -> 1, không có Exception nào ngoài 'session is full'. Trước đó LAN đội 2 (3 tiến trình) cũng đạt, khách thứ 3 bị từ chối 'Phòng đã đủ người hoặc ván đã bắt đầu'.
+- SỬA SAU TEST: RoomService thông báo 'Mất kết nối với chủ phòng' (thay vì chuỗi '[Disconnect Event]...'); NetworkSessionService.Fail đổi 'session is full' -> 'Phòng đã đủ người'. Compile sạch, build lại (0 lỗi, 0 cảnh báo) nhưng 2 sửa này CHƯA chạy lại trong kịch bản tự động (chỉ đã compile + build).
+- CHƯA: xem RoomHud bằng mắt (Builds/NetworkRoom/chay_phong_thu_cong.bat), đội 4 người thật, test 'chủ phòng thoát giữa chừng' bằng bản build mới, nối phòng -> nạp map (T-028), voice (T-029). T-026 -> REVIEW; T-029 mở khóa. Cổng 7777 đã nhả. Editor không bị dùng.
+
+### 2026-10-31 10:15 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #7) | START | T-029
+- Nhận T-029 (chat giọng nói Vivox theo phòng). TẠO MỚI: Features/Network/Runtime/Voice/* (asmdef TheReturn.Network.Voice, VoiceChatService, VoiceHud, VoiceAutoRun) và gắn vào scene NetworkRoomTest (mở Additive, không đụng scene đang mở). KHÔNG đổi manifest/Relay/luật phòng. Vivox cần bật trong Unity Cloud dashboard: nếu bị từ chối sẽ báo chủ dự án. Mức dự kiến: 3 + 4 một phần (vào kênh, thấy nhau); nghe thật cần 2 người + micro.
+
+### 2026-10-31 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #7) | NET-TEST START (Relay + thoại, chỉ bản build) | T-029
+- Đã tạo Features/Network/Runtime/Voice/{asmdef, VoiceChatService.cs, VoiceHud.cs}, gắn vào NetworkRoomTest (Additive, SchoolFloorPrototype không đụng), build lại Builds/NetworkRoom (0 lỗi/0 cảnh báo). Sắp chạy kịch bản Relay 2 người có thoại. KHÔNG dùng Editor/Play Mode, KHÔNG dùng cổng LAN 7777.
+
+### 2026-10-31 10:19 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #8) | PROGRESS | T-033
+- Chủ dự án nhắc: lỗi 1 và 3 giống nhau, tìm nguyên nhân gốc chung rồi sửa cho TẤT CẢ phòng/hành lang. PlayMode hiện 20/20 xanh (không bắt được lỗi) nên đang đọc MissionRegistry/MapProgress/bảng cổng để tìm điều kiện test không phủ. Chưa sửa gì. Editor.log: không có exception liên quan.
+
+### 2026-10-31 UTC | Claude Sonnet 5.5 (chat, phiên #6) | DONE | T-022 (duyệt)
+- Chủ dự án: 8 câu cứ theo mặc định nếu AI thấy ổn nhất. AI kiểm thêm (chỉ đọc): đo scene SchoolFloorPrototype (bục Choir cách 3/4/3 m, hai đầu 10 m; 4 trạm TeacherTruth cách nhau 2,4-3,8 m; đèn lồng Point range 6 m), đọc TeacherSaysGenerator.IsValid (người nghe khác đoạn trước, đủ mọi người), ChoirRules.Online (2,0 s cố định). Kết quả: 7 mặc định giữ, 1 đổi (Choir online 3/2,5/2 s theo N). Sửa 1 chỗ SAI trong bản đề xuất đầu (câu 6, TeacherSays). Ghi DECISIONS/2026-10-31-t022-team-size.md; T-022 chuyển sang TASKS_DONE; T-031 chỉ còn chờ T-027; BOARD đã sinh lại.
