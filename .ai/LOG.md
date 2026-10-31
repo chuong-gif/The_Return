@@ -208,3 +208,9 @@
 
 ### 2026-10-31 UTC | Claude Sonnet 5.5 (chat, phiên #6) | DONE | T-022 (duyệt)
 - Chủ dự án: 8 câu cứ theo mặc định nếu AI thấy ổn nhất. AI kiểm thêm (chỉ đọc): đo scene SchoolFloorPrototype (bục Choir cách 3/4/3 m, hai đầu 10 m; 4 trạm TeacherTruth cách nhau 2,4-3,8 m; đèn lồng Point range 6 m), đọc TeacherSaysGenerator.IsValid (người nghe khác đoạn trước, đủ mọi người), ChoirRules.Online (2,0 s cố định). Kết quả: 7 mặc định giữ, 1 đổi (Choir online 3/2,5/2 s theo N). Sửa 1 chỗ SAI trong bản đề xuất đầu (câu 6, TeacherSays). Ghi DECISIONS/2026-10-31-t022-team-size.md; T-022 chuyển sang TASKS_DONE; T-031 chỉ còn chờ T-027; BOARD đã sinh lại.
+
+### 2026-10-31 UTC | Claude Sonnet 5.5 (chat, phiên #6) | START | T-030 (bước 1: tài liệu thiết kế)
+- Chủ dự án giao làm tiếp task rảnh. Chỉ viết PLANS/T-030-host-migration-design.md (theo T-030-brief), KHÔNG code, KHÔNG đụng Features/Network, Domain, scene. Có tra tài liệu NGO/Unity Multiplayer Services trên web.
+
+### 2026-10-31 UTC | Claude Sonnet 5.5 (chat, phiên #6) | DONE (chỉ tài liệu, chờ duyệt) | T-030 bước 1
+- Tạo PLANS/T-030-host-migration-design.md: sự thật đã tra (NGO không có chuyển host; Sessions chỉ có bầu host + IMigrationDataHandler mặc định cho Entities; Relay hết hiệu lực khi host mất), hiện trạng repo (đọc code), 6 kịch bản, 4 phương án (khuyến nghị C: nhật ký sự kiện + bầu ô nhỏ nhất), cái sẽ mất, 9 rủi ro, kế hoạch S0-S6 (9-16 phiên AI ước lượng), 7 câu hỏi cho chủ dự án. Không chạy thử mạng, không sửa code/scene/Domain. Việc cần chủ dự án: duyệt hướng và giúp chạy S0 với 2 máy.
