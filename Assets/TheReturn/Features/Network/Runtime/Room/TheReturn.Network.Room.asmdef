@@ -1,0 +1,11 @@
+{
+  "name": "TheReturn.Network.Room",
+  "rootNamespace": "TheReturn.Network.Room",
+  "references": [
+    "TheReturn.Network",
+    "TheReturn.Network.Framework",
+    "Unity.Netcode.Runtime",
+    "Unity.Collections",
+    "Unity.Services.Multiplayer"
+  ]
+}

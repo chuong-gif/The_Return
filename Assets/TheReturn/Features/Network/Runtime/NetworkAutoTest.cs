@@ -1,10 +1,12 @@
 // Mục đích: công cụ KIỂM THỬ cho T-009 S1 (không dùng khi chơi thật). Cho bản build/Editor tự host hoặc client LAN qua tham số dòng lệnh,
 //   tự di chuyển người chơi do mình sở hữu, và ghi log vị trí mọi người chơi đã spawn để kiểm tra đồng bộ OwnerNetworkTransform.
-// Tham số dòng lệnh: -netauto host|client   -netmove   -netquit <giây>
+// Tham số dòng lệnh: -netauto host|client|relayhost|relayclient   -netmove   -netquit <giây>
+//   (T-023) Relay: -netproto dtls|wss|udp   -netregion <vùng>   -netcode <mã phòng> (cho relayclient)
 // Hàm: Awake, Update, StartMoveIfReady, LogSnapshot.
 using System;
 using System.Globalization;
 using Unity.Netcode;
+using Unity.Services.Multiplayer;
 using UnityEngine;
 
 namespace TheReturn.Network
@@ -26,6 +28,10 @@ namespace TheReturn.Network
         private float _moveElapsed = -1f;
         private bool _started;
         private bool _moveDone;
+        private string _code = "";
+        private string _proto = "";
+        private string _region = "";
+        private NetworkSessionState _lastState = NetworkSessionState.Idle;
 
         /// <summary>Đọc tham số dòng lệnh khi khởi động. Nhận/Trả: không.</summary>
         private void Awake()
@@ -35,6 +41,9 @@ namespace TheReturn.Network
             {
                 if (args[i] == "-netauto" && i + 1 < args.Length) _mode = args[i + 1].ToLowerInvariant();
                 else if (args[i] == "-netmove") AutoMove = true;
+                else if (args[i] == "-netcode" && i + 1 < args.Length) _code = args[i + 1].Trim();
+                else if (args[i] == "-netproto" && i + 1 < args.Length) _proto = args[i + 1].ToLowerInvariant();
+                else if (args[i] == "-netregion" && i + 1 < args.Length) _region = args[i + 1].Trim();
                 else if (args[i] == "-netquit" && i + 1 < args.Length)
                     float.TryParse(args[i + 1], NumberStyles.Float, CultureInfo.InvariantCulture, out _quitAfter);
             }
@@ -51,6 +60,20 @@ namespace TheReturn.Network
                 _started = true;
                 if (_mode == "host") session.StartLanHost();
                 else if (_mode == "client") session.StartLanClient();
+                else if (_mode == "relayhost" || _mode == "relayclient")
+                {
+                    if (_proto == "wss") session.RelayProtocolChoice = RelayProtocol.WSS;
+                    else if (_proto == "udp") session.RelayProtocolChoice = RelayProtocol.UDP;
+                    else if (_proto == "dtls") session.RelayProtocolChoice = RelayProtocol.DTLS;
+                    if (_region != "") session.RelayRegion = _region;
+                    Debug.Log("[NetTest] RELAY mode=" + _mode + " proto=" + session.RelayProtocolChoice + " region=" + session.RelayRegion + " code=" + _code);
+                    if (_mode == "relayhost") session.StartRelayHost(); else session.JoinRelayByCode(_code);
+                }
+            }
+            if (session != null && session.State != _lastState)
+            {
+                _lastState = session.State;
+                Debug.Log("[NetTest] STATE=" + session.State + " | " + session.StatusText + " | code=" + session.JoinCode);
             }
             StartMoveIfReady();
             if (Time.realtimeSinceStartup >= _nextLog)

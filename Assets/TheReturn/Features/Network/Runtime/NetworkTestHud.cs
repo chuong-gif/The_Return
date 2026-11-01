@@ -1,6 +1,7 @@
 // Mục đích: HUD thử nhỏ (IMGUI, góc trái trên) cho T-009 S1: Host/Join LAN, Host/Join Relay bằng mã, Rời phòng. F1 ẩn/hiện.
-// Hàm: Update, OnGUI.
+// Hàm: Update, NextProtocol, OnGUI. (T-023: nút đổi giao thức Relay DTLS/WSS/UDP)
 using Unity.Netcode;
+using Unity.Services.Multiplayer;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,11 +21,19 @@ namespace TheReturn.Network
             if (kb != null && kb.f1Key.wasPressedThisFrame) _visible = !_visible;
         }
 
+        /// <summary>Xoay vòng giao thức Relay DTLS -> WSS -> UDP -> DTLS. Nhận: giao thức hiện tại. Trả: giao thức kế.</summary>
+        private static RelayProtocol NextProtocol(RelayProtocol p)
+        {
+            if (p == RelayProtocol.DTLS) return RelayProtocol.WSS;
+            if (p == RelayProtocol.WSS) return RelayProtocol.UDP;
+            return RelayProtocol.DTLS;
+        }
+
         /// <summary>Vẽ HUD theo trạng thái phiên. Nhận/Trả: không.</summary>
         private void OnGUI()
         {
             if (!_visible || session == null) return;
-            GUILayout.BeginArea(new Rect(10, 10, 260, 300), GUI.skin.box);
+            GUILayout.BeginArea(new Rect(10, 10, 300, 340), GUI.skin.box);
             GUILayout.Label("T-009 S1 - Online test (F1 ẩn)");
             GUILayout.Label(session.StatusText);
             if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsListening)
@@ -36,6 +45,7 @@ namespace TheReturn.Network
                     if (GUILayout.Button("Host LAN (localhost)")) session.StartLanHost();
                     if (GUILayout.Button("Join LAN (127.0.0.1)")) session.StartLanClient();
                     GUILayout.Space(6);
+                    if (GUILayout.Button("Giao thức Relay: " + session.RelayProtocolChoice + " (bấm để đổi)")) session.RelayProtocolChoice = NextProtocol(session.RelayProtocolChoice);
                     if (GUILayout.Button("Tạo phòng Relay")) session.StartRelayHost();
                     GUILayout.BeginHorizontal();
                     _code = GUILayout.TextField(_code, 8, GUILayout.Width(110));
