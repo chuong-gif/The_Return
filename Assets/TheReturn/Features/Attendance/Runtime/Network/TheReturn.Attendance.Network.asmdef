@@ -1,0 +1,9 @@
+{
+  "name": "TheReturn.Attendance.Network",
+  "rootNamespace": "TheReturn.AttendanceNet",
+  "references": [
+    "TheReturn.Attendance.Domain",
+    "TheReturn.Network.Framework"
+  ],
+  "noEngineReferences": true
+}
