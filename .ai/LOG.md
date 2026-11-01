@@ -10,6 +10,7 @@
 - Chỉ ghi sự kiện có giá trị lâu dài: thay đổi kiến trúc, hoàn thành task, kết quả kiểm thử, lỗi mới hoặc quyết định của chủ dự án.
 - Không ghi từng bước thao tác, PREFLIGHT thông thường hoặc nội dung đã có đầy đủ trong tài liệu khác.
 - Mỗi mục tối đa 3 dòng, 500 ký tự; chi tiết dài chuyển sang tài liệu chuyên biệt.
+
 - Ghi rõ mức xác minh: 1 = tạo/sửa file; 2 = kiểm tra nội dung; 3 = compile; 4 = kiểm thử thực tế; 5 = chủ dự án xác nhận.
 - Chỉ ghi kết quả đã quan sát. Phân biệt rõ điều đã xác minh, điều chưa kiểm tra và giả thuyết.
 - Khi tiếp quản task, đọc `CURRENT.md` và `TASKS.md`, sau đó tra LOG theo ID task nếu cần. Không đọc toàn bộ nhật ký cũ mặc định.
@@ -237,3 +238,73 @@
 
 ### 2026-10-31 UTC | Claude Sonnet 5.5 (chat, phiên #6) | HỦY | T-030
 - Chủ dự án bỏ chuyển host (host off thì cả đám rời phòng) để game xong nhanh. Ghi DECISIONS/2026-10-31-t030-no-host-migration.md (ghi đè câu 3 của 2026-10-29); T-030 sang TASKS_DONE trạng thái HỦY; đánh dấu HỦY đầu PLANS/T-030-host-migration-design.md; sửa brief T-028, PLANS/T-009; BOARD sinh lại. Không đụng code. Mặc định AI (chưa được xác nhận): ai rời giữa ván thì ván kết thúc, không vào lại.
+
+### 2026-10-31 15:34 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #8) | PROGRESS | T-033
+- NGUYÊN NHÂN GỐC bug 1+3 (đã chẩn đoán): bắt đầu khu cần cả đội trong hộp preparationZone sâu chỉ 4 m, người chơi thật đi sâu/tản ra nên không đủ, cửa tự đóng sau 3 s. Lần làm trước đã SỬA code (SchoolPreparationGate.CountEntered/IsEntered, MissionFlowController, SchoolFloorCanvasPresenter) và viết SchoolFloorWalkPlayTests (đi bộ thật bằng CharacterController) nhưng hết token trước khi ghi LOG/chạy test. Kế hoạch: PLANS/T-033-owner-bugs-1029.md. CHƯA xác minh: sẽ chạy EditMode + PlayMode ngay. Bug 2 và 4 chưa chẩn đoán.
+
+### 2026-10-31 15:45 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #8) | PROGRESS | T-033
+- BUG 1+3 ĐÃ SỬA VÀ XÁC MINH (mức 4, đi bộ thật bằng CharacterController): EveryGate_TeamWalksDeeperIntoArea_StartsItsArea(4 người, mọi cổng có nhiệm vụ) xanh; AfterPhong1_WalkingTeam_StartsNextAreas(2,4) xanh; Corridor_HandoverThenTeamAtGoal_CompletesAndOpensDoors(2,4) xanh. Nguyên nhân gốc: hộp preparationZone bên trong chỉ sâu 4 m nên người chơi đi sâu/tản ra không đủ cả đội; sửa bằng SchoolPreparationGate.CountEntered/IsEntered (enteredDepth 30 m, enteredSideMargin 14 m) dùng trong MissionFlowController. Test đỏ-trước-sửa chỉ chứng minh bằng suy luận (điểm đích 13,5 m ngoài hộp 2,5-6,5 m), CHƯA chạy lại bản cũ.
+- Bug 4: nguyên nhân = AreaHudProviders của 6 nhiệm vụ mới không điền Prompt/Controls; chuẩn bị sửa. Bug 2: đang kiểm TryToggleStation.
+
+### 2026-10-31 15:55 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #9) | PROGRESS (mức 3 một phần; BỊ CHẶN bởi lỗi biên dịch của phiên khác) | T-027
+- Xong: (1) luật host thêm PlankCardMode + toạ độ thẻ (PlankDropSpot trong IPlankWorld); (2) PlankCodec + 24 test mới, TheReturn.PlankAndKey.Network.Tests = 45/45 xanh; (3) MissionNetBridge (Features/Network/Online); OnlinePartySlots thêm Roster/SlotOf/TryGetClient; OnlinePartyLocalDriver thêm Seated; (4) asmdef mới TheReturn.PlankAndKey.Online: PlankLane, PlankOnlineHost, PlankOnlineClient. Các dll mới đã biên dịch được (Library/ScriptAssemblies).
+- CHƯA chạy được trong Editor: Console có 1 lỗi KHÔNG phải của tôi: Assets/TheReturn/Maps/SchoolFloor/Tests/PlayMode/SchoolFloorWalkPlayTests.cs(234,41) CS0012 'PuzzleDoor' nằm trong assembly TheReturn.Shared mà TheReturn.SchoolFloor.PlayTests.asmdef chưa tham chiếu (file sửa lúc 15:48 bởi phiên #8, T-033). Lỗi này chặn nạp domain mới cho cả team. Tôi KHÔNG sửa file/asmdef của #8. Đề nghị #8: thêm "TheReturn.Shared" vào references của asmdef đó.
+- Phiên #8 đang sửa SchoolFloorPrototype.unity (15:44): tôi sẽ KHÔNG đụng scene thật; chỉ dựng scene thử riêng NetworkPlankTest khi Editor nạp lại được.
+
+### 2026-10-31 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #6) | START | T-034
+- Chủ dự án nhờ: (1) sửa hiển thị sai của các phòng mới vừa thêm vào scene (nghi đổ bóng), (2) thêm collider cho tường các phòng, (3) chỉnh cỡ cửa chặn khớp phòng mới. Làm trên SchoolFloorPrototype (đã chụp snapshot BeforeNewRooms_*; bị .gitignore). PREFLIGHT: scene dirty=False, không Play, không compile; cây git còn nhiều thay đổi của phiên #7/#8/#9 chưa commit (T-027, T-033) - không đụng các file đó. T-033 (#8) từng sửa cổng bằng CountEntered; phiên #6 chỉ sửa DỮ LIỆU scene (kích thước blocker/vùng), không sửa code cổng.
+
+### 2026-10-31 20:41 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #8) | DONE (mức 3-4, chưa chơi tay) | T-033
+- Xong 4 bug chủ dự án báo. Bug 1+3 (đã sửa từ lần trước, xác minh bằng test đi bộ thật): hộp «vào khu» chỉ sâu 4 m nên người thật đi sâu/tản ra không đủ cả đội, cửa tự đóng sau 3 s. Bug 2: người giữ nút B (bắt buộc đứng sát nút, thường ngoài ranh giới goalZone) làm AllAcross không bao giờ đủ; test đi bộ + giữ nút đỏ rồi xanh (2 và 4 người). Bug 4: provider HUD 6 khu mới thiếu Prompt/Controls; đã điền (FillHud đọc lại đúng cho 6 khu). Thêm phòng ngừa: IsPartyBody để đồng đội đứng chắn không làm mất tương tác (6 test EditMode mới).
+- File sửa: Core/Runtime/Players/PrototypePartyController.cs, Features/{QuietCorridor,GradeRepair,NavigationExam,TeacherTruth,DontLookBack}/Runtime/Presentation/*Prototype.cs, Maps/SchoolFloor/Runtime/{SchoolPreparationGate,Missions/MissionFlowController,UI/AreaHudProviders,UI/SchoolFloorCanvasPresenter}.cs (4 file sau từ lần làm trước), Tests: SchoolFloorWalkPlayTests.cs, PrototypePartyControllerInteractionTests.cs (mới).
+- XÁC MINH: EditMode 279/279; PlayMode SchoolFloorFlowPlayTests 11/11; Corridor_RealisticHandover 2/2; Console 0 lỗi/cảnh báo. KHÔNG chạy lại EveryGate_TeamWalksDeeperIntoArea (6 phút) vì lần này không đụng luồng cổng; không nhìn tận mắt chữ gợi ý trên màn hình thật. CÒN: chủ dự án chơi thật xác nhận (nhất là hành lang 1 và chữ «bấm E» ở Phong_6).
+
+### 2026-10-31 21:05 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #8) | PROGRESS (mức 4 mô phỏng) | T-033
+- Chủ dự án chơi thật: hành lang 1 «giữ trật tự» vẫn không hoàn thành dù đứng trong PreparationZone của cổng «Hanh lang 2_Ra» (nơi có biển «VÙNG ĐÍCH / CHỜ ĐỦ CẢ ĐỘI»). NGUYÊN NHÂN GỐC LẦN 2: luật hoàn thành dùng hộp QuietCorridor_LogicOnly/Team_Goal chỉ sâu 5 m, còn biển GoalLabel và PreparationZone của cổng ra nằm NGOÀI hộp đó (biển lệch 0,8 m). Sửa: mở rộng Team_Goal trong PF_QuietCorridor.prefab để bao cả PreparationZone cổng ra (center local (-0.13,-0.08,6.46), size (16.38,4.05,17.93)). Backup prefab cũ: Temp/T033_backup/PF_QuietCorridor.prefab.bak. Scene đã lưu, dirty=False.
+- Test mới Corridor_TeamStandsInExitGatePreparationZone_Completes (2 và 4 người, không ai giữ nút, cả đội đứng giữa PreparationZone cổng ra) xanh. Chưa chạy bản đỏ-trước-sửa; bằng chứng đỏ: biển và tâm vùng cổng ra nằm ngoài hộp cũ (đo trực tiếp). Chưa chạy lại cả bộ test. CÒN: chủ dự án chơi thật xác nhận.
+
+### 2026-10-31 21:16 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #9) | NET-TEST START | T-027
+- Lỗi biên dịch của #8 đã hết (asmdef PlayTests được thêm TheReturn.Shared lúc 17:02); EditMode 430/430 xanh. Đã dựng scene thử Features/Network/Scenes/NetworkPlankTest.unity (bản sao NetworkPartyTest + PF_PlankAndKey đặt ở gốc toạ độ + hai bờ BankA/BankB có khe giữa + đối tượng PlankOnline gồm NetworkObject, MissionNetBridge, PlankOnlineHost, PlankOnlineClient; đội 2 người). KHÔNG đụng SchoolFloorPrototype (phiên #6 đang làm T-034 trên scene đó).
+- Sắp: chuyển scene mở trong Editor sang NetworkPlankTest, Play Mode, host LAN cổng 7777 một mình. Xong sẽ MỞ LẠI SchoolFloorPrototype và ghi NET-TEST END. Phiên khác ĐỪNG vào Play Mode/đổi scene Editor đến lúc đó.
+
+### 2026-10-31 21:19 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #9) | NET-TEST END | T-027
+- Đã dừng Play Mode, cổng 7777 nhả, scene Editor mở lại là SchoolFloorPrototype (dirty=False); NetworkPlankTest đã lưu, không dirty. Kết quả host một mình: xem DONE bên dưới.
+### 2026-10-31 21:19 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #9) | DONE (mức 3 + mức 4 host một mình; CHƯA 2 máy thật) | T-027
+- Làm thêm so với PROGRESS trước: dựng scene thử Features/Network/Scenes/NetworkPlankTest.unity (bản sao NetworkPartyTest; Ground cũ tắt; BankA/BankB có khe |z|<4; PF_PlankAndKey ở gốc toạ độ; PlankOnline = NetworkObject + MissionNetBridge + PlankOnlineHost + PlankOnlineClient; đội 2 người); build Builds/NetworkPlank/NetworkPlank.exe (development, 73s, 0 lỗi 4 cảnh báo) + chay_host.bat + chay_client.bat.
+- Kiểm: EditMode 430/430; TheReturn.PlankAndKey.Network.Tests 45/45; Play Mode (Editor host một mình) đủ vòng nhặt thẻ, đứng ván + gạt cần (ván chạy 6s, người + thẻ đi theo, seated=True), đến nơi (phiên bản host = bản sao = 3), từ chối lệnh sai bờ và lệnh rác (phiên bản không đổi, lý do lên HUD), Retry (về đầu khe, thẻ về chỗ, ResetCount 1). Console 0 lỗi/cảnh báo.
+- KHÔNG sửa: Domain PlankAndKey, PlankAndKeyPrototype, SchoolFloorPrototype, prefab PF_PlankAndKey, NetworkSessionService/Room/Voice. Có sửa (file của tôi): OnlinePartySlots, OnlinePartyLocalDriver (T-025). Build Settings: công cụ build TỰ THÊM NetworkPartyTest và NetworkPlankTest (và có thể NetworkS1Test từ lần của #7) vào danh sách: chưa gỡ, cần chủ dự án đồng ý. Đính chính: lần trước tôi nói «khả năng thấp», thực tế là chính công cụ build.
+- CHƯA: 2 máy thật (đường client -> host qua RPC chưa chạy), đội 3-4 người, người vào lại (T-028), nối Hanh_Lang_6 trong SchoolFloorPrototype (phiên #6 đang sửa scene này, T-034; sẽ cần bản Before..., kiểm Scene lock).
+
+### 2026-10-31 21:30 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #9) | START | T-027 (sửa lỗi animation người ngồi ván)
+- Chủ dự án thử 2 máy thật xong, báo: người đứng trên ván đang chạy thì máy người kia thấy họ làm animation ĐI TẠI CHỖ dù thực tế đứng yên. Nguyên nhân (đọc PlayerAnimationDriver, T-010): driver tính Speed từ độ dời vị trí; người trên ván bị ván chở đi ~1,8 m/s nên Speed > ngưỡng 0,15 => animation đi. Cách sửa: thêm thuộc tính SuppressLocomotion vào PlayerAnimationDriver (Core, thay đổi cộng thêm, mặc định false => hành vi cũ giữ nguyên) và để PlankOnlineClient đặt true cho MỌI người đang ngồi trên ván (giữ thêm 0,4 giây sau khi đến nơi để nhân vật máy khác kịp nội suy xong).
+- Sửa file: Core/Runtime/Players/PlayerAnimationDriver.cs, Features/PlankAndKey/Runtime/Online/PlankOnlineClient.cs. Sẽ ghi NET-TEST START/END khi vào Play Mode kiểm.
+
+### 2026-10-31 21:33 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #9) | DONE (mức 3; chưa xác minh bằng mắt) | T-027 (sửa animation người ngồi ván)
+- Sửa xong theo nguyên nhân đã ghi ở START: PlayerAnimationDriver (Core) thêm SuppressLocomotion (mặc định false, hành vi cũ giữ nguyên) và hàm thuần HorizontalVelocity dùng trong LateUpdate; PlankOnlineClient.UpdateRiderAnimations đặt cờ cho mọi người đang Crossing và giữ 0,4 s sau đó. Test mới Features/Network/Tests/EditModeOnline/PlayerAnimationDriverVelocityTests.cs (7 test). EditMode toàn dự án 437/437 xanh, Console 0 lỗi.
+- KHÔNG làm được: kiểm trong Play Mode và build lại Builds/NetworkPlank vì scene đang mở trong Editor là SchoolFloorPrototype với dirty=True (có thay đổi CHƯA LƯU của phiên khác, nhiều khả năng #6 / T-034 hoặc chủ dự án). Tôi không chuyển scene và không build để tránh làm mất hoặc tự lưu thay đổi đó. Cần: scene được lưu/đóng, sau đó tôi build lại và chủ dự án thử 2 máy. Không có NET-TEST START nào đang mở.
+
+### 2026-10-31 21:33 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #9) | NET-TEST START | T-027
+- Scene Editor đã hết dirty nên tôi kiểm lại bản sửa animation: mở NetworkPlankTest, Play Mode, host LAN 7777 một mình, đo Speed của Animator khi ngồi ván. Xong sẽ mở lại SchoolFloorPrototype và ghi NET-TEST END (kèm build lại Builds/NetworkPlank).
+
+### 2026-11-01 04:33 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #9) | NET-TEST END | T-027
+- Đã dừng Play Mode, cổng 7777 nhả, mở lại SchoolFloorPrototype (dirty=False). NetworkPlankTest không dirty. Đính chính mục DONE ngay trước: lúc đó scene đang dirty nên tôi chưa kiểm được; sau đó scene hết dirty nên tôi đã kiểm và build lại như dưới đây.
+### 2026-11-01 04:33 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #9) | DONE (mức 4 một phần: host một mình đã đo; CHƯA xem bằng mắt trên 2 máy) | T-027 (sửa animation người ngồi ván)
+- Play Mode (Editor host một mình, NetworkPlankTest): trong lúc ván chạy (phase=Crossing, avatar đi theo ván z=2.47) SuppressLocomotion=True và Speed của Animator = 0.000, Forward = 0 (trước khi sửa Speed đọc theo độ dời ~1,8 m/s nên > ngưỡng 0,15). Sau khi đến nơi: SuppressLocomotion=False, Seated=False (đứng). Console 0 lỗi/cảnh báo. EditMode toàn dự án 437/437.
+- Lưu ý: ở máy chủ nhân vật (owner) clip hiện «Sitting» vì OnlinePartyLocalDriver.Seated chỉ đặt cho nhân vật của chính máy đó; thân của họ bị ẩn nên không ai thấy. Máy khác thấy nhân vật đó Seated=false (đứng, Idle) vì Seated không được gửi qua mạng.
+- Build lại Builds/NetworkPlank/NetworkPlank.exe (development, 35s, 0 lỗi 4 cảnh báo) với bản sửa; chay_host.bat/chay_client.bat giữ nguyên. Chủ dự án cần thử lại 2 máy để xác nhận bằng mắt người kia hết đi tại chỗ khi đứng trên ván.
+
+### 2026-11-01 05:27 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #8) | PROGRESS (mức 2-3) | T-033
+- Chủ dự án báo: giữ E ở hành lang 1 thì nhân vật phát hoạt họa NGỒI dù không phải ghế. Nguyên nhân: QuietCorridorPrototype gọi party.TickInput(IsHolding(...)); tham số seated vừa khóa đi lại vừa bật PlayerAnimationDriver.Seated. Sửa: TickInput(bool seated, bool showSeatedPose = true); QuietCorridor gọi với false. Ghế thật (Attendance) và PlankAndKey giữ nguyên hành vi. Backup: Temp/T033_backup/*.seated.bak. File: Core/Runtime/Players/PrototypePartyController.cs, Features/QuietCorridor/.../QuietCorridorPrototype.cs, test mới Core/Tests/EditMode/PrototypePartyControllerSeatedPoseTests.cs.
+- XÁC MINH: EditMode TheReturn.Core.Tests 26/26 (3 test mới); Console 0 lỗi. KHÔNG chạy Play Mode (chưa nhìn tận mắt hoạt họa); chưa chạy lại bộ test khác. CÒN: chủ dự án chơi thật xác nhận hết ngồi khi giữ E.
+
+### 2026-11-01 05:55 UTC | Claude Sonnet 5.5 (chat + Unity MCP, phiên #7) | START | T-031 (dòng Attendance)
+- Nhận dòng Attendance trong PLANS/T-031-remaining-missions.md (T-031 -> IN-PROGRESS, mỗi AI nhận 1 dòng). T-028 để trống: động scene map SchoolFloorPrototype đang dirty của phiên #6 (T-034). Làm theo mẫu PLANS/T-027-plank-network-pattern.md; chỉ tạo file MỚI trong Features/Attendance/Runtime/Network + Tests/EditModeNet (+ Online + scene thử riêng sau), KHÔNG sửa Domain Attendance, KHÔNG đụng scene map.
+- DỌN BUILD SETTINGS: manage_build tự thêm scene vào Build Settings; đã gỡ NetworkS1Test (do build thử của mình để lại). Còn NetworkPartyTest, NetworkPlankTest (của #9, bạn nhớ gỡ khi xong). NetworkRoomTest không có trong danh sách.
+
+### 2026-11-01 | Claude Sonnet 5.5 | START | T-035
+- Đóng gói source Unity để chia sẻ; giữ Assets (trừ ThirdParty có license), Packages, ProjectSettings và tài liệu AI.
+- Loại Library/cache, Builds, Git, Backups, Captures và dữ liệu editor cục bộ; không chỉnh sửa scene hay mã nguồn.
+
+### 2026-11-01 | Claude Sonnet 5.5 | DONE | T-035
+- ZIP 76.1 MB, 1,591 tệp; kiểm tra ZIP integrity và xác nhận mã, scene, `.meta`, cấu hình Unity, tài liệu AI cùng các tệp untracked hiện có.
+- ThirdParty Asset Store, Library/cache, Builds, Git và dữ liệu backup/editor bị loại; người nhận cài ThirdParty bằng license riêng theo manifest.

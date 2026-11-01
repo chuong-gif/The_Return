@@ -28,5 +28,9 @@ Khu / vai trò: Hanh_Lang_6 (nhiệm vụ MỚI, T-006b). Cập nhật: 2026-10-
 
 - 2026-10-31 05:04 UTC (phiên #9, T-027): thêm lớp mạng thuần C# Runtime/Network (asmdef TheReturn.PlankAndKey.Network: PlankCommand, IPlankWorld, PlankPublicState/PlankPrivateState, PlankHostRules) + 21 test EditMode xanh (Tests/EditModeNet). Domain KHÔNG đổi. CHƯA có cầu nối NGO, IPlankWorld cho Unity, Presentation online (PLANS/T-027-plank-network-pattern.md mục 6-8).
 
+- 2026-10-31 21:19 UTC (phiên #9, T-027 xong phần code): lớp online hoàn chỉnh: Runtime/Network (luật host, codec, trạng thái thẻ PlankCardMode) + Runtime/Online (asmdef TheReturn.PlankAndKey.Online: PlankLane, PlankOnlineHost, PlankOnlineClient) + cầu nối chung Features/Network/Online/MissionNetBridge. 45 test EditMode xanh (TheReturn.PlankAndKey.Network.Tests). Host một mình chạy đủ vòng nhặt thẻ -> gạt cần -> ván chạy -> đến nơi -> từ chối lệnh sai -> đặt lại trong Play Mode. CHƯA thử 2 máy thật. Scene thử: Features/Network/Scenes/NetworkPlankTest.unity; build thử Builds/NetworkPlank (chay_host.bat, chay_client.bat). Chưa nối vào Hanh_Lang_6 trong SchoolFloorPrototype (T-028). PlankAndKeyPrototype cũ giữ nguyên, chế độ 1 máy không đổi.
+
+- 2026-10-31 21:33 UTC (phiên #9): chủ dự án thử 2 máy thật: chạy được, chỉ lỗi người đứng trên ván chạy bị máy kia thấy làm animation ĐI TẠI CHỖ (PlayerAnimationDriver tính Speed từ độ dời vị trí nên bị ván chở đi cũng thành đi bộ). Đã sửa: PlayerAnimationDriver.SuppressLocomotion + hàm thuần HorizontalVelocity (7 test EditMode xanh) và PlankOnlineClient.UpdateRiderAnimations đặt cờ cho MỌI người đang ngồi ván (giữ thêm 0,4 s sau khi đến nơi). CHƯA xác minh bằng mắt trên 2 máy: cần build lại Builds/NetworkPlank (xem LOG).
+
 ## D. Task liên quan
 - T-006b DONE (Domain). T-006b2 IN-PROGRESS: S2-S3 xong (PlankSession, PlankSettings, asset); S4-S6 (Presentation, adapter, đăng ký, dựng scene, Play Mode) chờ Scene lock của phiên #3.

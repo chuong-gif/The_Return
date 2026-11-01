@@ -7,5 +7,5 @@ Trạng thái: code 12 khu + HUD theo khu + MainMenu/Party/Settings + âm thanh 
 Cảnh báo:
 - Chạy Play Mode: đặt Cursor.lockState=Locked mới thấy HUD. Không chạy builder/migration cũ (menu The Return/*). Không commit/push/xóa khi chưa được yêu cầu.
 - Features/Audio TRÙNG kiểu AudioCueRules với Features/GameAudio (có thể lỗi ambiguous): chủ dự án nên XÓA thư mục Features/Audio (AI không xóa được).
-- Chờ chủ dự án CHƠI THẬT: T-006a2/b2/c/d2/e2/f, T-008, T-011, T-017..T-021. File thừa chủ dự án xóa tay: Assets/Screenshots/*.png, BreakerParts.cs (rỗng). Snapshot mới: Scenes/BeforeMissionPrefabs_20261029_043005.unity, BeforeOldMissionPrefabs_20261029_044208.unity.
+- Chờ chủ dự án CHƠI THẬT: T-033 (4 bug chủ dự án báo), T-006a2/b2/c/d2/e2/f, T-008, T-011, T-017..T-021. File thừa chủ dự án xóa tay: Assets/Screenshots/*.png, BreakerParts.cs (rỗng). Snapshot mới: Scenes/BeforeMissionPrefabs_20261029_043005.unity, BeforeOldMissionPrefabs_20261029_044208.unity.
 Chi tiết cũ: SESSIONS/CURRENT_FULL_20261022.md. Chủ dự án báo thay đổi ở OWNER_UPDATES.md (đọc 3 mục cuối).

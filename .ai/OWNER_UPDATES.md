@@ -80,3 +80,8 @@ AI khi xử lý xong mục nào thì ghi LOG `OWNER-CHANGE-PROCESSED` (không s�
 
 ### 2026-10-29 | OWNER (qua chat với Claude phiên #8, AI ghi hộ) | BÁO BUG khi chơi thật
 - (1) Cả đội tập hợp ở cửa các phòng 1-6, vào trong, cửa đóng rồi nhưng nhiệm vụ KHÔNG bắt đầu. (2) Hành lang 1 «giữ trật tự»: cả đội đứng ở vùng đích mà cửa không mở và nhiệm vụ không kết thúc. (3) Sau khi xong phòng 1, vào khu chuẩn bị của hành lang 6: cửa mở, cả đội vào, cửa đóng lại nhưng nhiệm vụ không bắt đầu; nghi mọi hành lang còn lại cũng vậy. (4) Phòng «hòa nhạc» (hợp xướng) không có chữ gợi ý bấm E để tương tác với nút.
+
+### 2026-11-01 | OWNER (qua chat với Claude phiên #9, AI ghi hộ)
+- (1) CHO PHÉP sửa scene (câu trả lời cho câu hỏi «có cho phép sửa scene map không» khi làm T-027 đưa nhiệm vụ cầu ván vào hành lang thật; nói ngày 2026-10-31). AI hiểu: được sửa SchoolFloorPrototype cho việc nối nhiệm vụ/luồng map qua mạng (T-027 tiếp, T-028, T-031); vẫn chụp snapshot (bản Before...) trước khi sửa. Phạm vi KHÔNG bao gồm Build Settings.
+- (2) Chủ dự án đã chạy thử 2 máy thật bản NetworkPlank (host + client): chơi được, kể cả bản sửa animation người ngồi ván => T-027 nghiệm thu DONE. Trước đó đã thử 2 máy bản NetworkParty (T-025): vào phòng thấy nhau, sau khi build lại thì animation đúng. Báo bug đã xử lý: (a) bản build đầu NetworkParty chỉ hiện dáng chữ T (nguyên nhân chưa rõ, hết sau khi build lại); (b) người ngồi ván bị máy kia thấy đi tại chỗ (đã sửa).
+- (3) Câu hỏi chủ dự án hỏi AI: scene nào là scene chính để thay asset môi trường => SchoolFloorPrototype (Maps/SchoolFloor/Scenes). 18 bản Before... là bản sao lưu tự tạo của AI, không dùng trong game.

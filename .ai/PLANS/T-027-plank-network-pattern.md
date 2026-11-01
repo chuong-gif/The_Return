@@ -34,16 +34,21 @@ Cập nhật: 2026-10-31 05:04 UTC (phiên #9). Phần 1-5 ĐÃ làm và có tes
 ## 5. Đã xác minh cho PlankAndKey (mức 3)
 - 21 test EditMode xanh (TheReturn.PlankAndKey.Network.Tests): đội 2/3/4, lệnh nhặt/thả/gạt/đặt lại, từ chối đúng lý do, ván chạy + đến nơi một lần, hết giờ tự đặt lại, ván thắng 3 người qua HostAuthority + ClientReplica (mọi máy thấy thắng, mỗi máy chỉ thấy tốc độ cặp sách của mình), 2 người cùng qua và thắng.
 
-## 6. CHƯA làm: cầu nối NGO (mỗi nhiệm vụ dùng lại một lớp chung)
-- NetworkBehaviour trong scene: ServerRpc nhận lệnh (đã tuần tự hóa) -> tra ô của người gửi qua OnlinePartySlots/SlotAllocator (T-025) -> HostAuthority.Submit; host gọi BuildBroadcast mỗi khi Version đổi và gửi từng gói cho đúng client (ClientRpc nhắm một client); client đưa vào ClientReplica.Receive; lệnh bị từ chối gửi lại Detail cho đúng người gửi để hiện thông báo.
-- Tuần tự hóa lệnh/trạng thái: JsonUtility hoặc INetworkSerializable; chọn một cách và dùng chung cho mọi nhiệm vụ.
+## 6. Cầu nối NGO dùng chung (ĐÃ VIẾT + chạy Play Mode host một mình, 2026-10-31 15:55 UTC; chưa chạy Play Mode vì Editor đang kẹt lỗi biên dịch của phiên khác)
+- Features/Network/Online/MissionNetBridge.cs: NetworkBehaviour đặt trên NetworkObject nằm sẵn trong scene; chỉ chuyển CHUỖI. Máy khách: SendCommand(số thứ tự, chuỗi), RequestState(). Host: SendState(clientId, phiên bản, chuỗi chung, chuỗi riêng). Giao diện IMissionHostEndpoint (OnCommand trả null nếu chấp nhận hoặc lý do từ chối; OnStateRequested) và IMissionClientEndpoint (OnState; OnRejected). Giới hạn 2048 ký tự mỗi chuỗi.
+- Mỗi nhiệm vụ chỉ cần: một Codec thuần C# (PlankCodec là mẫu: InvariantCulture, giải mã KHÔNG ném lỗi, trả false khi sai định dạng/ngoài khoảng) + Host + Client như mục 7.
+- OnlinePartySlots (T-025) thêm Roster/SlotOf/TryGetClient: host dùng để đổi mã client <-> ô; OnlinePartyLocalDriver thêm Seated (nhiệm vụ đặt true khi người chơi ngồi trên phương tiện).
 
-## 7. CHƯA làm: Unity trên host và Presentation online của PlankAndKey
-- IPlankWorld cài đặt từ vị trí avatar + vùng deckZone/khoảng cách thẻ/cần (lấy số đo từ PlankAndKeyPrototype hiện có: interactDistance + 0.8 cho thẻ, InBox(deckZone)).
-- Chạy PlankHostRules.Tick(Time.deltaTime) trên host, MarkChanged khi trả true; khi ResetCount đổi thì đưa cả đội về đầu khe và đặt ván/thẻ (như PlaceAttempt).
-- PlankAndKeyPrototype có chế độ online: không tự chạy luật; phím E/G/R gửi PlankCommand; ván/thẻ/người trên ván hiển thị từ PlankPublicState; HUD tốc độ cặp sách chỉ từ PlankPrivateState của máy này.
-- Scene: thử trong scene riêng Features/Network (tự do); đưa vào SchoolFloorPrototype/map CHỈ sau khi OWNER_UPDATES cho phép sửa scene map.
+## 7. Host + Client của PlankAndKey (ĐÃ VIẾT + chạy Play Mode host một mình, chưa chạy; asmdef TheReturn.PlankAndKey.Online)
+- PlankLane: hình học dùng chung (vị trí ván theo tiến độ, điểm đứng đầu khe, vị trí thẻ theo PlankCardMode, vùng ván). Online coi bờ A là bờ đầu khe.
+- PlankOnlineHost (chỉ chạy khi là host): dựng PlankHostRules theo OnlinePartySlots.TeamSize, IPlankWorld lấy từ vị trí nhân vật + PlankInteractable + deckZone, Tick đồng hồ, phát trạng thái mỗi khi Version đổi, trả trạng thái khi client hỏi.
+- PlankOnlineClient (mọi máy): E/G/R -> lệnh; vẽ ván/thẻ/nhãn/HUD từ ClientReplica; người ngồi trên ván được đưa đi theo ván TRÊN MÁY CỦA CHÍNH HỌ (nhân vật do chủ máy điều khiển, host không đẩy vị trí); về đầu khe khi ResetCount đổi; xin lại trạng thái mỗi giây cho tới khi nhận được gói đầu.
+- PlankAndKeyPrototype cũ KHÔNG sửa: để Active = false (không gọi Begin), chỉ giữ điểm mốc.
+- Thẻ từ: luật host giữ PlankCardMode (AtHome/Held/OnFloor/OnDeck) + toạ độ làn để mọi máy vẽ giống nhau.
 
-## 8. Điều kiện để làm tiếp 6-7
-- Chủ dự án thử 2 bản của T-025 (SYSTEM_CARDS/OnlineAvatars.md mục C) và báo kết quả.
-- Phép sửa scene map nếu muốn đưa vào hành lang thật.
+## 8. Đã xác minh và còn lại (2026-10-31 21:19 UTC)
+- ĐÃ xác minh trong Play Mode (Editor làm host một mình, scene Features/Network/Scenes/NetworkPlankTest.unity): bridge spawn đúng; host dựng luật theo đội 2 người; client nhận gói đầu qua RPC; nhặt thẻ (thẻ theo tay người cầm); đứng lên ván và gạt cần: ván chạy 6 giây, người ngồi trên ván đi theo ván, thẻ theo người; đến nơi: phiên bản host = bản sao; lệnh sai bờ và lệnh sai định dạng bị host từ chối, lý do hiện lên HUD, phiên bản không đổi; Retry: cả đội về đầu khe, thẻ về chỗ cũ, ván về bờ đầu. Console 0 lỗi/cảnh báo. EditMode toàn dự án 430/430.
+- CHƯA xác minh: 2 MÁY THẬT (đường client -> RPC -> host -> RPC -> client chỉ chạy với host tự gửi cho chính mình), thắng/thua đủ đội 2-4 người trên máy thật, người vào lại.
+- Cách chủ dự án thử: Builds/NetworkPlank (không nằm trong git): bấm đúp chay_host.bat, đợi vài giây, rồi chay_client.bat. Mỗi cửa sổ: Tab khóa chuột, WASD, chuột; E nhặt thẻ / gạt cần, G thả thẻ, R làm lại. Đội mặc định 2 người (PartyRoot > OnlinePartySlots > Team Size trong scene).
+- Đưa vào SchoolFloorPrototype / Hanh_Lang_6: chủ dự án ĐÃ CHO PHÉP sửa scene (2026-10-31) nhưng phiên #6 đang sửa scene này (T-034), nên chưa làm. Việc của T-028 (luồng map qua mạng: cổng, khu chuẩn bị, MapProgress, màn thắng chạy trên host).
+- Lưu ý chung cho nhiệm vụ khác: công cụ build (manage_build) TỰ THÊM các scene được build vào Build Settings; build scene thử xong phải gỡ khỏi Build Settings.
