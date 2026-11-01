@@ -5,6 +5,8 @@
  * - LateUpdate: tính vận tốc ngang từ độ dời vị trí rồi cập nhật tham số Animator (Speed, Forward, Airborne, Seated).
  * - SetBodyVisible: ẩn/hiện thân mô hình (ẩn thân người đang điều khiển ở góc nhìn thứ nhất, vẫn đổ bóng).
  * - Seated: true thì phát pose ngồi.
+ * - HorizontalVelocity: (T-027) hàm thuần tính vận tốc ngang từ độ dời, có thể test không cần scene.
+ * - SuppressLocomotion: (T-027) true thì coi như đứng yên dù vị trí đổi (người được phương tiện chở, vd ván chạy); mặc định false.
  */
 using UnityEngine;
 
@@ -24,6 +26,8 @@ namespace TheReturn
         /// <summary>Thời gian rời mặt đất (giây) trước khi phát animation nhảy/rơi.</summary>
         public float airborneDelay = 0.06f;
         public bool Seated { get; set; }
+        /// <summary>Nhiệm vụ đặt true khi nhân vật được phương tiện chở đi (vị trí đổi nhưng người đứng yên): không phát animation đi/chạy.</summary>
+        public bool SuppressLocomotion { get; set; }
         public bool BodyVisible { get; private set; } = true;
 
         static readonly int SpeedId = Animator.StringToHash("Speed");
@@ -55,11 +59,8 @@ namespace TheReturn
         {
             float dt = Time.deltaTime;
             if (dt <= 0f || animator == null || motionRoot == null) return;
-            Vector3 velocity = (motionRoot.position - lastPosition) / dt;
+            Vector3 velocity = HorizontalVelocity(motionRoot.position - lastPosition, dt, SuppressLocomotion);
             lastPosition = motionRoot.position;
-            velocity.y = 0f;
-            // Dịch chuyển tức thời (Teleport, đứng dậy khỏi ghế): không tính là chạy.
-            if (velocity.magnitude > 20f) velocity = Vector3.zero;
 
             float speed = velocity.magnitude;
             float forward = speed > moveThreshold ? Vector3.Dot(velocity / speed, motionRoot.forward) : 0f;
@@ -74,6 +75,18 @@ namespace TheReturn
             animator.SetFloat(ForwardId, smoothForward);
             animator.SetBool(AirborneId, airTime > airborneDelay && !Seated);
             animator.SetBool(SeatedId, Seated);
+        }
+
+        /// <summary>
+        /// Nhận độ dời vị trí trong một khung hình, thời gian khung hình (giây) và cờ đang bị chở; trả vận tốc ngang (m/s).
+        /// Trả 0 khi dt không dương, khi đang bị chở (SuppressLocomotion), hoặc khi dịch chuyển tức thời (Teleport, đứng dậy khỏi ghế: trên 20 m/s).
+        /// </summary>
+        public static Vector3 HorizontalVelocity(Vector3 displacement, float dt, bool suppress)
+        {
+            if (dt <= 0f || suppress) return Vector3.zero;
+            Vector3 velocity = displacement / dt;
+            velocity.y = 0f;
+            return velocity.magnitude > 20f ? Vector3.zero : velocity;
         }
 
         /// <summary>Nhận true để hiện thân, false để ẩn (vẫn đổ bóng); không trả dữ liệu.</summary>

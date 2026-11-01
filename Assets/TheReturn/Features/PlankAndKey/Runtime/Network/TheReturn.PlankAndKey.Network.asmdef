@@ -1,0 +1,9 @@
+{
+  "name": "TheReturn.PlankAndKey.Network",
+  "rootNamespace": "TheReturn.PlankNet",
+  "references": [
+    "TheReturn.PlankAndKey.Domain",
+    "TheReturn.Network.Framework"
+  ],
+  "noEngineReferences": true
+}

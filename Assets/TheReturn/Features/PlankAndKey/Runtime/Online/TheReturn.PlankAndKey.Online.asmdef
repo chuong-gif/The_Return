@@ -1,0 +1,14 @@
+{
+  "name": "TheReturn.PlankAndKey.Online",
+  "rootNamespace": "TheReturn.PlankNet.Online",
+  "references": [
+    "TheReturn.PlankAndKey",
+    "TheReturn.PlankAndKey.Domain",
+    "TheReturn.PlankAndKey.Network",
+    "TheReturn.Network.Framework",
+    "TheReturn.Network.Online",
+    "TheReturn.Core",
+    "Unity.Netcode.Runtime",
+    "Unity.InputSystem"
+  ]
+}
