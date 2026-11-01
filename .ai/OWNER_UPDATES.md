@@ -85,3 +85,6 @@ AI khi xử lý xong mục nào thì ghi LOG `OWNER-CHANGE-PROCESSED` (không s�
 - (1) CHO PHÉP sửa scene (câu trả lời cho câu hỏi «có cho phép sửa scene map không» khi làm T-027 đưa nhiệm vụ cầu ván vào hành lang thật; nói ngày 2026-10-31). AI hiểu: được sửa SchoolFloorPrototype cho việc nối nhiệm vụ/luồng map qua mạng (T-027 tiếp, T-028, T-031); vẫn chụp snapshot (bản Before...) trước khi sửa. Phạm vi KHÔNG bao gồm Build Settings.
 - (2) Chủ dự án đã chạy thử 2 máy thật bản NetworkPlank (host + client): chơi được, kể cả bản sửa animation người ngồi ván => T-027 nghiệm thu DONE. Trước đó đã thử 2 máy bản NetworkParty (T-025): vào phòng thấy nhau, sau khi build lại thì animation đúng. Báo bug đã xử lý: (a) bản build đầu NetworkParty chỉ hiện dáng chữ T (nguyên nhân chưa rõ, hết sau khi build lại); (b) người ngồi ván bị máy kia thấy đi tại chỗ (đã sửa).
 - (3) Câu hỏi chủ dự án hỏi AI: scene nào là scene chính để thay asset môi trường => SchoolFloorPrototype (Maps/SchoolFloor/Scenes). 18 bản Before... là bản sao lưu tự tạo của AI, không dùng trong game.
+
+### 2026-11-01 | OWNER (qua chat với Claude phiên #6, AI ghi hộ)
+- Chủ dự án đã tự sửa phần phòng mới (hiển thị/va chạm/cửa chặn) mà phiên #6 làm dở; phiên #6 dừng T-034. Scene SchoolFloorPrototype do chủ dự án lưu là bản đúng.
