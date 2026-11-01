@@ -1,0 +1,10 @@
+{
+  "name": "TheReturn.Network.Voice",
+  "rootNamespace": "TheReturn.Network.Voice",
+  "references": [
+    "TheReturn.Network",
+    "TheReturn.Network.Room",
+    "Unity.Services.Core",
+    "Unity.Services.Vivox"
+  ]
+}
