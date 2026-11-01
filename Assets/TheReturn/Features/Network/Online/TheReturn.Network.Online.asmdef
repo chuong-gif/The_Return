@@ -1,0 +1,12 @@
+{
+  "name": "TheReturn.Network.Online",
+  "rootNamespace": "TheReturn.Network.Online",
+  "references": [
+    "TheReturn.Core",
+    "TheReturn.Network",
+    "TheReturn.Network.Framework",
+    "Unity.Netcode.Runtime",
+    "Unity.Collections",
+    "Unity.InputSystem"
+  ]
+}
