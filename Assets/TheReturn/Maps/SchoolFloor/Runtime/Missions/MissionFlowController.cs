@@ -6,6 +6,7 @@
  * Kiểu: GateBinding, MissionFlowController.
  * LUẬT CỬA (T-016, chủ dự án chốt): lúc đầu MỌI cửa đóng. Cả đội đứng đủ ở khu chuẩn bị NGOÀI cửa (SchoolPreparationGate.CountOutside)
  * thì cửa đó 'armed' = mở. Cả đội vào đủ vùng chuẩn bị bên trong thì nhiệm vụ bắt đầu và khóa mọi cửa. Xong khu thì cả ba lối của khu mở lại.
+ * T-033: «vào đủ» tính bằng CountEntered (vùng chuẩn bị bên trong HOẶC phía trong cửa, tầm enteredDepth/enteredSideMargin), vì người chơi thật đi sâu vào khu.
  * Khu chưa có nhiệm vụ: cửa đóng hẳn. Cửa armed tự đóng lại nếu cả đội rời cả hai vùng quá DisarmSeconds giây.
  * Hàm MissionFlowController: Awake; Start; Update; ResetFlow; TryGetGateState; GateHasMission; AreaOfGate; GateGatherCount; GatherSummary;
  * AnyMissionActive; FreeRoam; UpdateArming; TryStartFromGates.
@@ -154,6 +155,16 @@ namespace TheReturn
             return label == null ? "Chưa ai ở khu chuẩn bị" : "Khu chuẩn bị " + label.Replace('_', ' ') + ": " + best + "/" + party.PartySize;
         }
 
+        /// <summary>Không nhận tham số; trả câu hướng dẫn cho UI theo trạng thái cổng: cổng đã mở thì nhắc cả đội cùng vào trong (kèm số người đã vào), chưa thì nhắc tập hợp trước cổng.</summary>
+        public string GuideHint()
+        {
+            PrototypePartyController party = flow.attendance.party;
+            if (party == null || party.PartySize < 2) return "Cần ít nhất 2 người trong đội";
+            if (ArmedGate != null)
+                return "Cổng đã mở: cả đội cùng đi vào bên trong để bắt đầu (" + ArmedGate.CountEntered(party) + "/" + party.PartySize + " đã vào)";
+            return "Cả đội đứng đủ ở khu chuẩn bị trước cổng của khu muốn chơi để mở cổng";
+        }
+
         /// <summary>Không nhận tham số; trả true nếu có khu đang làm trong registry hoặc bất kỳ adapter nào báo Active.</summary>
         bool AnyMissionActive()
         {
@@ -203,7 +214,7 @@ namespace TheReturn
                 break;
             }
             if (ArmedGate == null) return;
-            if (ArmedGate.CountOutside(party) + ArmedGate.CountInside(party) > 0) { disarmTimer = 0; return; }
+            if (ArmedGate.CountOutside(party) + ArmedGate.CountEntered(party) > 0) { disarmTimer = 0; return; }
             disarmTimer += Time.deltaTime;
             if (disarmTimer > disarmSeconds) ArmedGate = null;
         }
@@ -218,7 +229,7 @@ namespace TheReturn
             if (ArmedGate == null || !byGate.TryGetValue(ArmedGate, out b)) return;
             PrototypePartyController party = flow.attendance.party;
             if (party == null || party.PartySize < 2) return;
-            if (ArmedGate.CountInside(party) != party.PartySize) return;
+            if (ArmedGate.CountEntered(party) != party.PartySize) return;
             if (Registry.TryBegin(b.areaId, b.entryFromId, true) == BeginResult.Started) ArmedGate = null;
         }
     }

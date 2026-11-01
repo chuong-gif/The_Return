@@ -81,7 +81,7 @@ namespace TheReturn
             Vector3 delta = target.TransformPoint(localOffset) - eye;
             if (delta.magnitude > distance || Vector3.Angle(party.viewCamera.transform.forward, delta) > 24f) return false;
             foreach (RaycastHit hit in Physics.RaycastAll(eye, delta.normalized, delta.magnitude, ~0, QueryTriggerInteraction.Ignore))
-                if (!hit.transform.IsChildOf(party.players[party.ActivePlayer]) && !hit.transform.IsChildOf(target))
+                if (!party.IsPartyBody(hit.transform) && !hit.transform.IsChildOf(target))
                     return false;
             return true;
         }

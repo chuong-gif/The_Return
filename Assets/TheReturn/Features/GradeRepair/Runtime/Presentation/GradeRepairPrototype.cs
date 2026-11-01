@@ -116,7 +116,7 @@ namespace TheReturn
             Vector3 delta = terminal.transform.position - eye;
             if (delta.magnitude > 3.2f) return false;
             foreach (RaycastHit hit in Physics.RaycastAll(eye, delta.normalized, delta.magnitude, ~0, QueryTriggerInteraction.Ignore))
-                if (!hit.transform.IsChildOf(party.players[party.ActivePlayer]) && !hit.transform.IsChildOf(terminal.transform)) return false;
+                if (!party.IsPartyBody(hit.transform) && !hit.transform.IsChildOf(terminal.transform)) return false;
             return true;
         }
 

@@ -330,7 +330,7 @@ namespace TheReturn
                 }
                 info = "Đã xong " + finished + "/" + total + " khu • Đội " + a.PartySize + " người";
                 message = finished == 0 ? "Tự chọn phòng hoặc hành lang muốn chơi, không có thứ tự cố định." : "Đã xong:" + names;
-                hint = "Cả đội đứng đủ trong khu chuẩn bị trước cổng của khu muốn chơi để bắt đầu";
+                hint = flow.missionFlow.GuideHint();
                 help = "WASD đi • 1–4 đổi vai • Tab menu";
             }
             if (prov || Phase == PhaseOther)

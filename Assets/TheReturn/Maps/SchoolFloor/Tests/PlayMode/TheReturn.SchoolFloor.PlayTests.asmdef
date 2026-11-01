@@ -1,25 +1,29 @@
 {
-  "name": "TheReturn.SchoolFloor.PlayTests",
-  "references": [
-    "TheReturn.SchoolFloor",
-    "TheReturn.SchoolFloor.Domain",
-    "TheReturn.Core",
-    "TheReturn.Attendance",
-    "TheReturn.Attendance.Domain",
-    "UnityEngine.TestRunner",
-    "UnityEditor.TestRunner"
-  ],
-  "includePlatforms": [],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": true,
-  "precompiledReferences": [
-    "nunit.framework.dll"
-  ],
-  "autoReferenced": false,
-  "defineConstraints": [
-    "UNITY_INCLUDE_TESTS"
-  ],
-  "versionDefines": [],
-  "noEngineReferences": false
+    "name": "TheReturn.SchoolFloor.PlayTests",
+    "rootNamespace": "",
+    "references": [
+        "TheReturn.SchoolFloor",
+        "TheReturn.SchoolFloor.Domain",
+        "TheReturn.Core",
+        "TheReturn.Attendance",
+        "TheReturn.Attendance.Domain",
+        "TheReturn.QuietCorridor",
+        "TheReturn.QuietCorridor.Domain",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "TheReturn.Shared"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

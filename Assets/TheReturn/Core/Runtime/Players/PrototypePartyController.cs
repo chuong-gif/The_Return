@@ -86,13 +86,13 @@ namespace TheReturn
             return true;
         }
 
-        /// <summary>Nhận trạng thái ngồi; đọc keyboard/mouse, cập nhật vị trí và góc nhìn, không trả dữ liệu.</summary>
-        public void TickInput(bool seated)
+        /// <summary>Nhận cờ khóa di chuyển (seated) và cờ có phát pose ngồi hay không (showSeatedPose, mặc định true); đọc keyboard/mouse, cập nhật vị trí và góc nhìn, không trả dữ liệu. T-033: đứng giữ nút (seated=true, showSeatedPose=false) khóa đi lại nhưng KHÔNG phát hoạt họa ngồi.</summary>
+        public void TickInput(bool seated, bool showSeatedPose = true)
         {
             IsSprinting = false;
             if (PartySize == 0) return;
             if (players[ActivePlayer] == null || controllers[ActivePlayer] == null) return; // chưa gắn nhân vật
-            if (drivers != null && drivers[ActivePlayer] != null) drivers[ActivePlayer].Seated = seated;
+            if (drivers != null && drivers[ActivePlayer] != null) drivers[ActivePlayer].Seated = seated && showSeatedPose;
             if (Cursor.lockState != CursorLockMode.Locked) return;
             var keyboard = Keyboard.current;
             var mouse = Mouse.current;
@@ -131,7 +131,15 @@ namespace TheReturn
             return grounded ? -2f : current - Gravity * dt;
         }
 
-        /// <summary>Nhận tầm với; trả true và hit gần nhất ngoài collider bản thân, giữ vật cản khác.</summary>
+        /// <summary>Nhận Transform trúng tia; trả true nếu thuộc thân của BẤT KỲ người chơi trong đội (kể cả đồng đội) để tia tương tác/nhìn thấy vật không bị đồng đội đứng chắn (T-033).</summary>
+        public bool IsPartyBody(Transform t)
+        {
+            if (t == null || players == null) return false;
+            for (int i = 0; i < players.Length; i++) if (players[i] != null && t.IsChildOf(players[i])) return true;
+            return false;
+        }
+
+        /// <summary>Nhận tầm với; trả true và hit gần nhất ngoài thân của cả đội (đồng đội không chắn tia), giữ vật cản khác.</summary>
         public bool TryGetInteractionHit(float distance, out RaycastHit nearest)
         {
             nearest = default;
@@ -141,7 +149,7 @@ namespace TheReturn
                 distance, ~0, QueryTriggerInteraction.Ignore);
             foreach (RaycastHit hit in hits)
             {
-                if (hit.transform.IsChildOf(players[ActivePlayer]) || hit.distance >= nearestDistance) continue;
+                if (IsPartyBody(hit.transform) || hit.distance >= nearestDistance) continue;
                 nearest = hit;
                 nearestDistance = hit.distance;
                 found = true;

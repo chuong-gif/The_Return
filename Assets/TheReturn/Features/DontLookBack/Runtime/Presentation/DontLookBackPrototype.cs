@@ -98,7 +98,7 @@ namespace TheReturn
                 if(delta.magnitude>3.2f)continue;
                 bool blocked=false;
                 foreach(var hit in Physics.RaycastAll(eye,delta.normalized,delta.magnitude,~0,QueryTriggerInteraction.Ignore))
-                    if(!hit.transform.IsChildOf(party.players[party.ActivePlayer])&&!hit.transform.IsChildOf(terminal))blocked=true;
+                    if(!party.IsPartyBody(hit.transform)&&!hit.transform.IsChildOf(terminal))blocked=true;
                 if(!blocked)return true;
             }
             return false;

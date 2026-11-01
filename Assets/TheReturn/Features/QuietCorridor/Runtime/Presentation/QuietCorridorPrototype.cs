@@ -79,7 +79,7 @@ namespace TheReturn
                 if (IsHolding(party.ActivePlayer)) State.Release(party.ActivePlayer);
                 else if (TargetStation >= 0) TryToggleStation(TargetStation, party.ActivePlayer);
             }
-            party.TickInput(IsHolding(party.ActivePlayer));
+            party.TickInput(IsHolding(party.ActivePlayer), false); // giữ nút: khóa đi lại nhưng không phát pose ngồi (T-033)
             TickSimulation(Time.deltaTime, party.IsSprinting ? 1 : 0);
         }
 
@@ -98,7 +98,7 @@ namespace TheReturn
             // Không thể giữ xuyên tường: bỏ collider của chính người gửi lệnh, giữ mọi vật cản khác.
             foreach (RaycastHit hit in Physics.RaycastAll(eye, (target-eye).normalized, Vector3.Distance(eye,target),
                 ~0, QueryTriggerInteraction.Ignore))
-                if (!hit.transform.IsChildOf(party.players[player]) && !hit.transform.IsChildOf(stations[station].transform))
+                if (!party.IsPartyBody(hit.transform) && !hit.transform.IsChildOf(stations[station].transform))
                     return false;
             return State.Hold(station, player);
         }
@@ -133,14 +133,14 @@ namespace TheReturn
             return false;
         }
 
-        /// <summary>Không nhận tham số; trả true nếu đủ đúng đội hiện tại đứng trong vùng sau cửa.</summary>
+        /// <summary>Không nhận tham số; trả true nếu đủ đúng đội hiện tại đứng trong vùng sau cửa. T-033: người đang giữ nút B (nút ở phía đích, bắt buộc đứng sát nút) cũng được tính là đã tới.</summary>
         public bool AllAcross()
         {
             if (party.PartySize != State.PlayerCount) return false;
             for (int i = 0; i < State.PlayerCount; i++)
                 // Dùng hộp local để hành lang xoay không nhận nhầm người còn đứng ngoài vùng đích.
                 if (!party.players[i].gameObject.activeInHierarchy ||
-                    !new Bounds(goalZone.center, goalZone.size).Contains(goalZone.transform.InverseTransformPoint(party.players[i].position))) return false;
+                    !(State.Owner(1) == i || new Bounds(goalZone.center, goalZone.size).Contains(goalZone.transform.InverseTransformPoint(party.players[i].position)))) return false;
             return true;
         }
 
