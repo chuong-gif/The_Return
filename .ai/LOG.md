@@ -244,5 +244,5 @@
 - Không push; không đổi nhánh. Chưa có dòng task riêng trong TASKS.md cho thao tác quản lý Git.
 
 ### 2026-11-11 | Git maintenance | DONE | Chia thay đổi thành commit chức năng
-- Tạo 3 commit: online mission framework, Core4/map handoff, và Unity render settings/folder metadata.
+- Tạo 3 commit chức năng: online mission framework, Core4/map handoff, Unity render settings/folder metadata; commit docs riêng.
 - Để lại scene blockout, snapshot/recovery, chỉnh vật liệu, và cài đặt editor cá nhân ngoài commit do phạm vi map còn chờ duyệt.
