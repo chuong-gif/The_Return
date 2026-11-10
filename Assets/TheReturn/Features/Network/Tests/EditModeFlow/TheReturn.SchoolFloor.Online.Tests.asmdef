@@ -1,0 +1,26 @@
+{
+  "name": "TheReturn.SchoolFloor.Online.Tests",
+  "references": [
+    "TheReturn.SchoolFloor",
+    "TheReturn.SchoolFloor.Domain",
+    "TheReturn.SchoolFloor.Online",
+    "TheReturn.Core",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

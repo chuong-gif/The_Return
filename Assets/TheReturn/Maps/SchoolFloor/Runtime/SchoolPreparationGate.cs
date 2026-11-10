@@ -55,7 +55,7 @@ namespace TheReturn
             if(!party || !preparationZone)return 0;
             int count=0;var box=new Bounds(preparationZone.center,preparationZone.size);
             for(int i=0;i<party.PartySize;i++)
-                if(party.players[i].gameObject.activeInHierarchy && box.Contains(preparationZone.transform.InverseTransformPoint(party.players[i].position)))count++;
+                if(party.players[i]!=null && party.players[i].gameObject.activeInHierarchy && box.Contains(preparationZone.transform.InverseTransformPoint(party.players[i].position)))count++;
             return count;
         }
 
@@ -97,7 +97,7 @@ namespace TheReturn
             if(!party || !preparationZone)return 0;
             int count=0;
             for(int i=0;i<party.PartySize;i++)
-                if(party.players[i].gameObject.activeInHierarchy && InOutside(party.players[i].position))count++;
+                if(party.players[i]!=null && party.players[i].gameObject.activeInHierarchy && InOutside(party.players[i].position))count++;
             return count;
         }
 

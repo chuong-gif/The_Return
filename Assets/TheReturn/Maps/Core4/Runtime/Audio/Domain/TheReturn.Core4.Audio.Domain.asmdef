@@ -1,0 +1,16 @@
+{
+  "name": "TheReturn.Core4.Audio.Domain",
+  "rootNamespace": "TheReturn.Core4.Audio",
+  "references": [
+    "TheReturn.GameAudio.Domain",
+    "TheReturn.Attendance.Network",
+    "TheReturn.Attendance.Domain",
+    "TheReturn.BreakerPanel.Network",
+    "TheReturn.BreakerPanel.Domain",
+    "TheReturn.Choir.Network",
+    "TheReturn.Choir.Domain",
+    "TheReturn.PlankAndKey.Network",
+    "TheReturn.PlankAndKey.Domain"
+  ],
+  "noEngineReferences": true
+}

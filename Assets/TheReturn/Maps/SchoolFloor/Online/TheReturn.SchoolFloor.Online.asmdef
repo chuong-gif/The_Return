@@ -1,0 +1,12 @@
+{
+  "name": "TheReturn.SchoolFloor.Online",
+  "rootNamespace": "TheReturn.SchoolFloorNet",
+  "references": [
+    "TheReturn.SchoolFloor",
+    "TheReturn.SchoolFloor.Domain",
+    "TheReturn.Network.Online",
+    "TheReturn.Network.Framework",
+    "TheReturn.Core",
+    "Unity.Netcode.Runtime"
+  ]
+}

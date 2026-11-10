@@ -1,0 +1,32 @@
+{
+  "name": "TheReturn.Core4.Audio.Domain.Tests",
+  "references": [
+    "TheReturn.Core4.Audio.Domain",
+    "TheReturn.GameAudio.Domain",
+    "TheReturn.Attendance.Network",
+    "TheReturn.Attendance.Domain",
+    "TheReturn.BreakerPanel.Network",
+    "TheReturn.BreakerPanel.Domain",
+    "TheReturn.Choir.Network",
+    "TheReturn.Choir.Domain",
+    "TheReturn.PlankAndKey.Network",
+    "TheReturn.PlankAndKey.Domain",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

@@ -1,0 +1,12 @@
+{
+  "name": "TheReturn.Network.Handoff",
+  "rootNamespace": "TheReturn.Network.Handoff",
+  "references": [
+    "TheReturn.Network",
+    "TheReturn.Network.Framework",
+    "TheReturn.Network.Room",
+    "TheReturn.Network.Online",
+    "Unity.Netcode.Runtime",
+    "Unity.Collections"
+  ]
+}

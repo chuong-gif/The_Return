@@ -1,0 +1,8 @@
+{
+  "name": "TheReturn.Core4.Domain",
+  "rootNamespace": "TheReturn.Core4",
+  "references": [
+    "TheReturn.SchoolFloor.Domain"
+  ],
+  "noEngineReferences": true
+}

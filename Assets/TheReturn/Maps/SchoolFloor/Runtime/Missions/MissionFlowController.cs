@@ -10,6 +10,8 @@
  * Khu chưa có nhiệm vụ: cửa đóng hẳn. Cửa armed tự đóng lại nếu cả đội rời cả hai vùng quá DisarmSeconds giây.
  * Hàm MissionFlowController: Awake; Start; Update; ResetFlow; TryGetGateState; GateHasMission; AreaOfGate; GateGatherCount; GatherSummary;
  * AnyMissionActive; FreeRoam; UpdateArming; TryStartFromGates.
+ * T-028 (chơi online): FlowNetRole (Offline = luồng một máy cũ, MẶC ĐỊNH; Host = chạy luật và gửi trạng thái; Client = chỉ hiển thị trạng thái host gửi);
+ * EnterOnline; ExitOnline; BuildState; ApplyRemoteState. Online không gọi FreeRoam (di chuyển do OnlinePartyLocalDriver) và chỉ đăng ký nhiệm vụ đã có bản online.
  */
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,17 @@ using UnityEngine.InputSystem;
 
 namespace TheReturn
 {
+    /// <summary>Vai của máy này trong luồng map khi chơi online (T-028).</summary>
+    public enum FlowNetRole
+    {
+        /// <summary>Chơi một máy: luồng cũ, không đổi.</summary>
+        Offline,
+        /// <summary>Máy chủ: chạy luật, bắt đầu/hoàn thành khu, gửi trạng thái cho máy khách.</summary>
+        Host,
+        /// <summary>Máy khách: không chạy luật, chỉ áp dụng trạng thái host gửi.</summary>
+        Client
+    }
+
     /// <summary>Gắn một cổng trong scene với khu của nó và với khu chuẩn bị mà đội đi từ đó tới (San, Phong_k hoặc Hanh_Lang_k).</summary>
     [Serializable]
     public sealed class GateBinding
@@ -36,6 +49,8 @@ namespace TheReturn
         public SchoolFloorFlow flow;
         [Tooltip("Một dòng cho mỗi SchoolPreparationGate (22 cổng): khu của cổng và nơi đội đi từ đó tới.")]
         public GateBinding[] bindings;
+        [Tooltip("Map mới (T-040): nếu có thì dùng topology của nó thay vòng 12 khu cũ. Để trống = hành vi cũ.")]
+        public MapTopologyProvider topology;
 
         public MissionRegistry Registry { get; private set; }
         /// <summary>True khi có nhiệm vụ nào đang chạy (kể cả nhiệm vụ do công cụ test bắt đầu ngoài registry).</summary>
@@ -46,6 +61,9 @@ namespace TheReturn
 
         /// <summary>Cổng đang được mở vì cả đội đã tập hợp ở khu chuẩn bị ngoài cửa (null = chưa cửa nào).</summary>
         public SchoolPreparationGate ArmedGate { get; private set; }
+
+        /// <summary>Vai online của máy này; Offline là mặc định (luồng một máy cũ).</summary>
+        public FlowNetRole NetRole { get; private set; }
         float disarmTimer;
 
         readonly Dictionary<SchoolPreparationGate, GateBinding> byGate = new Dictionary<SchoolPreparationGate, GateBinding>();
@@ -59,11 +77,23 @@ namespace TheReturn
                 enabled = false;
                 return;
             }
-            Registry = MissionRegistryFactory.CreateDefault(flow);
+            Registry = NewRegistry();
             byGate.Clear();
             if (bindings != null)
                 foreach (GateBinding b in bindings)
                     if (b != null && b.gate != null) byGate[b.gate] = b;
+        }
+
+        /// <summary>Không nhận tham số; trả MapProgress mới: từ topology (nếu có) hoặc vòng 6 phòng/6 hành lang cũ.</summary>
+        MapProgress NewProgress()
+        {
+            return topology != null ? topology.CreateProgress() : MapProgress.CreateRing(6, null);
+        }
+
+        /// <summary>Không nhận tham số; dựng registry mặc định từ flow trên topology hiện dùng (vòng cũ khi topology trống, nên hành vi cũ không đổi).</summary>
+        MissionRegistry NewRegistry()
+        {
+            return MissionRegistryFactory.Create(NewProgress(), flow);
         }
 
         /// <summary>Không nhận tham số; Attendance KHÔNG tự chạy: nhường quyền và tắt HUD cho tới khi đội chọn Phong_1.</summary>
@@ -78,10 +108,16 @@ namespace TheReturn
         void Update()
         {
             if (Registry == null) return;
-            if (Registry.Tick()) PrototypePartyController.SetCursor(true);
+            if (NetRole == FlowNetRole.Client)
+            {
+                // Máy khách chỉ hiển thị trạng thái host gửi (ApplyRemoteState), không chạy luật.
+                AnyActive = Registry.Progress.ActiveAreaId != null;
+                return;
+            }
+            if (Registry.Tick() && NetRole == FlowNetRole.Offline) PrototypePartyController.SetCursor(true);
             AnyActive = AnyMissionActive();
             if (AnyActive) { ArmedGate = null; return; }
-            FreeRoam();
+            if (NetRole == FlowNetRole.Offline) FreeRoam();
             UpdateArming();
             TryStartFromGates();
         }
@@ -94,6 +130,81 @@ namespace TheReturn
             AnyActive = false;
             ArmedGate = null;
             disarmTimer = 0;
+        }
+
+        /// <summary>
+        /// Nhận vai online và các adapter của những nhiệm vụ ĐÃ có bản online (Host: adapter chạy thật; Client: adapter giả chỉ để khu có nhiệm vụ).
+        /// Dựng lại registry với vòng 6 phòng/6 hành lang rỗng rồi chỉ đăng ký các adapter này, nên khu chưa có bản online có cửa đóng hẳn.
+        /// Vai Offline tương đương ExitOnline. Gọi trước khi cả đội vào chơi.
+        /// </summary>
+        public void EnterOnline(FlowNetRole role, IEnumerable<IMissionAdapter> adapters)
+        {
+            if (role == FlowNetRole.Offline)
+            {
+                ExitOnline();
+                return;
+            }
+            MissionRegistry registry = new MissionRegistry(NewProgress());
+            if (adapters != null)
+            {
+                foreach (IMissionAdapter adapter in adapters)
+                {
+                    if (adapter != null) registry.Register(adapter);
+                }
+            }
+            Registry = registry;
+            NetRole = role;
+            AnyActive = false;
+            ArmedGate = null;
+            disarmTimer = 0;
+        }
+
+        /// <summary>Không nhận tham số; quay về luồng một máy cũ (registry mặc định với mọi nhiệm vụ offline).</summary>
+        public void ExitOnline()
+        {
+            NetRole = FlowNetRole.Offline;
+            ArmedGate = null;
+            AnyActive = false;
+            disarmTimer = 0;
+            if (flow != null) Registry = NewRegistry();
+        }
+
+        /// <summary>Không nhận tham số; trả ảnh chụp luồng map để host gửi cho máy khách (null nếu chưa có registry).</summary>
+        public MapFlowState BuildState()
+        {
+            if (Registry == null) return null;
+            return MapFlowState.From(Registry.Progress, IndexOfGate(ArmedGate));
+        }
+
+        /// <summary>
+        /// Nhận ảnh chụp từ host; CHỈ máy khách áp dụng (khôi phục tiến độ, cổng đang mở). Trả false và không đổi gì nếu vai không phải Client,
+        /// ảnh rỗng hoặc ảnh không khớp map (khu lạ, khu đang làm chưa có nhiệm vụ).
+        /// </summary>
+        public bool ApplyRemoteState(MapFlowState state)
+        {
+            if (NetRole != FlowNetRole.Client || Registry == null || state == null) return false;
+            if (!Registry.Progress.RestoreSnapshot(state.ToSnapshot())) return false;
+            AnyActive = Registry.Progress.ActiveAreaId != null;
+            ArmedGate = GateAt(state.ArmedGateIndex);
+            return true;
+        }
+
+        /// <summary>Nhận cổng (null được); trả chỉ số cổng trong bảng bindings, hoặc -1 nếu null/không có.</summary>
+        int IndexOfGate(SchoolPreparationGate gate)
+        {
+            if (gate == null || bindings == null) return -1;
+            for (int i = 0; i < bindings.Length; i++)
+            {
+                if (bindings[i] != null && bindings[i].gate == gate) return i;
+            }
+            return -1;
+        }
+
+        /// <summary>Nhận chỉ số trong bảng bindings; trả cổng tương ứng hoặc null nếu ngoài khoảng.</summary>
+        SchoolPreparationGate GateAt(int index)
+        {
+            if (bindings == null || index < 0 || index >= bindings.Length || bindings[index] == null) return null;
+            return bindings[index].gate;
         }
 
         /// <summary>
@@ -198,11 +309,14 @@ namespace TheReturn
         /// <summary>
         /// Không nhận tham số; khi chưa nhiệm vụ nào chạy: nếu cả đội (từ 2 người) đứng đủ ở khu chuẩn bị NGOÀI một cổng thuộc khu chưa xong thì cổng đó
         /// 'armed' (cửa mở). Cổng đang armed tự đóng nếu cả đội rời cả hai vùng quá disarmSeconds giây.
+        /// Cổng đang armed được GIỮ NGUYÊN chừng nào còn người ở vùng ngoài/đã vào: không chuyển sang cổng khác dù vùng ngoài hai cổng chồng nhau
+        /// (lỗi 'Phong 2_Cua 1' ↔ 'Hanh lang 2_Ra': người đầu bước vào làm armed nhảy sang cổng kia, cửa đóng sập).
         /// </summary>
         void UpdateArming()
         {
             PrototypePartyController party = flow.attendance.party;
             if (party == null || party.PartySize < 2 || bindings == null) { ArmedGate = null; return; }
+            if (ArmedGate != null && ArmedGate.CountOutside(party) + ArmedGate.CountEntered(party) > 0) { disarmTimer = 0; return; }
             foreach (GateBinding b in bindings)
             {
                 if (b == null || b.gate == null) continue;
