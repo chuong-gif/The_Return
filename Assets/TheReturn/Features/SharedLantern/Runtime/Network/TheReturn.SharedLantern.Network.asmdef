@@ -1,0 +1,9 @@
+{
+  "name": "TheReturn.SharedLantern.Network",
+  "rootNamespace": "TheReturn.LanternNet",
+  "references": [
+    "TheReturn.SharedLantern.Domain",
+    "TheReturn.Network.Framework"
+  ],
+  "noEngineReferences": true
+}

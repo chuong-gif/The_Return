@@ -1,0 +1,14 @@
+{
+  "name": "TheReturn.Choir.Online",
+  "rootNamespace": "TheReturn.ChoirNet.Online",
+  "references": [
+    "TheReturn.Choir",
+    "TheReturn.Choir.Domain",
+    "TheReturn.Choir.Network",
+    "TheReturn.Network.Framework",
+    "TheReturn.Network.Online",
+    "TheReturn.Core",
+    "Unity.Netcode.Runtime",
+    "Unity.InputSystem"
+  ]
+}

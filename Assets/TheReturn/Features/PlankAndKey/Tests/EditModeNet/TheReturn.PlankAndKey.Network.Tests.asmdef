@@ -1,6 +1,7 @@
 {
   "name": "TheReturn.PlankAndKey.Network.Tests",
   "references": [
+    "TheReturn.Network.Contract.Tests",
     "TheReturn.PlankAndKey.Network",
     "TheReturn.PlankAndKey.Domain",
     "TheReturn.Network.Framework",

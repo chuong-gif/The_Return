@@ -2,6 +2,7 @@
  * Mục đích: Nối nhân vật online với bộ điều khiển có sẵn PrototypePartyController trên MÁY NÀY (T-025): gắn mọi nhân vật đã spawn vào ô
  * của nó, bật chế độ online cho nhân vật của chính người chơi (chỉ điều khiển ô đó), và mỗi frame chuyển phím/chuột vào TickInput.
  * Phím Tab khóa/thả chuột. Không sửa luật nhiệm vụ.
+ * T-028: lần đầu có nhân vật online thì tắt các PlayerSlot có sẵn trong scene (chế độ một máy) và gỡ chúng khỏi bộ điều khiển.
  * Hàm: Update; xử lý sự kiện OnlineAvatar.SlotReady / Removed.
  */
 using UnityEngine;
@@ -14,6 +15,7 @@ namespace TheReturn.Network.Online
         [SerializeField] private PrototypePartyController controller;
 
         private int localSlot = -1;
+        private bool partyPrepared;
 
         /// <summary>Nhiệm vụ đặt true khi người chơi đang ngồi trên phương tiện (vd ván chạy): không tự đi được.</summary>
         public bool Seated { get; set; }
@@ -31,9 +33,23 @@ namespace TheReturn.Network.Online
             OnlineAvatar.Removed -= HandleRemoved;
         }
 
+        // Các PlayerSlot dựng sẵn của chế độ một máy sẽ trùng với nhân vật online: tắt chúng và để mọi ô trống chờ BindSlot.
+        private void PrepareParty()
+        {
+            if (partyPrepared || controller == null) return;
+            partyPrepared = true;
+            Transform[] originals = (Transform[])controller.players.Clone();
+            for (int i = 0; i < originals.Length; i++)
+            {
+                controller.BindSlot(i, null);
+                if (originals[i] != null) originals[i].gameObject.SetActive(false);
+            }
+        }
+
         private void HandleReady(OnlineAvatar avatar)
         {
             if (controller == null) return;
+            PrepareParty();
             controller.BindSlot(avatar.Slot, avatar.transform);
             if (!avatar.IsOwner) return;
             localSlot = avatar.Slot;

@@ -1,6 +1,7 @@
 /*
  * Mục đích: Cấu hình ô nhân vật online của một ván (T-025): số người của đội (2-4) và điểm xuất phát từng ô. Trên HOST còn giữ bảng
  * chia ô cố định (SlotAllocator): mỗi người một ô cả ván, không đổi vai. Một đối tượng duy nhất trong scene online.
+ * Tham số dòng lệnh -teamsize N (2-4) ghi đè số người khi chạy bản build thử.
  * Hàm: SetTeamSize; AssignSlot; ReleaseSlot; SlotOf; TryGetClient; SpawnPositionFor; thuộc tính TeamSize, Roster, Instance.
  */
 using TheReturn.Network.Framework;
@@ -24,6 +25,12 @@ namespace TheReturn.Network.Online
         private void Awake()
         {
             Instance = this;
+            string[] args = System.Environment.GetCommandLineArgs();
+            for (int i = 0; i + 1 < args.Length; i++)
+            {
+                int size;
+                if (args[i] == "-teamsize" && int.TryParse(args[i + 1], out size)) SetTeamSize(size);
+            }
         }
 
         private void OnDestroy()

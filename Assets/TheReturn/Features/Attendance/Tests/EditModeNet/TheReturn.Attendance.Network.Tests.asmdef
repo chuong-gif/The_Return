@@ -1,6 +1,7 @@
 {
   "name": "TheReturn.Attendance.Network.Tests",
   "references": [
+    "TheReturn.Network.Contract.Tests",
     "TheReturn.Attendance.Network",
     "TheReturn.Attendance.Domain",
     "TheReturn.Network.Framework",

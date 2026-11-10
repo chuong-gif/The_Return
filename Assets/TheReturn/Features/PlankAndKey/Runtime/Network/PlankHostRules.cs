@@ -108,8 +108,14 @@ namespace TheReturn.PlankNet
             int count = PlayerCount;
             PlankBank[] banks = new PlankBank[count];
             for (int i = 0; i < count; i++) banks[i] = session.State.BankOf(i);
+            // F-001: KHÔNG phát đồng hồ đang chạy (cùng Version phải cùng nội dung). Khi ván đang chạy, phát giá trị TẠI LÚC BẮT ĐẦU lượt:
+            // còn lại = tổng, đã dùng = đã dùng hiện tại trừ phần đã trôi. Máy khách tự đếm ngược từ lúc nhận (PlankOnlineClient.leftAtSnapshot).
+            bool crossing = session.Phase == PlankPhase.Crossing;
+            float left = crossing ? session.CrossingSecondsTotal : session.CrossingSecondsLeft;
+            float used = session.DisplayUsedSeconds;
+            if (crossing) used = (float)Math.Round(Math.Max(0f, used - (session.CrossingSecondsTotal - session.CrossingSecondsLeft)), 3);
             return new PlankPublicState(count, session.Phase, session.State.Status, deckAtNear, session.CrossingSecondsTotal,
-                session.CrossingSecondsLeft, riders, banks, cardHolder, cardMode, cardX, cardZ, session.DisplayUsedSeconds,
+                left, riders, banks, cardHolder, cardMode, cardX, cardZ, used,
                 session.DeadlineSeconds, session.State.Attempts, resetCount, session.Solved, lastMessage);
         }
 

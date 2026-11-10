@@ -2,6 +2,7 @@
  * Mục đích: NUnit EditMode test cho Hợp xướng (T-006d): trình sinh đề, thẻ nhạc, luật bấm bục và đặc biệt hạn chót giữa hai nốt
  * CHỈNH ĐƯỢC (StepWindowSeconds, 0 = không giới hạn, SwitchExtraSeconds khi đổi vai). Không cần scene hay Play Mode.
  * Hàm: Press (trợ giúp bấm nốt đúng); các test Rules_*, Generator_*, Cards_*, Sequence_*, Window_*, NoLimit_*, SwitchExtra_*, ApplyRules_*, Reset_*.
+ * T-037: thêm Rules_OnlineFor_* và Window_OnlineFor_* (cửa sổ online đổi theo số người 3 / 2,5 / 2 giây; ChoirRules.Online giữ giá trị đội 4).
  */
 using System;
 using System.Collections.Generic;
@@ -30,12 +31,48 @@ namespace TheReturn.Tests
         {
             Assert.AreEqual(5.0, ChoirRules.Default.StepWindowSeconds);
             Assert.AreEqual(1.5, ChoirRules.Default.SwitchExtraSeconds);
-            Assert.AreEqual(2.0, ChoirRules.Online.StepWindowSeconds);
+            Assert.AreEqual(2.0, ChoirRules.Online.StepWindowSeconds, "Online = giá trị đội 4 người (T-037)");
             Assert.AreEqual(0.0, ChoirRules.Online.SwitchExtraSeconds);
             Assert.IsTrue(ChoirRules.Default.HasTimeLimit);
             Assert.IsFalse(new ChoirRules(0, 0).HasTimeLimit);
             Assert.Throws<ArgumentOutOfRangeException>(() => new ChoirRules(-1, 0));
             Assert.Throws<ArgumentOutOfRangeException>(() => new ChoirRules(2, -0.1));
+        }
+
+        [TestCase(2, 3.0)]
+        [TestCase(3, 2.5)]
+        [TestCase(4, 2.0)]
+        public void Rules_OnlineFor_ScalesWithTeamSize(int players, double window)
+        {
+            ChoirRules rules = ChoirRules.OnlineFor(players);
+            Assert.AreEqual(window, rules.StepWindowSeconds, 1e-9);
+            Assert.AreEqual(0.0, rules.SwitchExtraSeconds, "online không đổi vai nên không cộng giờ");
+            Assert.IsTrue(rules.HasTimeLimit);
+        }
+
+        [Test]
+        public void Rules_OnlineFor_GetsShorterAsTeamGrows_AndRejectsBadSizes()
+        {
+            Assert.Greater(ChoirRules.OnlineFor(2).StepWindowSeconds, ChoirRules.OnlineFor(3).StepWindowSeconds);
+            Assert.Greater(ChoirRules.OnlineFor(3).StepWindowSeconds, ChoirRules.OnlineFor(4).StepWindowSeconds);
+            Assert.Throws<ArgumentOutOfRangeException>(() => ChoirRules.OnlineFor(1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ChoirRules.OnlineFor(5));
+            Assert.Throws<ArgumentOutOfRangeException>(() => ChoirRules.OnlineFor(0));
+        }
+
+        [TestCase(2, 3.0)]
+        [TestCase(3, 2.5)]
+        [TestCase(4, 2.0)]
+        public void Window_OnlineFor_ExactBoundaryPerTeamSize(int players, double window)
+        {
+            var onTime = new ChoirState(ChoirGenerator.Generate(players, 5), ChoirRules.OnlineFor(players));
+            PressRight(onTime, 0, 0);
+            Assert.AreEqual(ChoirResult.Correct, PressRight(onTime, 1, window - 0.05), "còn kịp trong cửa sổ");
+            var late = new ChoirState(ChoirGenerator.Generate(players, 5), ChoirRules.OnlineFor(players));
+            PressRight(late, 0, 0);
+            Assert.AreEqual(ChoirResult.TooLate, PressRight(late, 1, window + 0.05), "quá cửa sổ thì reset dãy");
+            Assert.AreEqual(0, late.Progress);
+            Assert.AreEqual(1, late.Timeouts);
         }
 
         // ---------- Trình sinh đề ----------

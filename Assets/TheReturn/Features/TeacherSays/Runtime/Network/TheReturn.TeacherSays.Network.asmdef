@@ -1,0 +1,9 @@
+{
+  "name": "TheReturn.TeacherSays.Network",
+  "rootNamespace": "TheReturn.TeacherSaysNet",
+  "references": [
+    "TheReturn.TeacherSays.Domain",
+    "TheReturn.Network.Framework"
+  ],
+  "noEngineReferences": true
+}

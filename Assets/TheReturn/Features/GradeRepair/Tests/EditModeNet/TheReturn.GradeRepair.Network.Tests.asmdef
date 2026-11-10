@@ -1,0 +1,26 @@
+{
+  "name": "TheReturn.GradeRepair.Network.Tests",
+  "references": [
+    "TheReturn.GradeRepair.Network",
+    "TheReturn.GradeRepair.Domain",
+    "TheReturn.Network.Framework",
+    "TheReturn.Network.Contract.Tests",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

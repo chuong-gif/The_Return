@@ -1,0 +1,9 @@
+{
+  "name": "TheReturn.BreakerPanel.Network",
+  "rootNamespace": "TheReturn.BreakerNet",
+  "references": [
+    "TheReturn.BreakerPanel.Domain",
+    "TheReturn.Network.Framework"
+  ],
+  "noEngineReferences": true
+}

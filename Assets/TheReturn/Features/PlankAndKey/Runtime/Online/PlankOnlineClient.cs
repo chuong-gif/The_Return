@@ -3,6 +3,7 @@
  * gửi lệnh (E nhặt thẻ/gạt cần, G thả thẻ, R làm lại) lên host qua MissionNetBridge, nhận trạng thái chung + thông tin riêng, rồi VẼ lại
  * ván, thẻ từ, nhãn và HUD từ bản sao đó. Người ngồi trên ván được đưa đi theo ván trên chính máy của họ (nhân vật do chủ máy điều khiển). Về
  * đầu khe khi host báo đặt lại. PlankAndKeyPrototype cũ vẫn nằm trong scene nhưng ở trạng thái tắt (không Begin), chỉ dùng làm nơi giữ điểm mốc.
+ * T-028: MissionActive (luồng map bật/tắt theo khu đang làm; startActive = false cho map thật).
  * Hàm: Update; LateUpdate; OnState; OnRejected; OnGUI.
  */
 using System.Text;
@@ -20,6 +21,9 @@ namespace TheReturn.PlankNet.Online
         [SerializeField] private MissionNetBridge bridge;
         [SerializeField] private PrototypePartyController party;
         [SerializeField] private OnlinePartyLocalDriver localDriver;
+        [Tooltip("true = chạy ngay (scene thử); false = chờ luồng map bật qua MissionActive (map thật).")]
+        [SerializeField] private bool startActive = true;
+        private bool missionActive = true;
 
         private PlankLane lane;
         private ClientReplica<PlankPublicState, PlankPrivateState> replica;
@@ -33,6 +37,27 @@ namespace TheReturn.PlankNet.Online
         private float statusUntil;
         private float nextRequest;
         private PlankMessage lastShownMessage = PlankMessage.None;
+
+        /// <summary>Phần máy khách của nhiệm vụ đang bật. Bật lại thì bản sao trạng thái được làm mới vì host dựng đề mới.</summary>
+        public bool MissionActive
+        {
+            get { return missionActive; }
+            set
+            {
+                if (value == missionActive) return;
+                missionActive = value;
+                if (value) ResetReplica();
+                else if (localDriver != null) localDriver.Seated = false;
+            }
+        }
+
+        private void ResetReplica()
+        {
+            if (mySlot >= 0) replica = new ClientReplica<PlankPublicState, PlankPrivateState>(mySlot);
+            handledResetCount = -1;
+            wasRider = false;
+            lastShownMessage = PlankMessage.None;
+        }
         private const float RideAnimationHold = 0.4f;
         private readonly PlayerAnimationDriver[] riderDrivers = new PlayerAnimationDriver[PlankRound.MaxPlayers];
         private readonly Transform[] riderDriverOwners = new Transform[PlankRound.MaxPlayers];
@@ -40,6 +65,11 @@ namespace TheReturn.PlankNet.Online
 
         /// <summary>Bản sao trạng thái hiện có (null nếu chưa có nhân vật của mình); để test và HUD đọc.</summary>
         public ClientReplica<PlankPublicState, PlankPrivateState> Replica { get { return replica; } }
+
+        private void Awake()
+        {
+            missionActive = startActive;
+        }
 
         private void OnEnable()
         {
@@ -77,7 +107,7 @@ namespace TheReturn.PlankNet.Online
         /// <summary>Nhận phiên bản và hai chuỗi từ host; giải mã, áp dụng vào bản sao nếu mới hơn.</summary>
         public void OnState(int version, string publicPayload, string privatePayload)
         {
-            if (replica == null) return;
+            if (replica == null || !missionActive) return;
             PlankPublicState state;
             PlankPrivateState own;
             if (!PlankCodec.TryDecodePublic(publicPayload, out state) || !PlankCodec.TryDecodePrivate(privatePayload, out own)) return;
@@ -123,7 +153,7 @@ namespace TheReturn.PlankNet.Online
 
         private void Update()
         {
-            if (replica == null || party == null || bridge == null || !lane.IsReady) return;
+            if (!missionActive || replica == null || party == null || bridge == null || !lane.IsReady) return;
             if (!replica.HasState)
             {
                 if (Time.time >= nextRequest)
@@ -192,7 +222,7 @@ namespace TheReturn.PlankNet.Online
 
         private void LateUpdate()
         {
-            if (replica == null || !replica.HasState || party == null || !lane.IsReady) return;
+            if (!missionActive || replica == null || !replica.HasState || party == null || !lane.IsReady) return;
             PlankPublicState state = replica.Public;
             Transform holder = null;
             if (state.CardMode == PlankCardMode.Held && state.CardHolder >= 0 && state.CardHolder < party.players.Length)
@@ -256,7 +286,7 @@ namespace TheReturn.PlankNet.Online
 
         private void OnGUI()
         {
-            if (replica == null || !replica.HasState || prototype == null) return;
+            if (!missionActive || replica == null || !replica.HasState || prototype == null) return;
             PlankPublicState state = replica.Public;
             float perUnit = prototype.settings != null ? prototype.settings.secondsPerUnit : 3f;
             StringBuilder text = new StringBuilder();

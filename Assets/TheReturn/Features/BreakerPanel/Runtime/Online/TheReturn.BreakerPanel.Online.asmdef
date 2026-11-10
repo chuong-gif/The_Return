@@ -1,0 +1,14 @@
+{
+  "name": "TheReturn.BreakerPanel.Online",
+  "rootNamespace": "TheReturn.BreakerNet.Online",
+  "references": [
+    "TheReturn.BreakerPanel",
+    "TheReturn.BreakerPanel.Domain",
+    "TheReturn.BreakerPanel.Network",
+    "TheReturn.Network.Framework",
+    "TheReturn.Network.Online",
+    "TheReturn.Core",
+    "Unity.Netcode.Runtime",
+    "Unity.InputSystem"
+  ]
+}

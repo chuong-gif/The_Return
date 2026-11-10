@@ -2,7 +2,8 @@
  * Mục đích: Phần HOST của nhiệm vụ cầu ván online (T-027). Dựng PlankHostRules + HostAuthority theo số người của đội, nhận lệnh từ
  * MissionNetBridge, lấy ô người gửi từ OnlinePartySlots (không tin nội dung lệnh), cung cấp IPlankWorld từ vị trí nhân vật và điểm mốc trong
  * scene, chạy đồng hồ (Tick) và phát trạng thái đúng từng người mỗi khi phiên bản đổi. Chỉ chạy khi máy này là host.
- * Hàm: Update; OnCommand; OnStateRequested; kiểu lồng HostWorld (IPlankWorld).
+ * T-028: autoStart (scene thử: chạy ngay) hoặc chỉ chạy khi luồng map gọi BeginMission/EndMission (map thật); Solved, CanHandOff cho adapter.
+ * Hàm: Update; OnCommand; OnStateRequested; BeginMission; EndMission; kiểu lồng HostWorld (IPlankWorld).
  */
 using System.Collections.Generic;
 using TheReturn.Network.Framework;
@@ -19,6 +20,9 @@ namespace TheReturn.PlankNet.Online
         [SerializeField] private float failResetSeconds = 2.5f;
         [Tooltip("0 = đề ngẫu nhiên mỗi ván; khác 0 = đề cố định để thử.")]
         [SerializeField] private int fixedSeed;
+        [Tooltip("true = tự chạy ngay khi là host (scene thử); false = chỉ chạy khi luồng map gọi BeginMission (map thật).")]
+        [SerializeField] private bool autoStart = true;
+        private bool missionActive;
 
         private PlankHostRules rules;
         private HostAuthority<PlankCommand, PlankPublicState, PlankPrivateState> authority;
@@ -29,6 +33,28 @@ namespace TheReturn.PlankNet.Online
 
         /// <summary>Phiên bản trạng thái hiện tại của host (-1 nếu chưa dựng).</summary>
         public int Version { get { return authority != null ? authority.Version : -1; } }
+
+        /// <summary>True khi luồng map đã bắt đầu nhiệm vụ này (chỉ có nghĩa khi autoStart = false).</summary>
+        public bool MissionActive { get { return missionActive; } }
+
+        /// <summary>True khi đề đã giải xong (cả đội qua khe, ván đã đến nơi).</summary>
+        public bool Solved { get { return rules != null && rules.Session.Solved; } }
+
+        /// <summary>True khi đã giải xong và ván không còn chạy: an toàn để luồng map kết thúc nhiệm vụ.</summary>
+        public bool CanHandOff { get { return rules != null && rules.Session.Solved && rules.Session.Phase == PlankPhase.Idle; } }
+
+        /// <summary>Luồng map bắt đầu nhiệm vụ: lần Update kế tiếp dựng đề mới theo số người của đội.</summary>
+        public void BeginMission()
+        {
+            missionActive = true;
+        }
+
+        /// <summary>Luồng map kết thúc nhiệm vụ: dỡ luật và HostAuthority (máy khách không còn nhận gói).</summary>
+        public void EndMission()
+        {
+            missionActive = false;
+            Teardown();
+        }
 
         private void OnEnable()
         {
@@ -61,6 +87,11 @@ namespace TheReturn.PlankNet.Online
             NetworkManager manager = NetworkManager.Singleton;
             bool hosting = manager != null && manager.IsListening && manager.IsServer;
             if (!hosting)
+            {
+                if (authority != null) Teardown();
+                return;
+            }
+            if (!autoStart && !missionActive)
             {
                 if (authority != null) Teardown();
                 return;

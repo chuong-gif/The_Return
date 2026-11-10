@@ -1,0 +1,25 @@
+{
+  "name": "TheReturn.TeacherSays.Network.Tests",
+  "references": [
+    "TheReturn.TeacherSays.Network",
+    "TheReturn.TeacherSays.Domain",
+    "TheReturn.Network.Framework",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
