@@ -1,11 +1,7 @@
-# CURRENT (HOT — ≤ 12 dòng, GHI ĐÈ khi đổi)
-
-Cập nhật: 2026-10-29 04:44 UTC bởi Claude Sonnet 5.5 (phiên #8)
-Scene lock: đã BỎ (chủ dự án 2026-10-29: AI chạy nối tiếp). Vẫn chụp snapshot trước khi sửa scene. Editor lúc 2026-10-29 04:44 UTC: play=False compiling=False scene=SchoolFloorPrototype dirty=False.
-Đang chạy: #8 xong T-020 + T-021 (REVIEW). #6 (T-005) và #7 (T-009) có START 28/10 chưa DONE. LOG gần nhất của phiên khác: #9 DONE T-008 (2026-10-29 04:22 UTC). Online co-op: T-009 là umbrella (#7), đã tách T-022..T-032 trong TASKS.md; T-024 do #9 giữ.
-Trạng thái: code 12 khu + HUD theo khu + MainMenu/Party/Settings + âm thanh bản thử; 11 root nhiệm vụ đều là prefab (T-020, T-021). EditMode 256/256 (2026-10-29). PlayMode T-005: 10/11; lỗi EveryGate_OfEveryMissionArea_StartsItsArea ở cổng «Hanh lang 1_Vao/Ra» (khu Hanh_Lang_6), CÓ SẴN trước T-020, chưa chẩn đoán.
-Cảnh báo:
-- Chạy Play Mode: đặt Cursor.lockState=Locked mới thấy HUD. Không chạy builder/migration cũ (menu The Return/*). Không commit/push/xóa khi chưa được yêu cầu.
-- Features/Audio TRÙNG kiểu AudioCueRules với Features/GameAudio (có thể lỗi ambiguous): chủ dự án nên XÓA thư mục Features/Audio (AI không xóa được).
-- Chờ chủ dự án CHƠI THẬT: T-033 (4 bug chủ dự án báo), T-006a2/b2/c/d2/e2/f, T-008, T-011, T-017..T-021. File thừa chủ dự án xóa tay: Assets/Screenshots/*.png, BreakerParts.cs (rỗng). Snapshot mới: Scenes/BeforeMissionPrefabs_20261029_043005.unity, BeforeOldMissionPrefabs_20261029_044208.unity.
-Chi tiết cũ: SESSIONS/CURRENT_FULL_20261022.md. Chủ dự án báo thay đổi ở OWNER_UPDATES.md (đọc 3 mục cuối).
+# CURRENT (ghi đè mỗi phiên; cập nhật 2026-11-10 08:16 UTC, phiên #13)
+- PHẠM VI ĐỔI 2026-11-10: chỉ 4 nhiệm vụ: PlankAndKey, Attendance, BreakerPanel, Choir. 8 nhiệm vụ còn lại ĐÓNG BĂNG.
+- Task mới T-040 (hướng ĐÃ CHỌN 2026-11-10: dựng map mới hoàn toàn; xóa code 8 nhiệm vụ SAU khi scene mới chạy; giữ hành lang 5): PLANS/T-040-scope-cut-4-missions.md. Chờ: chủ dự án DUYỆT sơ đồ layout v1 (PLANS/T-040-map-design.md, PENDING P-010). Q-010 khảo sát và Q-011 thiết kế đã xong.
+- Q-012 dựng scene (BLOCKED chờ duyệt P-010), Q-013 xóa code 8 nhiệm vụ (BLOCKED chờ chủ dự án xác nhận scene chạy + commit git).
+- T-039: M1-M5 DONE (hợp đồng, mạng giả, Gauntlet, lớp cơ sở Online + Breaker). M6 HỦY, M7 gộp T-040 P5.
+- Gauntlet: menu TheReturn/Gauntlet/Chạy Gauntlet mạng rồi đọc .ai/GAUNTLET.md (KHÔNG Thread.Sleep trong execute_code).
+- Tồn: dọn thư mục Features/MissionTemplate (#13 tạo dở, chưa dùng).

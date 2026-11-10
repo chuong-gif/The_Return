@@ -29,6 +29,7 @@ d. Kiểm tra Console không có lỗi compile; Unity không ở Play Mode.
 e. Scene: KHÔNG còn Scene lock (chủ dự án bỏ 2026-10-29: AI chạy nối tiếp, không song song). Trước khi sửa `.unity`/`.prefab`: chủ dự án đã cho phép (OWNER_UPDATES), chụp snapshot, và nếu scene đang dirty lúc bắt đầu thì đó là thay đổi chưa lưu của phiên trước hoặc chủ dự án - kiểm/hỏi trước khi lưu, đừng ghi đè.
 
 ## 4. Vòng đời task (trạng thái trong TASKS.md)
+> v2 (T-039, duyệt 2026-11-06): task CÓ thẻ trong .ai/QUEUE.md dùng ngưỡng INTERRUPTED 6 giờ (mục 14). Ngưỡng STALE 24 giờ chỉ còn cho task không có thẻ.
 `TODO` -> `CLAIMED` -> `IN-PROGRESS` -> `REVIEW` (xong, chờ chủ dự án xem) -> `DONE`; nhánh: `PAUSED` (dừng giữa chừng có chủ ý), `BLOCKED` (cần thông tin/quyết định/quyền), `STALE` (bị bỏ dở).
 - Nhận task: sửa dòng task (trạng thái, tên AI/model, giờ UTC) và ghi LOG `START` TRƯỚC khi sửa file đầu tiên, liệt kê file định đụng.
 - Đang làm: sau mỗi nhóm thay đổi có ý nghĩa, ghi LOG `PROGRESS` ngắn (đã làm gì, mức xác minh, file). Nếu phiên bị ngắt đột ngột, mục START/PROGRESS cuối cùng là dấu vết cho người sau.
@@ -42,6 +43,7 @@ e. Scene: KHÔNG còn Scene lock (chủ dự án bỏ 2026-10-29: AI chạy nố
 5. Báo cáo cuối trong chat cho chủ dự án (mục 9). Không tạo báo cáo dài cho từng thao tác nhỏ.
 
 ## 6. Tiếp quản việc dở của AI khác
+> v2 (T-039): với thẻ QUEUE không cần giấy TAKEOVER; chỉ một dòng LOG `RESUME` (mục 14.4).
 1. Đọc các mục LOG của task đó + dòng TASKS. 2. Đối chiếu thực tế: `changed_since`, `git diff`/`git status` nếu có, Console, mở đúng các file được liệt kê. 3. Xác định phần ĐÃ xong và đã xác minh (giữ nguyên) với phần dở/hỏng. 4. Ghi LOG `TAKEOVER` (từ ai, trạng thái thật, kế hoạch). 5. Không làm lại phần đã xong đã xác minh; không xóa/hoàn tác việc của AI trước nếu chưa chắc — hỏi chủ dự án khi có nguy cơ mất dữ liệu.
 Ngược lại, nếu BẠN bị ngắt: lần vào lại, đọc LOG xem có `TAKEOVER`/mục của AI khác sau mục cuối của bạn không; nếu có, việc của bạn có thể đã được làm — làm preflight b trước khi tiếp tục.
 
@@ -83,3 +85,18 @@ Làm gì | mức xác minh (1-5) | file đã đổi | việc dở + bước kế
 - Không có khóa: chủ dự án chạy AI nối tiếp (hết limit mới chuyển AI khác) nên đã bỏ Scene lock (2026-10-29). Nếu có lúc chạy song song, chủ dự án chỉ định phạm vi file/scene cho từng AI.
 - Mốc thời gian dùng UTC (giờ file trên đĩa cũng là UTC khi đọc bằng changed_since).
 - AI không có terminal/Git chỉ dựa được vào changed_since và LOG; thay đổi chủ dự án làm mà không ghi sẽ chỉ phát hiện qua mtime, không có nội dung diff.
+
+## 14. Quy trình v2 chịu ngắt limit (T-039, duyệt 2026-11-06)
+Pha: L Logic -> G Gauntlet -> F Fix -> O Online -> S Smoke -> H Người thật (chi tiết: PLANS/T-039-online-fast-track.md mục 5). Việc đi theo thẻ trong `.ai/QUEUE.md`; lỗi test đi theo `.ai/FAILURES.md` + `.ai/MISSIONS_NET.md`; câu hỏi chờ ở `DECISIONS/PENDING.md`.
+1. Bước nguyên tử: mọi file của một bước tạo liền nhau, rồi MỘT lần refresh + compile, MỘT lần chạy test của bước.
+2. Luôn để trạng thái xanh: không kết thúc/không bắt đầu bước mới khi Console còn lỗi biên dịch do mình gây ra. Thứ tự tạo: asmdef -> kiểu nền -> kiểu dùng nền -> test.
+3. Ghi ý định TRƯỚC, kết quả SAU: dòng NEXT trong khối RESUME của plan (1 dòng: việc + danh sách file định tạo) cập nhật trước khi bắt đầu bước, và cập nhật lại khi xong.
+4. Vào lại sau khi bị ngắt: đọc NEXT; kiểm đủ file + compile + test của bước; thiếu/hỏng thì làm lại bước từ đầu (chỉ file MỚI nên ghi đè an toàn); đủ và xanh thì đánh dấu xong. Chỉ một dòng LOG `RESUME`, không TAKEOVER.
+5. Thẻ IN-PROGRESS không có LOG >= 6 giờ = INTERRUPTED (không phải bị bỏ rơi); AI nào cũng tiếp được ngay.
+6. Ghi file phải idempotent: tạo-mới hoặc ghi-đè-toàn-bộ (không append, không vá). Riêng LOG chỉ thêm: kiểm cuối file trước khi thêm để không trùng.
+7. Cập nhật bảng TASKS + LOG + QUEUE gộp trong MỘT lần gọi ở cuối bước để không lệch nhau.
+8. Trả Editor về như lúc nhận (scene gốc, không Play, không dirty) trước khi kết thúc thẻ.
+9. Sắp hết limit (hoặc nghi ngờ): viết RESUME ngay, ngắn, rồi mới làm tiếp.
+10. Câu hỏi thiết kế chưa được trả lời: KHÔNG BLOCKED; chọn phương án an toàn nhất, ghi PROVISIONAL vào DECISIONS/PENDING.md (lý do + cách đổi), làm tiếp.
+11. Lỗi chéo (khung Network/Framework/Contract/lớp cơ sở, hoặc nhiều nhiệm vụ đỏ cùng nguyên nhân) -> thẻ FIX thuộc T-039. Nghi lỗi Domain -> không sửa Domain, ghi F-xxx loại DOMAIN cho chủ dự án.
+12. Gauntlet: một lệnh kiểm mọi nhiệm vụ: `execute_menu_item` đường dẫn `TheReturn/Gauntlet/Chạy Gauntlet mạng` rồi đọc `.ai/GAUNTLET.md` khi dòng đầu hết «ĐANG CHẠY» (không Thread.Sleep/chờ trong execute_code: chặn luồng chính của Unity, test không chạy được). Lỗi tự vào FAILURES.md + thẻ FIX trong QUEUE.md theo nhiệm vụ/người viết (MISSIONS_NET.md); test xanh lại thì dòng F thành XANH-LẠI, người giữ xác nhận rồi mới FIXED. Nhiệm vụ mạng mới PHẢI có dòng trong MISSIONS_NET.md (Gauntlet cảnh báo nếu thiếu).

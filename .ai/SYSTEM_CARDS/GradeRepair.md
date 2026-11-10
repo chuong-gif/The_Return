@@ -34,3 +34,11 @@ Cập nhật B/C: 2026-10-15 06:33 UTC (T-014). Quy ước thẻ: phần A tự 
 
 ## D. Task/kế hoạch liên quan
 - Xem .ai/TASKS.md và .ai/PLANS/ (luồng tự chọn phòng: PLANS/nonlinear-mission-flow.md)
+
+## E. Mạng (T-036, pha L xong 2026-11-10 07:51)
+- Lớp mạng thuần C#: Features/GradeRepair/Runtime/Network (namespace TheReturn.GradeRepairNet): GradeRepairCommand (Read/Apply/Undo/Submit/Reset) + IGradeRepairWorld (gần bảng, gần bàn tài liệu), GradeRepairPublicState/PrivateState, GradeRepairHostRules, GradeRepairCodec. Domain KHÔNG đổi.
+- Quyền: đọc tài liệu = đúng vai phụ trách (doc % số người) + đứng gần bàn + chưa đọc; Apply/Undo/Submit = đứng gần bảng; Reset = ai cũng được (giữ tài liệu đã đọc). Kết quả Domain (OutOfRange, WrongRecord...) là PHẢN HỒI chung, không phải lệnh bị từ chối.
+- Chung: điểm 4 hồ sơ, phiếu đã dùng, tài liệu đã đọc, đã thắng, kết quả thao tác cuối. RIÊNG: sự kiện ASCII của tài liệu mình ĐÃ ĐỌC (C.<mã_mã_mã_mã>, V<biến thể>.<mã>, T<biến thể>.<nguồn>_<đích>). Seed, mã hồ sơ, đáp án không bao giờ vào trạng thái chung.
+- Thứ tự đáp án: phiếu 2 (chuyển điểm) TRƯỚC, rồi phiếu 0 và 1 (hồ sơ điểm 9 chỉ nhận +2 sau khi đã bớt 1).
+- Test: Tests/EditMode (24 test Domain đặc tả), Tests/EditModeNet (HostRules, Codec, ContractAdapter + hợp đồng C1-C9/N1). Gauntlet 2026-11-08: GradeRepair.Network.Tests 65 test, 64 đạt, 1 bỏ qua (C7: không có «thua»).
+- CÒN cho pha O: IGradeRepairWorld theo vị trí nhân vật; máy khách dựng câu chữ tài liệu từ SỰ KIỆN (cần thêm hàm THÊM MỚI trong GradeRepairCatalog nhận biến thể + mã, không dùng seed); scene thử.

@@ -6,3 +6,6 @@
 - Cách kiểm xong (mỗi dòng): test EditMode xanh + chơi 2 máy; thử đủ số người theo thiết kế T-022.
 - Đọc trước (tối đa 3): mẫu chuẩn trong PLANS/T-027-*.md; thiết kế T-022; SYSTEM_CARDS của nhiệm vụ đó.
 - Chờ: T-027 (mẫu), T-022 (thiết kế).
+
+---
+CẬP NHẬT 2026-11-04 (phiên #7): T-031 giờ chỉ còn là TIÊN PHONG: Attendance (REVIEW, #7) + BreakerPanel (IN-PROGRESS, #10). 9 nhiệm vụ còn lại đã tách thành T-036 (GradeRepair, NavigationExam, TeacherTruth), T-037 (Choir, TeacherSays, SharedLantern), T-038 (GlassBridge, QuietCorridor, DontLookBack). Xem DECISIONS/2026-11-04-t031-split.md. Phần «Cách làm: mỗi AI nhận 1 dòng» ở trên áp dụng cho từng bảng của T-036/T-037/T-038.

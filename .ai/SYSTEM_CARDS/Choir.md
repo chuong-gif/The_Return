@@ -25,3 +25,10 @@ Khu / vai trò: Phong_6 (nhiệm vụ MỚI, T-006d/T-006d2). Cập nhật: 2026
 
 ## D. Task liên quan
 - T-006d DONE (Domain); T-006d2 REVIEW (chờ chủ dự án chơi thử).
+
+## E. Mạng (T-037 GĐ1, phiên #14, 2026-11-07; mức M3)
+- Lớp thuần C# (asmdef TheReturn.Choir.Network, namespace TheReturn.ChoirNet, noEngine): Runtime/Network/{ChoirCommand (Press/Retry), IChoirWorld (IsNearPad), ChoirPublicState (+ChoirPrivateState), ChoirHostRules (IHostRules), ChoirCodec}.cs. Domain KHÔNG đổi; cửa sổ giữa hai nốt = ChoirRules.OnlineFor(N) = 3 / 2,5 / 2 giây (P-003).
+- Chung: bản nhạc, nốt tới, sai/quá giờ, cửa sổ, thông báo. RIÊNG: thẻ nhạc «ký hiệu=bục» của mình. Đồng hồ KHÔNG nằm trong trạng thái chung (bất biến theo Version, bài học F-001 ở BreakerPanel); client tự đếm từ lúc nhận gói có Progress mới.
+- Host: Press kiểm ô hợp lệ, bục 0-3, IsNearPad (vị trí host thấy, không tin client), chưa thắng; Tick(delta) quá cửa sổ thì dãy về đầu (trả true để Online host gọi MarkChanged). Quyết định P-004: bấm E gần bục.
+- Test: Tests/EditModeNet (TheReturn.Choir.Network.Tests): ChoirHostRulesTests, ChoirCodecTests, ChoirContractAdapter (bộ hợp đồng C1-C9+N1; C7 bỏ qua vì Choir không có «thua»).
+- CÒN (GĐ2, sau Q-007 lớp cơ sở Online): Runtime/Online (IChoirWorld từ OnlineAvatar.transform.position, bán kính «gần bục» đo trong scene, Tick mỗi frame, HUD thẻ riêng + đồng hồ ước lượng, phím E/R), scene thử NetworkChoirTest, LAN 3 tiến trình thắng/thua/quá giờ + ca client ở xa bị bác (M4). Rủi ro: cửa sổ 2-3 giây rất nhạy với độ trễ khi chơi qua Internet (vị trí host thấy trễ hơn); cần thử Relay (M5), không tự nới luật.
