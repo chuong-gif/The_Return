@@ -23,3 +23,10 @@ LOG không phải nguồn trạng thái. Xem `CURRENT.md`, `TASKS.md`, `QUEUE.md
 ### 2026-11-13 | T-043 | DONE (M2)
 - Còn 49 file `.ai`/~95 KB; 7 plan; LOG 4 mục/25 dòng/<2 KB. Đã kiểm tham chiếu tài liệu bị xóa và `git diff --check` sạch.
 - Không chạy Unity test; snippet index chưa chạy trong Editor. Không sửa Assets/code/scene/Build Settings; T-042/P-014 giữ nguyên.
+
+### 2026-11-13 | T-044 | START
+- Chia phần thay đổi hiện có thành các commit theo chức năng, map/scenes và phần phụ. Sẽ kiểm staged diff trước mỗi commit; không chạy builder hoặc sửa Assets.
+
+### 2026-11-13 | T-044 | DONE (M2)
+- Đã tạo 6 commit: `2ce47dd`, `d9c1cb1`, `3aa4c96`, `a1fd1b7`, `26c01ce`, `835614d`; stage path được đối chiếu theo nhóm, không chạy Unity test trong thao tác commit.
+- `diff --check` báo trailing spaces chỉ trong các scene/meta Unity serialize rỗng; giữ nguyên, không format scene. Worktree sẽ sạch sau commit ghi nhận này.
