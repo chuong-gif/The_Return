@@ -1,26 +1,20 @@
-# ARCHITECTURE (WARM)
+# ARCHITECTURE — Core4 và online chung
 
-Nguồn: asmdef + cấu trúc thư mục, đọc 2026-10-14. Quy ước thư mục của chủ dự án: `Design/Cau-truc-du-an.md`.
+Tóm tắt điều hướng; kiểm asmdef/code hiện hành trước khi thay đổi kiến trúc.
 
-## Tầng assembly [V]
-- Domain (`TheReturn.<Feature>.Domain`): refs rỗng. Feature: Attendance, GradeRepair, NavigationExam, QuietCorridor, DontLookBack, TeacherTruth.
-- Feature runtime (`TheReturn.<Feature>`) -> Domain của chính nó + `TheReturn.Core` + `TheReturn.Shared` + Unity.InputSystem.
-- `TheReturn.Core` -> Unity.InputSystem. `TheReturn.Shared` -> Unity.ugui.
-- `TheReturn.SchoolFloor` (Maps/SchoolFloor/Runtime) -> TẤT CẢ feature + Domain + Core + Shared (điểm tập trung phụ thuộc).
-- `TheReturn.Lobby` -> Core, ugui, InputSystem.
-- Editor: Attendance.Editor, Lobby.Editor, SchoolFloor.Editor. Tests (Editor): Attendance.Tests, SchoolFloor.Tests.
-- Chưa có asmdef: `Assets/Scripts/Player.cs` (vào Assembly-CSharp), `Art/Editor/*` (Assembly-CSharp-Editor).
+## Luồng
+- Domain nhiệm vụ thuần C#; Presentation/Unity scene ở lớp feature.
+- `Features/Network/Runtime/Framework`: HostAuthority, ClientReplica, roster/slot, luật host-authoritative.
+- `Features/Network/Online`: avatar, room/voice, bridge lệnh/trạng thái.
+- `Maps/SchoolFloor`: điều phối map/cổng/tiến trình; scene đích hiện hành là MapSchoolF.
+- Mỗi nhiệm vụ có Domain/Network/Online phù hợp; host sở hữu luật và trạng thái, client hiển thị snapshot. MapFlowOnline điều phối adapter nhiệm vụ.
 
-## Cấu trúc Assets/TheReturn [V]
-Art, Assets3D, Core, Features (6 feature), Maps (Lobby, SchoolFloor), Scenes, Shared. Ngoài Assets: Design, Backups, Captures, ArtPreviews. `Assets/ThirdParty` bị gitignore (nội dung Asset Store có bản quyền, xem `Design/ThirdParty-manifest.md`).
+## Ranh giới phụ thuộc
+- Domain không tham chiếu Unity; Core/Shared không tham chiếu ngược Feature.
+- Chỉ bốn nhiệm vụ Core4 là phạm vi phát triển. Assembly map cũ có thể còn tham chiếu nhiệm vụ đã cắt; không xóa code trước điều kiện Q-013.
+- Nguồn chi tiết: `.ai/NETWORK.md`, `.ai/MAPS/asmdef-graph.md`, `.ai/SYSTEM_CARDS/INDEX.md`.
 
-## Số liệu [V]
-80 file .cs (khoảng 9.3k dòng không tính ThirdParty), 20 scene, 877 prefab, 52 .asset, 21 asmdef. File .cs lớn nhất 330 dòng (AttendancePrototype.cs) — không có file quá lớn.
-
-## Điểm rủi ro
-- [V] SchoolFloor phụ thuộc mọi feature: sửa một feature có thể ảnh hưởng SchoolFloor, SchoolFloor.Editor và SchoolFloor.Tests.
-- [V] `FindFirstObjectByType` xuất hiện ở 16 file: phụ thuộc scene ngầm, dễ vỡ khi đổi cấu trúc scene.
-- [V] Controller cần tham chiếu cửa nhỏ cũ đang ẩn (PROJECT_STATE): không xóa object ẩn khi chưa kiểm tra reference.
-- [V] Builder cũ trong Art/Editor và SchoolFloor/Editor có thể ghi đè bố cục (xem AGENTS.md).
-- [V] Một số bài kiểm tra lịch sử hardcode tọa độ cũ (PROJECT_STATE) — kết quả có thể sai nếu chạy lại.
-- [S] Hai scene dự phòng, `_Recovery/0.unity`, `Assets/Scripts/Player.cs`: vai trò chưa rõ, không xóa.
+## An toàn
+- Trước khi sửa scene tạo snapshot theo `AGENTS.md`.
+- Không chạy builder/migration cũ trong menu; xem danh sách cấm ở `AGENTS.md`.
+- Thay đổi trạng thái/thứ tự online xem `CURRENT.md`, `QUEUE.md`, `DECISIONS/PENDING.md`.

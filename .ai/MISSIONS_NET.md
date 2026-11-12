@@ -1,16 +1,14 @@
-# MISSIONS_NET — registry nhiệm vụ đã nối mạng (nguồn cho Gauntlet; tên assembly test chứa tên nhiệm vụ)
+# MISSIONS_NET — registry online Core4
 
-Pha: L (logic + test) | G (qua Gauntlet) | O (Online + scene thử) | S (smoke LAN) | H (người thật). Gauntlet gần nhất: xem GAUNTLET.md.
+Phạm vi registry là bốn nhiệm vụ được giữ. Gauntlet mới phải kiểm đúng các assembly này và hạ tầng chung; không dùng các nhiệm vụ khác làm tiêu chí phát triển.
 
-| Nhiệm vụ | Khu | Task giữ | Assembly test (EditMode) | VIẾT BỞI (phiên/ngày) | Pha hiện tại | Adapter hợp đồng | Gauntlet gần nhất |
-|---|---|---|---|---|---|---|---|
-| Attendance | Phong_1 | T-031 | TheReturn.Attendance.Network.Tests | #7 / 2026-11-03 | O (LAN 3 tiến trình; đội 2 chưa kết luận) | có (Q-005; AttendanceContractAdapter) | 2026-11-10 08:33 XANH 53/54 |
-| BreakerPanel | Phong_5 | T-031 | TheReturn.BreakerPanel.Network.Tests | #10 / 2026-11-05 | O (host một mình Play) | có (Q-005; BreakerContractAdapter) | 2026-11-10 08:33 XANH 70/71 |
-| GradeRepair | Phong_2 | T-036 | TheReturn.GradeRepair.Network.Tests | #10 / 2026-11-07 | L (xong; chưa Online) - CẮT (T-040, 2026-11-10, đóng băng) | có (GradeRepairContractAdapter) | 2026-11-10 08:33 XANH 64/65 |
-| PlankAndKey | Hanh_Lang_6 | T-027 | TheReturn.PlankAndKey.Network.Tests | #9 / 2026-11-01 | O (DONE nghiệm thu 2 máy 2026-11-01) | có (T-040 P4, #14 2026-11-10) | 2026-11-10 08:33 XANH 55/55 |
-| TeacherSays | Hanh_Lang_5 | T-037 | TheReturn.TeacherSays.Network.Tests | #11 / 2026-11-05 | L (GĐ1 xong) - CẮT (T-040, 2026-11-10, đóng băng) | chưa | 2026-11-10 08:33 XANH 70/70 |
-| Choir | Phong_6 | T-037 | TheReturn.Choir.Network.Tests | #14 / 2026-11-07 | L (GĐ1 xong) | có (ChoirContractAdapter) | 2026-11-10 08:33 XANH 65/66 |
-| SharedLantern | Hanh_Lang_4 | T-037 | TheReturn.SharedLantern.Network.Tests | #14 / 2026-11-08 | L (GĐ1 xong) - CẮT (T-040, 2026-11-10, đóng băng) | có (SharedLanternContractAdapter) | 2026-11-10 08:33 XANH 83/84 |
+| Nhiệm vụ | Khu | Assembly test | Tình trạng tích hợp | Lần Gauntlet có số liệu |
+|---|---|---|---|---|
+| PlankAndKey | Hanh_Lang_6 | `TheReturn.PlankAndKey.Network.Tests` | Online; đã nối MapSchoolF trong T-042. | 55/55 đạt |
+| Attendance | Phong_1 | `TheReturn.Attendance.Network.Tests` | Online; đã nối MapSchoolF trong T-042. | 53/54 đạt, 1 bỏ qua |
+| BreakerPanel | Phong_5 | `TheReturn.BreakerPanel.Network.Tests` | Online; đã nối MapSchoolF trong T-042. | 70/71 đạt, 1 bỏ qua |
+| Choir | Phong_6 | `TheReturn.Choir.Network.Tests` | Online; đã nối MapSchoolF trong T-042. | 65/66 đạt, 1 bỏ qua |
 
-Khung dùng chung (lỗi chéo -> thẻ FIX thuộc T-039): TheReturn.Network.Framework.Tests (T-024, #9).
-Thêm dòng mới khi nhiệm vụ qua pha L; Gauntlet quét assembly *Network.Tests trong dự án và cảnh báo nếu lệch bảng này.
+Số liệu là từ Gauntlet 2026-11-12, không xác nhận thao tác mạng nhiều máy. Tình trạng online phòng→map và smoke xem `QUEUE.md`; mọi số liệu phải được cập nhật bằng lần chạy mới, không suy ra từ đây.
+
+Assembly dùng chung trong phép lọc cũ: `TheReturn.BreakerPanel.Domain.Tests`, `TheReturn.Choir.Domain.Tests`, `TheReturn.Core.Tests`, `TheReturn.Core4.Domain.Tests`, `TheReturn.GameAudio.Domain.Tests`, `TheReturn.GameSettings.Domain.Tests`, `TheReturn.Network.Contract.Tests`, `TheReturn.Network.Framework.Tests`, `TheReturn.Network.Online.Tests`, `TheReturn.Network.Room.Tests`, `TheReturn.Party.Domain.Tests`, `TheReturn.PlankAndKey.Domain.Tests`, `TheReturn.SchoolFloor.Domain.Tests`, `TheReturn.SchoolFloor.Online.Tests`. Danh sách này phản ánh phép lọc GAUNTLET 2026-11-12, không khẳng định mọi assembly còn đúng tên ở source hiện hành.

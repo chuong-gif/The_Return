@@ -1,32 +1,17 @@
-# INDEX thẻ hệ thống (đọc file này TRƯỚC khi mở code; ≈ 1 màn hình)
+# SYSTEM_CARDS — chỉ mục Core4
 
-Tìm lỗi/việc theo KHU hoặc TỪ KHÓA -> mở đúng 1 thẻ -> đọc bảng «Triệu chứng -> nơi xem» -> mở đúng file/hàm đó. Tên khu = tên object trong scene (MAPS/area-adjacency.md).
+Mở đúng một thẻ theo khu/hệ thống; sau đó chỉ đọc file/hàm được thẻ trỏ tới. Source/scene là nguồn sự thật.
 
-| Khu / hệ thống | Thẻ | Từ khóa |
+| Khu/hệ thống | Thẻ | Từ khóa |
 |---|---|---|
-| Phong_1 | Attendance | điểm danh, ghế, 24 ghế, bảng, Attendance |
-| Phong_2 | GradeRepair | sửa điểm, terminal điểm, GradeRepair |
-| Phong_3 | NavigationExam | bài thi dẫn đường, NavigationExam |
-| Phong_4 | TeacherTruth | sự thật giáo viên, TeacherTruth |
-| Hanh_Lang_1 | QuietCorridor | hành lang im lặng, loa, checkpoint, QuietCorridor |
-| MainMenu | MainMenu, menu bắt đầu, nhóm chơi, phòng chờ, mã phòng, Settings, âm lượng, độ nhạy chuột, toàn màn hình, PartySession |
-| Hanh_Lang_2 | GlassBridge | cầu kính, ô kính, sơ đồ, đài, ô vỡ, GlassBridge |
-| Hanh_Lang_3 | DontLookBack | không nhìn lại, DontLookBack |
-| Hanh_Lang_4 | SharedLantern | đèn lồng, biển ký hiệu, sổ riêng, vùng sáng, SharedLantern |
-| Phong_5, Phong_6, Hanh_Lang_2/4/5/6 | (chưa có nhiệm vụ) | xem MISSIONS_TODO.md |
-| Điều phối tầng, cổng, khu chuẩn bị, chuyển nhiệm vụ, UI canvas, bộ *Checks | SchoolFloor | cửa không mở, không chuyển được, khu chuẩn bị, gate, Flow, Canvas, test fail |
-| Sảnh chờ | Lobby | Sanh_Cho, lobby, sảnh |
-| Người chơi, tương tác, cửa trượt | CoreShared | PrototypeParty, di chuyển, đổi người 1-4, Interaction, SlidingDoor |
+| Phong_1 | `Attendance.md` | ghế, điểm danh, manh mối |
+| Phong_5 | `BreakerPanel.md` | cầu dao, công tắc, quá tải |
+| Phong_6 | `Choir.md` | nốt, bục, thẻ nhạc, cửa sổ nhịp |
+| Hanh_Lang_6 | `PlankAndKey.md` | cầu ván, thẻ từ, bờ, đồng hồ |
+| MapSchoolF/map flow | `SchoolFloor.md` | cổng, khu chuẩn bị, topology, MapFlowOnline |
+| Host-authoritative/network | `NetworkFramework.md` | HostAuthority, ClientReplica, snapshot |
+| Avatar/slot | `OnlineAvatars.md` | slot, avatar, owner, roster |
+| UI/core/shared | `CoreShared.md` | điều khiển, tương tác, chuyển scene |
+| Sảnh chờ | `Lobby.md`, `MainMenu.md` | party, phòng, Start |
 
-Không thấy hệ thống phù hợp: tìm tên symbol trong MAPS/index-scripts.md (chỉ đọc dòng khớp), rồi tạo thẻ mới theo mẫu của các thẻ hiện có và thêm vào bảng này.
-Thẻ còn trống phần B/C nghĩa là chưa ai ghi kinh nghiệm: sau khi bạn sửa lỗi hay làm task ở đó, ghi lại (PROTOCOL mục 13).
-
-- Choir (Phong_6, MỚI, đã có scene): SYSTEM_CARDS/Choir.md — từ khóa: hợp xướng, bục, thẻ nhạc, StepWindowSeconds, cửa sổ nhịp.
-- PlankAndKey (Hanh_Lang_6, MỚI, mới có Domain): SYSTEM_CARDS/PlankAndKey.md — từ khóa: cầu ván, thẻ từ, ván, khe, PlankAndKey, hạn tổng.
-- BreakerPanel (Phong_5, MỚI, đã có scene): SYSTEM_CARDS/BreakerPanel.md — từ khóa: cầu dao, công tắc, đèn, quá tải, BreakerPanel.
-
-- TeacherSays.md — Hanh_Lang_5 «Cô nói» (REVIEW)
-
-- NetworkFramework (khung mạng online, MỚI): SYSTEM_CARDS/NetworkFramework.md — từ khóa: host-authoritative, HostAuthority, ClientReplica, TeamRoster, lệnh client, trạng thái host, thông tin riêng, StaleSequence.
-
-- OnlineAvatars (nhân vật online, MỚI): SYSTEM_CARDS/OnlineAvatars.md — từ khóa: nhân vật online, ô cố định, SlotAllocator, OnlineAvatar, EnterOnlineMode, BindSlot, NetworkPartyTest.
+Tám nhiệm vụ đã cắt không có thẻ vận hành. Không tạo task mới cho chúng. Builder/migration cũ vẫn còn trong code; không chạy theo `AGENTS.md`.

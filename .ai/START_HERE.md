@@ -1,76 +1,29 @@
-# START_HERE — đọc file này TRƯỚC; thường là ĐỦ để bắt đầu (cập nhật 2026-10-28 17:20 UTC)
-Dự án Unity «The Return» (co-op 2–4 người, tầng trường học; 12 khu = Phong_1..6 + Hanh_Lang_1..6). Gốc: E:\kho model 3D\Project Unity\The Return. Chủ dự án nói tiếng Việt.
+# START_HERE — hướng dẫn khởi động
 
-## PHẠM VI ĐÃ ĐỔI 2026-11-10 (chủ dự án): CHỈ CÒN 4 NHIỆM VỤ
-GIỮ: PlankAndKey (Hanh_Lang_6), Attendance (Phong_1), BreakerPanel (Phong_5), Choir (Phong_6). BỎ/ĐÓNG BĂNG: TeacherSays, GlassBridge, SharedLantern, QuietCorridor, GradeRepair, NavigationExam, DontLookBack, TeacherTruth. Chủ dự án đã chọn: DỰNG MAP MỚI và sẽ XÓA HẲN code 8 nhiệm vụ bỏ SAU KHI scene mới chạy được (T-040 P7) nên ĐỪNG sửa/mở rộng chúng. KHÔNG bắt đầu hay tiếp tục việc mới cho 8 nhiệm vụ bỏ (việc dở: dừng ở trạng thái xanh, ghi LOG, không xóa file). Sẽ có SCENE/MAP MỚI cho 4 nhiệm vụ: xem `.ai/PLANS/T-040-scope-cut-4-missions.md` và `.ai/DECISIONS/2026-11-10-scope-cut-4-missions.md`; đừng làm thêm gì trên SchoolFloorPrototype cho việc map/online khi chưa đọc T-040.
+Dự án Unity The Return, co-op 2–4 người. Chủ dự án giao tiếp bằng tiếng Việt.
 
-## PROMPT CỐ ĐỊNH (T-039 v2, duyệt 2026-11-06) — việc online đi theo `.ai/QUEUE.md`
-Nhận thẻ đầu tiên READY/INTERRUPTED (thẻ FIX trước) trong `.ai/QUEUE.md`, làm đúng thẻ đó theo `.ai/PROTOCOL.md` mục 14, không khảo sát thêm. Hết limit giữa chừng là bình thường: khối RESUME trong plan của thẻ cho biết NEXT. Câu hỏi chưa trả lời -> PROVISIONAL + `DECISIONS/PENDING.md`.
+## Mỗi phiên
+1. Đọc file này, `.ai/CURRENT.md` và tối đa 8 mục cuối `.ai/LOG.md`.
+2. Mở đúng dòng việc trong `.ai/TASKS.md`; nếu làm bước map/online, mở đúng thẻ ở `.ai/QUEUE.md`.
+3. Chỉ đọc plan, quyết định, system card, owner update hoặc mã nguồn liên quan trực tiếp. Tìm đúng đoạn trước; không quét cả thư mục hay lịch sử.
+4. Trước khi sửa, kiểm tra trạng thái thực và thay đổi hiện có. Ghi START/TASKS; khi dừng hoặc xong, ghi LOG/TASKS/CURRENT theo `.ai/PROTOCOL.md`.
 
-## NGÂN SÁCH ĐỌC (bắt buộc — nguyên nhân tốn token trước đây)
-- Khởi động chỉ đọc: file này + `.ai/CURRENT.md` + 8 mục cuối `.ai/LOG.md`. Tổng ≲ 6.000 token.
-- KHÔNG mở cả file: LOG_FULL, PLANS/*, SYSTEM_CARDS/*, TOOLING.md, PROTOCOL.md, MAPS/*, PROJECT_STATE.md — trừ khi task BẠN nhận trỏ đúng file đó; khi mở thì tìm bằng Grep/find_in_file rồi đọc đoạn (offset/limit).
-- Mỗi tool call gửi lại toàn bộ ngữ cảnh: ít lượt hơn = rẻ hơn. Gom nhiều thao tác đọc vào MỘT execute_code và chỉ `return` chuỗi ngắn (≤ 40 dòng). Không gọi hierarchy/scene dump/read_console không giới hạn (luôn đặt count).
-- «Tìm việc rảnh» = chỉ đọc mục FREE dưới đây, chọn, trả lời chủ dự án ngay (≤ 3 tin), rồi mới mở PLANS của task đó. Không khảo sát cả dự án.
-- Viết LOG ≤ 5 dòng/≤ 700 ký tự mỗi mục; chi tiết dài → PLANS/ hoặc SYSTEM_CARDS/. Báo chat cuối ≤ 8 dòng.
+## Phạm vi hiện hành
+Chỉ phát triển PlankAndKey, Attendance, BreakerPanel, Choir, map mới và online dùng chung. Không mở rộng tám nhiệm vụ đã bỏ. Việc xóa code của chúng vẫn bị chặn theo Q-013 tới khi chủ dự án xác nhận map mới chạy và đã commit/tag. Trạng thái chuẩn nằm trong CURRENT, TASKS và QUEUE.
 
-## LUẬT CỨNG (bản rút gọn của AGENTS.md)
-- Không commit/push/xóa nếu chưa được yêu cầu. Không chạy lại builder/migration cũ (menu The Return/*). Không ghi API key/mật khẩu.
-- Sửa scene: chỉ khi chủ dự án cho phép (xem OWNER_UPDATES, 5 mục cuối) + snapshot `BeforeXxx_yyyyMMdd_HHmmss.unity` (SaveScene(scene, path, true)) trước khi sửa. KHÔNG còn Scene lock (chủ dự án bỏ 2026-10-29: AI chạy nối tiếp). Scene dirty lúc bắt đầu = thay đổi chưa lưu của phiên trước/chủ dự án: kiểm trước khi lưu, đừng ghi đè.
-- Trước khi làm: ghi START vào LOG + đổi dòng task trong TASKS. Sau khi làm: LOG DONE/PAUSED + TASKS + CURRENT. Task DONE chuyển sang `.ai/TASKS_DONE.md`.
-- Mức xác minh: 1 tạo file / 2 compile / 3 test xanh / 4 Play Mode / 5 chưa xác nhận. Không nói «xong» chỉ vì compile.
-- Test: run_tests EditMode cần `assembly_names` (vd TheReturn.SchoolFloor.Domain.Tests). Play Mode: Cursor.lockState=Locked mới thấy HUD (editor coi là pause).
-- AI chạy NỐI TIẾP, không song song (chủ dự án xác nhận 2026-10-29). Phiên trước có LOG START mà chưa DONE thường là đã hết limit: đọc LOG rồi làm tiếp, không cần chờ.
+## An toàn
+- Không commit, push, đổi nhánh, reset hay xóa nếu chưa được yêu cầu rõ; không ghi bí mật.
+- Không chạy builder/migration cũ trong menu `The Return/`.
+- Chỉ sửa scene/prefab khi đã có phép phù hợp; chụp snapshot trước sửa và không ghi đè scene đang dirty.
+- Báo rõ mức xác minh: tạo/sửa file, compile, test, runtime hay chủ dự án xác nhận. Compile không đồng nghĩa runtime đã đúng.
 
-## BOARD (TỰ SINH từ TASKS.md bằng `.ai/tools/make_board.snippet.cs`; DONE nằm ở TASKS_DONE.md)
-<!--BOARD-->
-- T-005 REVIEW | Claude Sonnet 5.5 (phiên #6,… | Test Play Mode NUnit cho luồng cổng/chọn khu/RestartMap: 11 [UnityTest] đã commit (81b6926…
-- T-006a2 REVIEW | Claude Sonnet 5.5 (phiên #3) | Phong_5 Cầu dao: code + scene xong. CÒN: chủ dự án chơi thật.
-- T-006b2 REVIEW | Claude Sonnet 5.5 (phiên MCP… | Hanh_Lang_6 PlankAndKey: Domain + Session + Presentation + adapter + đăng ký + s…
-- T-006c REVIEW | Claude Sonnet 5.5 (phiên #3,… | Hanh_Lang_5 Cô nói: code + scene xong, Play Mode giả lập qua. CÒN: chơi thật, nhánh cảnh c…
-- T-006d2 REVIEW | Claude Sonnet 5.5 (phiên #3) | Phong_6 Choir: code + scene xong. CÒN: chủ dự án chơi thật.
-- T-006e2 REVIEW | Claude Sonnet 5.5 (phiên #4,… | Hanh_Lang_2 GlassBridge: code + scene + 2 cổng xong. CÒN: chủ dự án chơi thật.
-- T-006f REVIEW | Claude Sonnet 5.5 (phiên #5;… | Hanh_Lang_4 SharedLantern: code + scene xong, Play Mode giả lập qua. CÒN: chơi thật, test …
-- T-008 REVIEW | Claude Sonnet 5.5 (phiên #9,… | MainMenu + nhóm chơi (IPartyService một máy) + Settings xong; Play Mode mô phỏng cả luồng …
-- T-009 IN-PROGRESS | Claude Sonnet 5.5 (phiên #7,… | UMBRELLA online co-op. Nền LAN (S1) + Relay (T-023) XONG; điều phối T-022..T-032. Công cụ …
-- T-010 REVIEW | Claude Sonnet 5.5 (phiên #6) | Nhân vật + animation. Chủ dự án đã đưa Assets/My_Asset/Player.fbx (Idle, Walking, Walking …
-- T-011 REVIEW | Claude Sonnet 5.5 (phiên #3) | UI theo khu XONG S1-S5 (HUD chung, bản đồ nhỏ sân, phím N sổ tay, 12 khu dùng provider). C…
-- T-012 REVIEW | Claude Sonnet 5.5 (phiên #5) | Tài liệu prefab/vật tương tác: PREFAB_GUIDE (14 prefab cũ, phiên trước) + 6 README mới cho…
-- T-017 REVIEW | Claude Sonnet 5.5 (phiên #3) | Không mặc định vào Phong_1: UI tự chọn phòng + F8 test 12 khu + nhãn cổng. CÒN: chơi thật.
-- T-018 REVIEW | Claude Sonnet 5.5 (phiên #3) | Âm thanh bản thử: AudioService + bank (41 clip tạm) + tiếng chung + tiếng riêng 12 khu (Mi…
-- T-019 REVIEW | Claude Sonnet 5.5 (phiên #3) | Bug Phong_1 (chủ dự án 2026-10-24): N không mở sổ, ghế không tương tác, không có tên nhân …
-- T-020 REVIEW | Claude Sonnet 5.5 (phiên #8) | 6 root nhiệm vụ mới (Breaker, Choir, GlassBridge, PlankAndKey, SharedLantern, TeacherSays)…
-- T-021 REVIEW | Claude Sonnet 5.5 (phiên #8) | 5 root nhiệm vụ cũ (QuietCorridor, GradeRepair, NavigationExam, DontLookBack, TeacherTruth…
-- T-024 REVIEW | Claude Sonnet 5.5 (phiên #9) | Khung mạng host-authoritative: lệnh client, trạng thái host, thông tin riêng từng người, k…
-- T-025 REVIEW | Claude Sonnet 5.5 (phiên #9) | Nhân vật online: mỗi người 1 nhân vật cố định (không đổi vai), số nhân vật = số người, spa…
-- T-026 REVIEW | Claude Sonnet 5.5 (phiên #7) | Phòng online: tạo/nhập mã, danh sách, đội 2-4 cố định lúc lập, bắt đầu, rời phòng. Chạy đư…
-- T-028 BLOCKED | (code do phiên #9 xong; chờ … | Luồng map qua mạng: nhiệm vụ, cổng, khu chuẩn bị, MapProgress, màn thắng chạy trên host; n…
-- T-029 REVIEW | Claude Sonnet 5.5 (phiên #7) | Chat giọng nói Vivox theo phòng: vào/ra kênh, bật/tắt mic, tắt tiếng từng người. T-026 đã …
-- T-031 IN-PROGRESS | Nhiều phiên: Attendance #7; … | Tiên phong nối mạng: Attendance (REVIEW) + BreakerPanel (#10 đang làm). 9 nhiệm vụ còn lại…
-- T-032 BLOCKED | (chưa ai) | Bản build gửi bạn bè: kiểm phiên bản host/client, build 1 lệnh, hướng dẫn, thử Internet. C…
-- T-036 TODO | (chưa ai) | Nhóm A online: thông tin riêng + thao tác rời rạc (GradeRepair, NavigationExam, TeacherTru…
-- T-037 IN-PROGRESS | Claude Sonnet 5.5 (phiên #11… | Nhóm B online: đồng hồ + đứng đúng vùng (Choir, TeacherSays, SharedLantern). Gồm đổi Choir…
-- T-038 TODO | (chưa ai) | Nhóm C online: chuyển động/hướng nhìn (GlassBridge, QuietCorridor, DontLookBack). Có việc …
-- T-033 REVIEW | Claude Sonnet 5.5 (phiên #8) | 4 bug chủ dự án báo khi chơi thật đã sửa: (1+3) cổng/khu không bắt đầu vì hộp «vào khu» ch…
-<!--/BOARD-->
+## Mở tài liệu có chọn lọc
+- `CURRENT.md`: trạng thái và cảnh báo hiện hành.
+- `TASKS.md` / `QUEUE.md`: chủ việc và bước tiếp theo; QUEUE là nguồn cho thẻ online.
+- `PROTOCOL.md`: quy trình khi cần thao tác task, sửa lỗi, tiếp quản hoặc kết thúc.
+- `PLANS/`, `SYSTEM_CARDS/`, `MAPS/`, `DECISIONS/`, `BUGS/`: chỉ mở tài liệu được task trỏ tới.
+- `LOG.md`: tối đa 8 mục gần nhất; chi tiết cũ đã loại nếu không còn tác dụng cho Core4.
+- `NETWORK.md`, `TESTING.md`, `TOOLING.md`, `MAPS/`, `SYSTEM_CARDS/`: chỉ mở phần liên quan tới task hiện tại.
+- `PROJECT_STATE.md`, `Design/`: tài liệu lịch sử/cold; không đọc trừ khi task cần.
 
-## FREE — việc AI có thể nhận NGAY (cập nhật 2026-10-29; nguồn sự thật là BOARD ở trên)
-Code 12 khu, HUD theo khu, MainMenu/Party/Settings và âm thanh bản thử đều đã có. Việc rảnh hiện có: nhóm ONLINE CO-OP (mục 0 bên dưới).
-0. ONLINE CO-OP (T-009 là umbrella; mỗi task có phiếu PLANS/T-0xx-brief.md, phụ thuộc ở PLANS/T-009-online-coop.md mục 8): nhận NGAY được T-022 (thiết kế co giãn 2/3/4 người), tài liệu của T-030. T-024 do phiên #9 giữ. BLOCKED chờ việc trước: T-027, T-028, T-031, T-032.
-1. Đang có người giữ (chỉ tiếp quản khi >24h không LOG hoặc chủ dự án cho phép): T-005 (phiên #6), T-009 (phiên #7).
-2. Chờ chủ dự án quyết/brief: T-030 (duyệt thiết kế chuyển host trước khi code), T-010 nhân vật/animation (cần asset/hướng).
-3. REVIEW chờ chủ dự án CHƠI THẬT (AI không làm thêm được): T-006a2/b2/c/d2/e2/f, T-008, T-011, T-017, T-018, T-019, T-020, T-021. T-012 xong phần tài liệu; T-020 (6 root nhiệm vụ mới) và T-021 (5 root nhiệm vụ cũ) đã chuyển thành prefab.
-4. Việc chủ dự án tự làm (AI không xóa được): xóa thư mục Features/Audio (trùng GameAudio) và ảnh thừa Assets/Screenshots/*.png.
-→ Khi chủ dự án bảo «tìm việc»: trả lời NGAY từ mục này (≤ 6 dòng, 0 tool call nếu START_HERE vừa đọc xong), đừng mở thêm file. Nếu không có việc rảnh thì nói thẳng và hỏi chủ dự án muốn nhận gì.
-
-## MẸO GIẢM TOKEN CHO CHỦ DỰ ÁN
-- Giao việc CỤ THỂ theo mã (vd «làm T-006b2 S6») thay vì «tìm việc» mở; mỗi việc một cuộc chat mới (chat dài = mỗi lượt gửi lại cả lịch sử).
-- Khi AI báo xong, đóng chat; việc sau mở chat mới (AI đọc START_HERE ~2k token là đủ).
-
-## CÔNG CỤ GỌN (dùng thay vì tự đọc)
-- Preflight MỘT lệnh: dán `.ai/tools/status.snippet.cs` vào execute_code (trả ≤ 15 dòng: Play/compile/scene dirty/3 mục LOG cuối/file .cs đổi sau LOG).
-- Sau khi sửa TASKS: dán `.ai/tools/make_board.snippet.cs` để sinh lại BOARD.
-- Giao việc: dùng `.ai/PLANS/_BRIEF_TEMPLATE.md` (phiếu ≤ 15 dòng). Nhận phiếu thì làm luôn.
-- Đọc đoạn file: find_in_file/Grep rồi offset+limit; mẫu execute_code gọn: `var l=System.IO.File.ReadAllLines(p); string r=""; for(int i=a;i<b;i++) r+=l[i].Substring(0,System.Math.Min(160,l[i].Length))+"\n"; return r;`
-- 3 tầng: (1) luôn đọc START_HERE + CURRENT; (2) khi nhận task: PLANS/T-xxx của nó; (3) tra khi cần: SYSTEM_CARDS/TOOLING/PROTOCOL/SESSIONS bằng tìm kiếm.
-- LOG mỗi mục ≤ 3 dòng/≤ 500 ký tự (mẫu ở đầu LOG.md). TASKS cột Task ≤ 140 ký tự.
+Không lưu danh sách việc rảnh ở đây; kiểm tra TASKS/QUEUE trước khi nhận việc.

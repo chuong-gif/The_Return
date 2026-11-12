@@ -1,36 +1,11 @@
-# CARD: PlankAndKey (Cầu ván và thẻ từ)
+# CARD: PlankAndKey — Hanh_Lang_6
 
-Khu / vai trò: Hanh_Lang_6 (nhiệm vụ MỚI, T-006b). Cập nhật: 2026-10-16 11:00 UTC. Trạng thái: Domain + PlankSession (thời gian thực) + PlankSettings + test; chưa Presentation/prefab/scene/adapter.
+Chỉ mục tra cứu, không phải đặc tả đầy đủ. Domain/README/test hiện hành là nguồn sự thật.
 
-## A. Bản đồ
-- Assets/TheReturn/Features/PlankAndKey/Runtime/Domain (asmdef TheReturn.PlankAndKey.Domain, noEngineReferences): PlankSolver (Dijkstra tìm thời gian tối thiểu + kế hoạch), PlankRound (đề bất biến: thời gian qua cầu từng người, tối ưu, hạn), PlankGenerator (danh mục bộ tốc độ theo số người, xáo theo seed, slack % là tham số), PlankState (TryCross, thẻ, hạn, thắng/thất bại, Reset), PlankSession (bọc PlankState + thời gian thực: TryStartCrossing, Tick, đồng hồ HUD, Solved chỉ sau khi nhóm cuối đến nơi).
-- Runtime (asmdef TheReturn.PlankAndKey: Domain + Core + Shared + Unity.InputSystem): Data/PlankSettings.cs (giây mỗi đơn vị mặc định 3, slack 25%, câu chữ tiếng Việt); asset Features/PlankAndKey/Data/PlankAndKey_VI.asset. Chưa có Presentation.
-- Test: Features/PlankAndKey/Tests/EditMode/{PlankAndKeyTests.cs (25 test), PlankSessionTests.cs (13 test)} (asmdef TheReturn.PlankAndKey.Domain.Tests).
-- Thiết kế: PLANS/T-006-mission-designs.md mục 3 (Hanh_Lang_6); kế hoạch: PLANS/T-006b-plank-and-key.md (mục 3 quyết định, mục 8 hạn chế).
-
-## B. Triệu chứng -> nơi xem
-| Triệu chứng | Nơi xem | Cách kiểm |
-|---|---|---|
-| Hạn quá chặt hoặc không thể thắng | PlankRound (DeadlineUnits = OptimalUnits + ceil(OptimalUnits x SlackPercent / 100)); PlankSolver.Solve | Test Round_DeadlineIsOptimalPlusCeilingOfSlack, Generator_DeadlineNeverBelowOptimalAndAlwaysWinnable |
-| Qua cầu mà không có thẻ, hoặc thẻ kẹt ở bờ kia | PlankState.TryCross (CardNotWithGroup; thẻ đi cùng nhóm) | Test State_RejectsCrossingWithoutCard, State_ReturnTripBringsCardBack |
-| Người ở hai bờ qua cùng nhau | PlankState.TryCross (WrongBank) | Test State_RejectsGroupAcrossBanks |
-| Thua dù còn giờ, hoặc thắng sai lúc | PlankState.TryCross (UsedUnits + cost > DeadlineUnits; AllFar) | Test State_WinsOnLastCrossingExactlyAtDeadline, State_OverDeadlineFailsAndMoveIsNotApplied |
-| Hai máy ra hai đề khác nhau | PlankGenerator.Generate dùng System.Random(seed) (chưa đảm bảo giống nhau giữa máy/runtime) | Test Generator_IsDeterministicPerSeed chỉ kiểm trong cùng một máy; đổi sang bộ sinh số tự viết khi cần (PLANS/T-006b mục 8) |
-| Qua cầu mất sai thời gian | PlankSession.TryStartCrossing (chi phí đơn vị x SecondsPerUnit) | Test Session_CrossingDurationFollowsSlowestPlayer |
-| Thắng khi nhóm cuối chưa đến nơi | PlankSession.Solved (đợi Tick đưa Phase về Idle) | Test Session_SolvedOnlyAfterFinalArrival |
-| Đồng hồ HUD nhảy hoặc âm | PlankSession.DisplayUsedSeconds | Test Session_DisplayClockProgressesDuringCrossing |
-| Bấm lượt khi đang qua cầu | PlankSession.TryStartCrossing (Busy) | Test Session_RejectsNewCrossingWhileBusy |
-
-## C. Ghi chú đã xác minh
-- 2026-10-17 02:20 UTC: 38/38 test xanh (mức 3) gồm 13 test PlankSession; asset PlankAndKey_VI.asset tạo được. Vẫn chưa chạy trong scene (mức 4 chưa có).
-- 2026-10-16 11:00 UTC: 25/25 test xanh (mức 3); bộ giải khớp số liệu duyệt 8/17/17/11 và bộ kiểm vét cạn độc lập. Chưa chạy trong scene (mức 4 chưa có).
-- Đơn vị thời gian là «đơn vị», chưa phải giây; đồng hồ chỉ tính thời gian các lượt qua cầu (chưa xác nhận với chủ dự án).
-
-- 2026-10-31 05:04 UTC (phiên #9, T-027): thêm lớp mạng thuần C# Runtime/Network (asmdef TheReturn.PlankAndKey.Network: PlankCommand, IPlankWorld, PlankPublicState/PlankPrivateState, PlankHostRules) + 21 test EditMode xanh (Tests/EditModeNet). Domain KHÔNG đổi. CHƯA có cầu nối NGO, IPlankWorld cho Unity, Presentation online (PLANS/T-027-plank-network-pattern.md mục 6-8).
-
-- 2026-10-31 21:19 UTC (phiên #9, T-027 xong phần code): lớp online hoàn chỉnh: Runtime/Network (luật host, codec, trạng thái thẻ PlankCardMode) + Runtime/Online (asmdef TheReturn.PlankAndKey.Online: PlankLane, PlankOnlineHost, PlankOnlineClient) + cầu nối chung Features/Network/Online/MissionNetBridge. 45 test EditMode xanh (TheReturn.PlankAndKey.Network.Tests). Host một mình chạy đủ vòng nhặt thẻ -> gạt cần -> ván chạy -> đến nơi -> từ chối lệnh sai -> đặt lại trong Play Mode. CHƯA thử 2 máy thật. Scene thử: Features/Network/Scenes/NetworkPlankTest.unity; build thử Builds/NetworkPlank (chay_host.bat, chay_client.bat). Chưa nối vào Hanh_Lang_6 trong SchoolFloorPrototype (T-028). PlankAndKeyPrototype cũ giữ nguyên, chế độ 1 máy không đổi.
-
-- 2026-10-31 21:33 UTC (phiên #9): chủ dự án thử 2 máy thật: chạy được, chỉ lỗi người đứng trên ván chạy bị máy kia thấy làm animation ĐI TẠI CHỖ (PlayerAnimationDriver tính Speed từ độ dời vị trí nên bị ván chở đi cũng thành đi bộ). Đã sửa: PlayerAnimationDriver.SuppressLocomotion + hàm thuần HorizontalVelocity (7 test EditMode xanh) và PlankOnlineClient.UpdateRiderAnimations đặt cờ cho MỌI người đang ngồi ván (giữ thêm 0,4 s sau khi đến nơi). CHƯA xác minh bằng mắt trên 2 máy: cần build lại Builds/NetworkPlank (xem LOG).
-
-## D. Task liên quan
-- T-006b DONE (Domain). T-006b2 IN-PROGRESS: S2-S3 xong (PlankSession, PlankSettings, asset); S4-S6 (Presentation, adapter, đăng ký, dựng scene, Play Mode) chờ Scene lock của phiên #3.
+- Thành phần chính: `Assets/TheReturn/Features/PlankAndKey/Runtime/{Domain,Network,Online,Presentation}`; assembly test `TheReturn.PlankAndKey.Network.Tests`.
+- Luật bền vững: người chơi đi theo đội qua cầu; thẻ phải cùng bờ với đội; thời gian đi theo lượt của người chậm nhất; host quyết định trạng thái.
+- Đơn vị thời gian mặc định 3 giây; đồng hồ tổng chỉ tính lượt qua cầu (quyết định chủ dự án, T-006b2); kiểm `PlankSettings` nếu hành vi khác.
+- Online đã được người dùng thử 2 máy trước đây; T-042 nối vào MapSchoolF. Room→map/kiểm smoke hiện tại xem `QUEUE.md`.
+- Nơi bắt đầu lỗi: `PlankState`/`PlankSession` cho luật và timer; `PlankOnlineHost`/`Client` cho tương tác; `MapFlowOnline` cho handoff.
+- Lỗi đã sửa cần tránh: timer không được làm public snapshot đổi trong cùng Version; xem F-006/`FAILURES.md`.
+- Kiểm tra: `TheReturn.PlankAndKey.Network.Tests`; Gauntlet 2026-11-12: 55/55 đạt.

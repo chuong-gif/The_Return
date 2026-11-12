@@ -1,11 +1,26 @@
-// PREFLIGHT: liệt kê file đổi sau một mốc giờ UTC (chỉ ĐỌC). Dán nội dung (bỏ dòng chú thích) vào execute_code của Unity MCP.
-// Đổi chuỗi trong DateTime.Parse thành giờ UTC của mục .ai/LOG.md cuối mà bạn đã đọc. Bỏ qua Library/Temp/obj/Logs/.git/UserSettings/node_modules và file .meta.
+// PREFLIGHT: liệt kê thay đổi sau mốc UTC trong Core4/shared và .ai (chỉ ĐỌC). Dán nội dung vào execute_code của Unity MCP.
+// Đổi chuỗi trong DateTime.Parse thành giờ UTC của mục .ai/LOG.md cuối mà bạn đã đọc. Chỉ quét Core4/shared; bỏ file .meta.
 // Kết quả: số file theo nhóm + 25 file mới nhất. File bạn sắp sửa mà có giờ MỚI HƠN mục LOG nhắc tới nó = có thay đổi chưa ghi (xem PROTOCOL.md mục 3c).
 var since = System.DateTime.Parse("2026-10-14 00:00:00", null, System.Globalization.DateTimeStyles.AssumeUniversal | System.Globalization.DateTimeStyles.AdjustToUniversal);
 var root = System.IO.Directory.GetParent(Application.dataPath).FullName;
-var skip = new System.Collections.Generic.HashSet<string>{"Library","Temp","obj","Logs",".git","UserSettings","node_modules"};
-var files = new System.Collections.Generic.List<string>(System.IO.Directory.GetFiles(root));
-foreach (var d in System.IO.Directory.GetDirectories(root)) if (!skip.Contains(System.IO.Path.GetFileName(d))) files.AddRange(System.IO.Directory.GetFiles(d, "*", System.IO.SearchOption.AllDirectories));
+var files = new System.Collections.Generic.List<string>();
+var scopes = new[]{
+  ".ai", "Assets/TheReturn/Core", "Assets/TheReturn/Shared", "Assets/TheReturn/Features/Network",
+  "Assets/TheReturn/Features/Party", "Assets/TheReturn/Features/GameSettings",
+  "Assets/TheReturn/Features/Attendance", "Assets/TheReturn/Features/BreakerPanel",
+  "Assets/TheReturn/Features/Choir", "Assets/TheReturn/Features/PlankAndKey",
+  "Assets/TheReturn/Maps/SchoolFloor/Runtime", "Assets/TheReturn/Maps/Lobby/Runtime",
+  "Assets/TheReturn/Maps/MainMenu/Runtime", "Assets/TheReturn/Scenes/Maps/MapSchoolF.unity"
+};
+foreach (var scope in scopes) {
+  var path = System.IO.Path.Combine(root, scope);
+  if (System.IO.File.Exists(path)) files.Add(path);
+  else if (System.IO.Directory.Exists(path)) files.AddRange(System.IO.Directory.GetFiles(path, "*", System.IO.SearchOption.AllDirectories));
+}
+foreach (var name in new[]{"AGENTS.md","CLAUDE.md"}) {
+  var path = System.IO.Path.Combine(root, name);
+  if (System.IO.File.Exists(path)) files.Add(path);
+}
 var hits = new System.Collections.Generic.List<string[]>();
 foreach (var f in files) {
   if (f.EndsWith(".meta")) continue;

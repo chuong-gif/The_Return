@@ -1,12 +1,23 @@
 // Cách chạy lại: dán NGUYÊN NỘI DUNG file này (không cần dòng chú thích) vào tool execute_code của Unity MCP (action=execute).
-// Chỉ ĐỌC project, chỉ GHI .ai/MAPS/index-scripts.md. Compiler codedom = C# 6. Nhớ cập nhật ngày sinh trong tiêu đề nếu đổi.
+// Chỉ ĐỌC Core4/shared, chỉ GHI .ai/MAPS/index-scripts.md. Compiler codedom = C# 6.
 var root = System.IO.Directory.GetParent(Application.dataPath).FullName;
 var rxType = new System.Text.RegularExpressions.Regex(@"^\s*(?:public\s+|internal\s+|private\s+|protected\s+)?(?:static\s+|sealed\s+|abstract\s+|partial\s+)*(class|struct|interface|enum)\s+(\w+)", System.Text.RegularExpressions.RegexOptions.Multiline);
 var rxNs = new System.Text.RegularExpressions.Regex(@"^\s*namespace\s+([\w\.]+)", System.Text.RegularExpressions.RegexOptions.Multiline);
 var rxGuid = new System.Text.RegularExpressions.Regex("guid: ([0-9a-f]{32})");
+var allowedPrefixes = new[]{
+  "Assets/TheReturn/Core/", "Assets/TheReturn/Shared/",
+  "Assets/TheReturn/Features/Network/", "Assets/TheReturn/Features/Party/",
+  "Assets/TheReturn/Features/GameSettings/", "Assets/TheReturn/Features/Attendance/",
+  "Assets/TheReturn/Features/BreakerPanel/", "Assets/TheReturn/Features/Choir/",
+  "Assets/TheReturn/Features/PlankAndKey/", "Assets/TheReturn/Maps/SchoolFloor/Runtime/",
+  "Assets/TheReturn/Maps/Lobby/Runtime/", "Assets/TheReturn/Maps/MainMenu/Runtime/"
+};
 var rows = new System.Collections.Generic.List<string[]>();
 var known = new System.Collections.Generic.HashSet<string>();
-foreach (var f in System.IO.Directory.GetFiles(Application.dataPath, "*.cs", System.IO.SearchOption.AllDirectories)) {
+foreach (var prefix in allowedPrefixes) {
+  var dir = System.IO.Path.Combine(root, prefix.Replace("/", "\\").TrimEnd('\\'));
+  if (!System.IO.Directory.Exists(dir)) continue;
+  foreach (var f in System.IO.Directory.GetFiles(dir, "*.cs", System.IO.SearchOption.AllDirectories)) {
   var rel = f.Replace(Application.dataPath, "Assets").Replace("\\","/");
   if (rel.Contains("/ThirdParty/") || rel.Contains("/TutorialInfo/")) continue;
   var t = System.IO.File.ReadAllText(f);
@@ -16,10 +27,20 @@ foreach (var f in System.IO.Directory.GetFiles(Application.dataPath, "*.cs", Sys
   if (System.IO.File.Exists(f + ".meta")) guid = rxGuid.Match(System.IO.File.ReadAllText(f + ".meta")).Groups[1].Value;
   rows.Add(new[]{ rel, t.Split('\n').Length.ToString(), rxNs.Match(t).Groups[1].Value, string.Join(", ", types.ToArray()), guid });
   if (guid != "") known.Add(guid);
+  }
 }
 var used = new System.Collections.Generic.Dictionary<string,System.Collections.Generic.List<string>>();
 int yaml = 0;
 foreach (var ext in new[]{"*.unity","*.prefab","*.asset"}) foreach (var f in System.IO.Directory.GetFiles(System.IO.Path.Combine(Application.dataPath, "TheReturn"), ext, System.IO.SearchOption.AllDirectories)) {
+  var rel = f.Replace(Application.dataPath, "Assets").Replace("\\","/");
+  if (!(rel == "Assets/TheReturn/Scenes/Maps/MapSchoolF.unity" ||
+        rel.StartsWith("Assets/TheReturn/Features/Network/Scenes/", System.StringComparison.Ordinal) ||
+        rel.StartsWith("Assets/TheReturn/Features/Attendance/", System.StringComparison.Ordinal) ||
+        rel.StartsWith("Assets/TheReturn/Features/BreakerPanel/", System.StringComparison.Ordinal) ||
+        rel.StartsWith("Assets/TheReturn/Features/Choir/", System.StringComparison.Ordinal) ||
+        rel.StartsWith("Assets/TheReturn/Features/PlankAndKey/", System.StringComparison.Ordinal) ||
+        rel.StartsWith("Assets/TheReturn/Maps/Lobby/", System.StringComparison.Ordinal) ||
+        rel.StartsWith("Assets/TheReturn/Maps/MainMenu/", System.StringComparison.Ordinal))) continue;
   var name = System.IO.Path.GetFileName(f);
   if (name.StartsWith("Before")) continue;
   var t = System.IO.File.ReadAllText(f);
@@ -33,8 +54,8 @@ foreach (var ext in new[]{"*.unity","*.prefab","*.asset"}) foreach (var f in Sys
 }
 rows.Sort((a,b)=>string.CompareOrdinal(a[0], b[0]));
 var sb = new System.Text.StringBuilder();
-sb.AppendLine("# Index script / symbol / nơi dùng (TỰ SINH — đừng sửa tay)\n");
-sb.AppendLine("Sinh bằng .ai/tools/rebuild_index.snippet.cs. Phạm vi: *.cs ngoài ThirdParty/TutorialInfo. Dùng-bởi = scene/prefab/asset YAML dưới Assets/TheReturn chứa GUID script (bỏ file Before*). Quét " + yaml + " file YAML. Bản đồ gần đúng: không thấy tham chiếu tạo bằng code. Source và Unity là nguồn sự thật.\n");
+sb.AppendLine("# Index script / symbol / nơi dùng (TỰ SINH — Core4/shared)\n");
+sb.AppendLine("Sinh bằng .ai/tools/rebuild_index.snippet.cs. Chỉ quét bốn nhiệm vụ, online/map dùng chung và scene liên quan (" + yaml + " YAML). Bản đồ gần đúng: không thấy tham chiếu tạo bằng code. Source và Unity là nguồn sự thật.\n");
 sb.AppendLine("| File | Dòng | Namespace | Kiểu | Dùng-bởi |");
 sb.AppendLine("|---|---|---|---|---|");
 foreach (var r in rows) {
