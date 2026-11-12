@@ -1,0 +1,140 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6098961549828542584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6095194511258548092}
+  - component: {fileID: 790892052151474454}
+  m_Layer: 0
+  m_Name: MissionFlow_Controller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6095194511258548092
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6098961549828542584}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &790892052151474454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6098961549828542584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ded894f086761fb4ab17a9cf0607cbe9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: TheReturn.SchoolFloor::TheReturn.MissionFlowController
+  flow: {fileID: 0}
+  bindings:
+  - gate: {fileID: 0}
+    areaId: Phong_1
+    entryFromId: Hanh_Lang_6
+  - gate: {fileID: 0}
+    areaId: Phong_1
+    entryFromId: Hanh_Lang_1
+  - gate: {fileID: 0}
+    areaId: Phong_1
+    entryFromId: San
+  - gate: {fileID: 0}
+    areaId: Phong_2
+    entryFromId: Hanh_Lang_1
+  - gate: {fileID: 0}
+    areaId: Phong_2
+    entryFromId: Hanh_Lang_2
+  - gate: {fileID: 0}
+    areaId: Phong_2
+    entryFromId: San
+  - gate: {fileID: 0}
+    areaId: Phong_3
+    entryFromId: Hanh_Lang_2
+  - gate: {fileID: 0}
+    areaId: Phong_3
+    entryFromId: Hanh_Lang_3
+  - gate: {fileID: 0}
+    areaId: Phong_3
+    entryFromId: San
+  - gate: {fileID: 0}
+    areaId: Phong_4
+    entryFromId: Hanh_Lang_3
+  - gate: {fileID: 0}
+    areaId: Phong_4
+    entryFromId: Hanh_Lang_4
+  - gate: {fileID: 0}
+    areaId: Phong_4
+    entryFromId: San
+  - gate: {fileID: 0}
+    areaId: Phong_5
+    entryFromId: Hanh_Lang_4
+  - gate: {fileID: 0}
+    areaId: Phong_5
+    entryFromId: Hanh_Lang_5
+  - gate: {fileID: 0}
+    areaId: Phong_5
+    entryFromId: San
+  - gate: {fileID: 0}
+    areaId: Phong_6
+    entryFromId: Hanh_Lang_5
+  - gate: {fileID: 0}
+    areaId: Phong_6
+    entryFromId: Hanh_Lang_6
+  - gate: {fileID: 0}
+    areaId: Phong_6
+    entryFromId: San
+  - gate: {fileID: 0}
+    areaId: Hanh_Lang_1
+    entryFromId: Phong_1
+  - gate: {fileID: 0}
+    areaId: Hanh_Lang_1
+    entryFromId: Phong_2
+  - gate: {fileID: 0}
+    areaId: Hanh_Lang_3
+    entryFromId: Phong_3
+  - gate: {fileID: 0}
+    areaId: Hanh_Lang_3
+    entryFromId: Phong_4
+  - gate: {fileID: 0}
+    areaId: Hanh_Lang_2
+    entryFromId: Phong_2
+  - gate: {fileID: 0}
+    areaId: Hanh_Lang_2
+    entryFromId: Phong_3
+  - gate: {fileID: 0}
+    areaId: Hanh_Lang_4
+    entryFromId: Phong_4
+  - gate: {fileID: 0}
+    areaId: Hanh_Lang_4
+    entryFromId: Phong_5
+  - gate: {fileID: 0}
+    areaId: Hanh_Lang_5
+    entryFromId: Phong_5
+  - gate: {fileID: 0}
+    areaId: Hanh_Lang_5
+    entryFromId: Phong_6
+  - gate: {fileID: 0}
+    areaId: Hanh_Lang_6
+    entryFromId: Phong_6
+  - gate: {fileID: 0}
+    areaId: Hanh_Lang_6
+    entryFromId: Phong_1
+  topology: {fileID: 0}
+  disarmSeconds: 3
