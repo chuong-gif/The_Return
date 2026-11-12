@@ -273,5 +273,51 @@ namespace TheReturn.Tests
             Assert.IsTrue(p.Find("Phong_1").HasMission);
             Assert.AreEqual(6, p.MissingMissionAreas.Count);
         }
+
+        // ---------- Hành lang vào từ sân (T-040 P-011) ----------
+
+        /// <summary>Dựng 2 phòng + 1 hành lang kề cả hai; hành lang có nhiệm vụ; yardEntry quyết định có vào được từ sân không.</summary>
+        static MapProgress CorridorMap(bool yardEntry)
+        {
+            return new MapProgress(new[]
+            {
+                new AreaInfo("Phong_1", AreaKind.Room, true, new[] { "Hanh_Lang_1" }),
+                new AreaInfo("Phong_2", AreaKind.Room, true, new[] { "Hanh_Lang_1" }),
+                new AreaInfo("Hanh_Lang_1", AreaKind.Corridor, true, new[] { "Phong_1", "Phong_2" }, yardEntry)
+            });
+        }
+
+        [Test]
+        public void Corridor_Default_StillRejectsEntryFromYard()
+        {
+            MapProgress p = CorridorMap(false);
+            Assert.AreEqual(BeginResult.InvalidEntry, p.CheckBegin("Hanh_Lang_1", MapProgress.Yard, true));
+            Assert.IsFalse(p.Find("Hanh_Lang_1").YardEntry);
+        }
+
+        [Test]
+        public void Corridor_WithYardEntry_CanBeEnteredFromYardAndFromBothNeighbors()
+        {
+            MapProgress p = CorridorMap(true);
+            Assert.AreEqual(BeginResult.Started, p.CheckBegin("Hanh_Lang_1", MapProgress.Yard, true));
+            Assert.AreEqual(BeginResult.Started, p.CheckBegin("Hanh_Lang_1", "Phong_1", true));
+            Assert.AreEqual(BeginResult.Started, p.CheckBegin("Hanh_Lang_1", "Phong_2", true));
+        }
+
+        [Test]
+        public void Corridor_WithYardEntry_StillNeedsTeamAndRejectsUnknownEntry()
+        {
+            MapProgress p = CorridorMap(true);
+            Assert.AreEqual(BeginResult.TeamNotReady, p.CheckBegin("Hanh_Lang_1", MapProgress.Yard, false));
+            Assert.AreEqual(BeginResult.InvalidEntry, p.CheckBegin("Hanh_Lang_1", "Khu_La", true));
+        }
+
+        [Test]
+        public void YardEntry_DoesNotChangeRoomsOrOtherCorridors()
+        {
+            MapProgress p = CorridorMap(true);
+            Assert.AreEqual(BeginResult.Started, p.CheckBegin("Phong_1", MapProgress.Yard, true));
+            Assert.AreEqual(BeginResult.InvalidEntry, MapProgress.CreateRing(6, new[] { "Hanh_Lang_1" }).CheckBegin("Hanh_Lang_1", MapProgress.Yard, true), "Vòng cũ: hành lang vẫn chỉ vào từ phòng kề");
+        }
     }
 }

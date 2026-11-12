@@ -23,7 +23,7 @@ namespace TheReturn
         public Renderer portalRenderer;
         [Header("Thiết lập phiên")]
         [Range(2, 4)] public int participantCount = 4;
-        public string schoolSceneName = "SchoolFloorPrototype";
+        public string schoolSceneName = "MapSchoolF";
         [Min(1f)] public float countdownSeconds = 5f;
 
         readonly bool[] ready = new bool[4];

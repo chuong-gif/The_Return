@@ -41,7 +41,7 @@ namespace TheReturn
                 }
                 return flow.teacherTruth != null && flow.teacherTruth.Active ? 5 :
                     flow.dontLookBack != null && flow.dontLookBack.Active ? 4 : flow.navigationExam != null && flow.navigationExam.Active ? 3 :
-                    flow.gradeRepair != null && flow.gradeRepair.Active ? 2 : flow.corridor.Active ? 1 : 0;
+                    flow.gradeRepair != null && flow.gradeRepair.Active ? 2 : flow.corridor != null && flow.corridor.Active ? 1 : 0; // T-040: 8 nhiệm vụ cũ có thể vắng trong scene mới
             }
         }
 
@@ -79,6 +79,7 @@ namespace TheReturn
             var old = view.missionButtons;
             if (old == null || old.Length == 0) return;
             var buttons = new Button[n];
+            for (int j = n; j < old.Length; j++) if (old[j] != null) old[j].gameObject.SetActive(false); // T-040: ẩn nút test thừa của nhiệm vụ đã cắt
             for (int i = 0; i < n; i++)
             {
                 if (i < old.Length) buttons[i] = old[i];
@@ -253,7 +254,7 @@ namespace TheReturn
         void RefreshHud()
         {
             var a = flow.attendance;
-            string[] titles ={a.textCatalog.title,flow.corridor.settings.title,flow.gradeRepair.catalog.title,flow.navigationExam.catalog.title,
+            string[] titles ={a.textCatalog.title,flow.corridor!=null?flow.corridor.settings.title:"",flow.gradeRepair!=null?flow.gradeRepair.catalog.title:"",flow.navigationExam!=null?flow.navigationExam.catalog.title:"",
                 flow.dontLookBack!=null?flow.dontLookBack.catalog.title:"",flow.teacherTruth!=null?flow.teacherTruth.catalog.title:""};
             SchoolFloorCanvasView.SetText(view.title, Phase <= 5 ? titles[Phase] : ExtraTitle());
             SchoolFloorCanvasView.SetText(view.role, (launcher.TestSession ? "TEST • " : "") + "VAI " + (a.party.ActivePlayer + 1) + RoleNameSuffix() + " / ĐỘI " + a.PartySize);
@@ -340,10 +341,10 @@ namespace TheReturn
                 message = ExtraStatus(area);
                 hint = ExtraModel(area).Prompt;
                 help = ExtraModel(area).Controls.Length > 0 ? ExtraModel(area).Controls : "WASD đi • E tương tác • R làm lại • 1–4 đổi vai • Tab menu";
-                if (Phase == 1 && flow.corridor.State != null) view.noise.value = flow.corridor.State.Noise / 100f;
+                if (Phase == 1 && flow.corridor != null && flow.corridor.State != null) view.noise.value = flow.corridor.State.Noise / 100f;
                 SchoolFloorCanvasView.SetText(view.clues, ExtraNotebook());
             }
-            bool solved = Phase == 0 ? a.State.Solved : Phase == 1 ? flow.corridor.State.Solved : Phase == 2 ? flow.gradeRepair.State.Solved : Phase == 3 ? flow.navigationExam.State.Solved : Phase == 4 && flow.dontLookBack.State.Solved;
+            bool solved = Phase == 0 ? a.State.Solved : Phase == 1 ? flow.corridor != null && flow.corridor.State.Solved : Phase == 2 ? flow.gradeRepair != null && flow.gradeRepair.State.Solved : Phase == 3 ? flow.navigationExam != null && flow.navigationExam.State.Solved : Phase == 4 && flow.dontLookBack != null && flow.dontLookBack.State.Solved;
             if (!prov && solved && Phase < 5 && flow.transitionGatherZones != null && flow.transitionGatherZones.Length > Phase && flow.transitionGatherZones[Phase] != null)
             {
                 float distance = Vector3.Distance(a.party.players[a.ActivePlayer].position, flow.transitionGatherZones[Phase].transform.position);

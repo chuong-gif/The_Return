@@ -52455,7 +52455,7 @@ MonoBehaviour:
   view: {fileID: 846152674}
   portalRenderer: {fileID: 738427817}
   participantCount: 4
-  schoolSceneName: SchoolFloorPrototype
+  schoolSceneName: MapSchoolF
   countdownSeconds: 5
 --- !u!4 &2123623868
 Transform:

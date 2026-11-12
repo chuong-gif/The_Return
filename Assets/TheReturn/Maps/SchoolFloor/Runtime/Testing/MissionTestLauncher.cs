@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Mục đích: Vào thẳng nhiệm vụ trong Editor/Development Build, chuẩn bị tiến trình trước bằng luật thật.
  * Hàm: Start áp lựa chọn Inspector; Launch đặt lại phiên và mở nhiệm vụ;
  * PrepareAttendance / PrepareCorridor / PrepareGrades / PrepareExam / PrepareBack hoàn tất điều kiện trước;
@@ -16,12 +16,10 @@ namespace TheReturn
     {
         /// <summary>Khu theo chỉ số bài test (0-5 khớp thứ tự cũ; 6+ là nhiệm vụ mới). Thêm nhiệm vụ mới: thêm cuối hai bảng này.</summary>
         public static readonly string[] TestAreas =
-            { "Phong_1", "Hanh_Lang_1", "Phong_2", "Phong_3", "Hanh_Lang_3", "Phong_4", "Phong_6", "Phong_5", "Hanh_Lang_2", "Hanh_Lang_4", "Hanh_Lang_6", "Hanh_Lang_5" };
+            { "Phong_1", "Phong_6", "Phong_5", "Hanh_Lang_6" }; // T-040: chỉ 4 nhiệm vụ giữ lại (khớp thứ tự TestLabels)
         /// <summary>Tên hiển thị tương ứng TestAreas.</summary>
         public static readonly string[] TestLabels =
-            { "Phòng 1 • Điểm danh", "Hành lang 1 • Giữ trật tự", "Phòng 2 • Sửa bảng điểm", "Phòng 3 • Bài kiểm tra", "Hành lang 3 • Không quay đầu",
-              "Phòng 4 • Giáo viên thật/dối", "Phòng 6 • Hợp xướng", "Phòng 5 • Bảng cầu dao", "Hành lang 2 • Cầu kính", "Hành lang 4 • Đèn lồng chung",
-              "Hành lang 6 • Cầu ván và thẻ từ", "Hành lang 5 • Cô nói" };
+            { "Phòng 1 • Điểm danh", "Phòng 6 • Hợp xướng", "Phòng 5 • Bảng cầu dao", "Hành lang 6 • Cầu ván và thẻ từ" }; // T-040: chỉ 4 nhiệm vụ giữ lại
         /// <summary>Trả số bài test hiện có.</summary>
         public static int AreaCount { get { return TestAreas.Length; } }
         /// <summary>Nhận chỉ số bài test; trả ID khu hoặc null nếu ngoài khoảng.</summary>

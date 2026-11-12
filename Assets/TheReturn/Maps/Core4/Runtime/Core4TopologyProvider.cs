@@ -20,6 +20,8 @@ namespace TheReturn.Core4
             public string id;
             public AreaKind kind;
             public string[] neighbors = new string[0];
+            [UnityEngine.Tooltip("Bật cho khu (thường là hành lang) cũng vào được thẳng từ Sân. Mặc định tắt: hành lang chỉ vào từ phòng kề.")]
+            public bool yardEntry;
         }
 
         [Tooltip("Mọi khu của map mới. Sân là 'San' (không khai ở đây). Phòng vào được từ Sân hoặc hành lang kề; hành lang chỉ vào từ phòng kề.")]
@@ -38,7 +40,7 @@ namespace TheReturn.Core4
             if (areas != null)
             {
                 foreach (AreaEntry e in areas)
-                    if (e != null && !string.IsNullOrEmpty(e.id)) list.Add(new AreaInfo(e.id, e.kind, false, e.neighbors));
+                    if (e != null && !string.IsNullOrEmpty(e.id)) list.Add(new AreaInfo(e.id, e.kind, false, e.neighbors, e.yardEntry));
             }
             Dictionary<Core4Mission, string> map = new Dictionary<Core4Mission, string>();
             map[Core4Mission.Attendance] = attendanceArea;

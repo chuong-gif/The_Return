@@ -126,10 +126,10 @@ namespace TheReturn
             if (navigationExam != null) navigationExam.StopSession();
             if (gradeRepair != null) gradeRepair.StopSession();
             if (gradeEntrance != null) gradeEntrance.SetOpen(false, true);
-            corridor.StopSession();
+            if (corridor != null) corridor.StopSession(); // T-040: nhiệm vụ đã cắt có thể vắng trong scene mới
             bool freeRoam = missionFlow != null && missionFlow.isActiveAndEnabled;
             attendance.ExternalControl = freeRoam;
-            attendanceHud.enabled = !freeRoam;
+            if (attendanceHud != null) attendanceHud.enabled = !freeRoam;
             attendance.StartNewRound();
             PrototypePartyController.SetCursor(false);
             Gathered = 0;
@@ -139,11 +139,11 @@ namespace TheReturn
         void OnGUI()
         {
             if (missionFlow != null && missionFlow.isActiveAndEnabled) return;
-            if ((teacherTruth != null && teacherTruth.Active) || (dontLookBack != null && dontLookBack.Active) || (navigationExam != null && navigationExam.Active) || (gradeRepair != null && gradeRepair.Active) || corridor.Active || attendance.State == null || !attendance.State.Solved) return;
+            if ((teacherTruth != null && teacherTruth.Active) || (dontLookBack != null && dontLookBack.Active) || (navigationExam != null && navigationExam.Active) || (gradeRepair != null && gradeRepair.Active) || (corridor != null && corridor.Active) || attendance.State == null || !attendance.State.Solved) return;
             if (useCanvas) return;
             var style = new GUIStyle(GUI.skin.box) { fontSize = 18, wordWrap = true };
             GUI.Box(new Rect(20, Screen.height * .25f, Mathf.Min(520, Screen.width - 40), 115),
-                corridor.settings.waiting + "\nĐã tập hợp: " + Gathered + "/" + attendance.PartySize, style);
+                (corridor != null ? corridor.settings.waiting : "Tập hợp cả đội") + "\nĐã tập hợp: " + Gathered + "/" + attendance.PartySize, style);
         }
     }
 }

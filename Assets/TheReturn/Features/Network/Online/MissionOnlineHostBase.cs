@@ -24,6 +24,27 @@ namespace TheReturn.Network.Online
         private HostAuthority<TCmd, TPub, TPriv> authority;
         private readonly Dictionary<int, Transform> avatars = new Dictionary<int, Transform>();
         private int lastBroadcastVersion = -1;
+        [Tooltip("true = tự chạy ngay khi là host (scene thử); false = chỉ chạy khi luồng map gọi BeginMission (map thật).")]
+        [SerializeField] private bool autoStart = true;
+        private bool missionActive;
+
+        /// <summary>True khi luồng map đã bắt đầu nhiệm vụ này (chỉ có nghĩa khi autoStart = false).</summary>
+        public bool MissionActive { get { return missionActive; } }
+
+        /// <summary>True khi host đã dựng ván và đề đã giải xong.</summary>
+        public bool Solved { get { return IsBuilt && IsSolvedNow(); } }
+
+        /// <summary>True khi an toàn để luồng map kết thúc nhiệm vụ (mặc định: đã giải xong).</summary>
+        public virtual bool CanHandOff { get { return Solved; } }
+
+        /// <summary>Lớp con trả true khi luật của ván đã giải xong; mặc định false. Chỉ gọi khi đã dựng ván.</summary>
+        protected virtual bool IsSolvedNow() { return false; }
+
+        /// <summary>Luồng map bắt đầu nhiệm vụ: lần Update kế tiếp dựng đề mới theo số người của đội.</summary>
+        public void BeginMission() { missionActive = true; }
+
+        /// <summary>Luồng map kết thúc nhiệm vụ: dỡ luật và HostAuthority (máy khách không còn nhận gói).</summary>
+        public void EndMission() { missionActive = false; Teardown(); }
 
         /// <summary>Phiên bản trạng thái hiện tại của host (-1 nếu chưa dựng).</summary>
         public int Version { get { return authority != null ? authority.Version : -1; } }
@@ -111,6 +132,11 @@ namespace TheReturn.Network.Online
             NetworkManager manager = NetworkManager.Singleton;
             bool hosting = manager != null && manager.IsListening && manager.IsServer;
             if (!hosting)
+            {
+                if (authority != null) Teardown();
+                return;
+            }
+            if (!autoStart && !missionActive)
             {
                 if (authority != null) Teardown();
                 return;

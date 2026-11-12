@@ -81,7 +81,7 @@ namespace TheReturn.Core4
             List<string> entries = new List<string>();
             AreaInfo a = Find(AreaOf(mission));
             if (a == null) return entries;
-            if (a.Kind == AreaKind.Room) entries.Add(MapProgress.Yard);
+            if (a.Kind == AreaKind.Room || a.YardEntry) entries.Add(MapProgress.Yard);
             foreach (string n in a.Neighbors) entries.Add(n);
             return entries;
         }
@@ -130,7 +130,7 @@ namespace TheReturn.Core4
             if (problems.Count > 0) throw new InvalidOperationException("Layout không hợp lệ: " + problems[0]);
             HashSet<string> withMission = new HashSet<string>(missionArea.Values);
             List<AreaInfo> list = new List<AreaInfo>();
-            foreach (AreaInfo a in areas) list.Add(new AreaInfo(a.Id, a.Kind, withMission.Contains(a.Id), a.Neighbors));
+            foreach (AreaInfo a in areas) list.Add(new AreaInfo(a.Id, a.Kind, withMission.Contains(a.Id), a.Neighbors, a.YardEntry));
             return new MapProgress(list);
         }
 

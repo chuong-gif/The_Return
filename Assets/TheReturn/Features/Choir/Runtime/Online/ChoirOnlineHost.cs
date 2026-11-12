@@ -50,6 +50,8 @@ namespace TheReturn.ChoirNet.Online
             Debug.Log("[ChoirHost] Bắt đầu Hợp xướng: " + teamSize + " người, seed " + builtSeed);
         }
 
+        protected override bool IsSolvedNow() { return rules != null && rules.Solved; }
+
         protected override void OnTeardown()
         {
             rules = null;

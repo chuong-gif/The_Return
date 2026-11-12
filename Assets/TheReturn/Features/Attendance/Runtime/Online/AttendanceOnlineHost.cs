@@ -23,6 +23,9 @@ namespace TheReturn.AttendanceNet.Online
         [SerializeField] private float settleSeconds = 2f;
         [Tooltip("0 = đề ngẫu nhiên mỗi ván; khác 0 = đề cố định để thử.")]
         [SerializeField] private int fixedSeed;
+        [Tooltip("true = tự chạy ngay khi là host (scene thử); false = chỉ chạy khi luồng map gọi BeginMission (map thật).")]
+        [SerializeField] private bool autoStart = true;
+        private bool missionActive;
 
         private AttendanceHostRules rules;
         private HostAuthority<AttendanceCommand, AttendancePublicState, AttendancePrivateState> authority;
@@ -34,6 +37,21 @@ namespace TheReturn.AttendanceNet.Online
 
         /// <summary>Chỉ để KIỂM THỬ TỰ ĐỘNG trên host: đáp án (ghế của từng ô), hoặc null nếu chưa dựng đề. Không bao giờ gửi qua mạng.</summary>
         public int[] SolutionSeatsForTest { get { return rules != null ? rules.Round.CopySolution() : null; } }
+
+        /// <summary>True khi luồng map đã bắt đầu nhiệm vụ này (chỉ có nghĩa khi autoStart = false).</summary>
+        public bool MissionActive { get { return missionActive; } }
+
+        /// <summary>True khi đề điểm danh đã giải xong.</summary>
+        public bool Solved { get { return rules != null && rules.Solved; } }
+
+        /// <summary>True khi an toàn để luồng map kết thúc nhiệm vụ (đã giải xong).</summary>
+        public bool CanHandOff { get { return Solved; } }
+
+        /// <summary>Luồng map bắt đầu nhiệm vụ: lần Update kế tiếp dựng đề mới theo số người của đội.</summary>
+        public void BeginMission() { missionActive = true; }
+
+        /// <summary>Luồng map kết thúc nhiệm vụ: dỡ luật và HostAuthority (máy khách không còn nhận gói).</summary>
+        public void EndMission() { missionActive = false; Teardown(); }
 
         private void OnEnable()
         {
@@ -68,6 +86,11 @@ namespace TheReturn.AttendanceNet.Online
             NetworkManager manager = NetworkManager.Singleton;
             bool hosting = manager != null && manager.IsListening && manager.IsServer;
             if (!hosting)
+            {
+                if (authority != null) Teardown();
+                return;
+            }
+            if (!autoStart && !missionActive)
             {
                 if (authority != null) Teardown();
                 return;

@@ -163,5 +163,20 @@ namespace TheReturn.Core4.Tests
             Assert.IsNotEmpty(layout.Problems());
             Assert.IsEmpty(layout.EntriesFor(Core4Mission.Choir));
         }
+
+        [Test]
+        public void Layout_YardEntryCorridor_IsEnterableFromYardAndBothRooms()
+        {
+            List<AreaInfo> list = new List<AreaInfo>(OldRing());
+            int i = list.FindIndex(a => a.Id == "Hanh_Lang_6");
+            Assert.GreaterOrEqual(i, 0, "layout mẫu phải có Hanh_Lang_6");
+            list[i] = new AreaInfo("Hanh_Lang_6", AreaKind.Corridor, false, new[] { "Phong_6", "Phong_1" }, true);
+            Core4Layout layout = new Core4Layout(list, null);
+            List<string> entries = new List<string>(layout.EntriesFor(Core4Mission.PlankAndKey));
+            Assert.Contains(MapProgress.Yard, entries);
+            Assert.Contains("Phong_6", entries);
+            Assert.Contains("Phong_1", entries);
+            Assert.AreEqual(BeginResult.Started, layout.CreateProgress().CheckBegin("Hanh_Lang_6", MapProgress.Yard, true));
+        }
     }
 }

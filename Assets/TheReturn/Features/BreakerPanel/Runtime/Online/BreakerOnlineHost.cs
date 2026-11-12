@@ -56,6 +56,8 @@ namespace TheReturn.BreakerNet.Online
             Debug.Log("[BreakerHost] Bắt đầu nhiệm vụ cầu dao: " + teamSize + " người, seed " + builtSeed + ", giữ khớp " + builtHold + " giây");
         }
 
+        protected override bool IsSolvedNow() { return rules != null && rules.Solved; }
+
         protected override void OnTeardown()
         {
             rules = null;

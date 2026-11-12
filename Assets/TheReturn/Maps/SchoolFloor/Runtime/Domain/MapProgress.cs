@@ -38,13 +38,17 @@ namespace TheReturn
         public bool HasMission { get; internal set; }
         public IReadOnlyList<string> Neighbors { get; }
 
+        /// <summary>True nếu khu (thường là hành lang) cũng vào được trực tiếp từ sân. Mặc định false: hành lang chỉ vào từ phòng kề (T-040 P-011 bật cho PlankAndKey).</summary>
+        public bool YardEntry { get; }
+
         /// <summary>Nhận ID khác rỗng, loại khu, cờ có nhiệm vụ và danh sách khu kề; tạo mô tả khu (sao chép danh sách kề).</summary>
-        public AreaInfo(string id, AreaKind kind, bool hasMission, IEnumerable<string> neighbors)
+        public AreaInfo(string id, AreaKind kind, bool hasMission, IEnumerable<string> neighbors, bool yardEntry = false)
         {
             if (string.IsNullOrEmpty(id)) throw new ArgumentException("Id rỗng", nameof(id));
             Id = id;
             Kind = kind;
             HasMission = hasMission;
+            YardEntry = yardEntry;
             var list = new List<string>();
             if (neighbors != null)
                 foreach (string n in neighbors) list.Add(n);
@@ -158,7 +162,7 @@ namespace TheReturn
         /// <summary>
         /// Nhận ID khu muốn làm, ID khu chuẩn bị mà đội đang đứng (Yard hoặc ID một phòng/hành lang) và cờ «cả đội đã đủ».
         /// Chỉ kiểm tra, không đổi trạng thái. Thứ tự kiểm: ID lạ, đã xong, chưa có nhiệm vụ, đang có khu khác, lối vào sai, đội chưa đủ.
-        /// Phòng vào được từ sân hoặc từ hành lang kề; hành lang chỉ vào được từ hai phòng kề.
+        /// Phòng vào được từ sân hoặc từ hành lang kề; hành lang chỉ vào được từ hai phòng kề, trừ khu có YardEntry (cũng vào được từ sân).
         /// </summary>
         public BeginResult CheckBegin(string areaId, string entryFromId, bool teamReady)
         {
@@ -167,7 +171,7 @@ namespace TheReturn
             if (IsDone(areaId)) return BeginResult.AlreadyDone;
             if (!a.HasMission) return BeginResult.NoMission;
             if (ActiveAreaId != null) return BeginResult.AnotherActive;
-            bool entryOk = Contains(a.Neighbors, entryFromId) || (a.Kind == AreaKind.Room && entryFromId == Yard);
+            bool entryOk = Contains(a.Neighbors, entryFromId) || ((a.Kind == AreaKind.Room || a.YardEntry) && entryFromId == Yard);
             if (!entryOk) return BeginResult.InvalidEntry;
             if (!teamReady) return BeginResult.TeamNotReady;
             return BeginResult.Started;
