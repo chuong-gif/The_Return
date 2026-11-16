@@ -8,3 +8,4 @@ Chỉ mục tra cứu, không phải đặc tả đầy đủ. Domain/README/tes
 - Nơi bắt đầu lỗi: `AttendanceState`/`AttendancePrototype` cho luật & trình bày; HostRules/Codec cho lệnh, snapshot, dữ liệu sai; `MapFlowOnline`/adapter cho tích hợp.
 - Kiểm tra: `TheReturn.Attendance.Network.Tests`; Gauntlet registry ở `MISSIONS_NET.md`. Gauntlet 2026-11-12: 53/54 đạt, 1 bỏ qua; không phải kiểm nhiều máy.
 - Trước khi chạy test Editor cũ, kiểm tác dụng phụ của `AttendanceChecks.Run()`: có thể ghi đè báo cáo `Design/Verification/AttendanceV2.json`.
+- Online (T-055): tên người trong đề lấy từ tên người chơi nhập ở panel Chơi online (`OnlineNames`, theo ô); `AttendanceTextCatalog.roleNames` (Minh/An/Bình/Chi) chỉ còn dùng khi chơi offline hoặc thiếu tên.

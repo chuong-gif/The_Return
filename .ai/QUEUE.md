@@ -10,6 +10,7 @@ Chỉ các bước còn cần để hoàn tất map mới và online của bốn
 | Q-016–Q-022 | T-042 S0–S6 | Khảo sát, vòng đời OnlineMissionLink, bốn adapter nhiệm vụ, MapFlowOnline và spawn. | DONE — 2026-11-12; chi tiết ở `PLANS/T-042-net-wiring-mapschoolf.md` |
 | Q-023 | T-042 S7 | Scene offline đích + Build Settings hoàn tất. Phần online room→map cần P-014 trước khi làm. | IN-PROGRESS — online bị chờ quyết định |
 | Q-024 | T-042 S8 | Kiểm tổng và chuẩn bị smoke 2 máy sau khi Q-023 hoàn tất. | BLOCKED — chờ Q-023 |
+| Q-025 | T-046–T-051 | Bản build thử online cho người thật (đường vào, mic, rời phòng, build, tài liệu, cổng kiểm). Gộp phần online của Q-023 và Q-024. | ĐÃ DUYỆT 2026-11-13 — T-046 REVIEW (đã kiểm một máy); T-047 REVIEW; T-048/T-049/T-051 chờ giao; T-050 TODO |
 
 ## Quyết định đang chờ
 - P-014 (`DECISIONS/PENDING.md`): cho phép nối `RoomMapHandoff`/`NetworkRoomTest` và Build Settings để kiểm online room→map? Không thay đổi phần này trước khi có trả lời.

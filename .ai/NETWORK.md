@@ -10,6 +10,7 @@
 - `Features/Network/Online`: avatar, slots, room, voice, MissionNetBridge.
 - `Maps/SchoolFloor/Online`: MapFlowOnline và adapter giữa map với nhiệm vụ.
 - Relay mặc định WSS; phải bật/tắt `UnityTransport.UseWebSockets` đúng theo giao thức.
+- Thoại: `Runtime/Voice/VoiceChatService` là singleton tự tạo (`VoiceRoot`, trước khi nạp scene), sống qua đổi scene, tự vào kênh Vivox `room-<mã phòng>` khi session Relay Hosting/Joined (LAN không có thoại); phím V bật/tắt mic. Không đặt vào scene/prefab (T-047).
 - Hợp đồng/code chi tiết: `SYSTEM_CARDS/NetworkFramework.md`, `SYSTEM_CARDS/OnlineAvatars.md`.
 
 ## Bốn nhiệm vụ
