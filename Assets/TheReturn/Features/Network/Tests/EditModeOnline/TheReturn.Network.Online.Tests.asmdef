@@ -2,6 +2,7 @@
   "name": "TheReturn.Network.Online.Tests",
   "references": [
     "TheReturn.Core",
+    "TheReturn.Network.Online",
     "UnityEngine.TestRunner",
     "UnityEditor.TestRunner"
   ],

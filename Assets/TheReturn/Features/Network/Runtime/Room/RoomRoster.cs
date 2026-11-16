@@ -17,6 +17,7 @@ namespace TheReturn.Network.Room
         public int Slot;
         public FixedString128Bytes Name;
         public bool IsHost;
+        public bool Ready;
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
@@ -24,11 +25,12 @@ namespace TheReturn.Network.Room
             serializer.SerializeValue(ref Slot);
             serializer.SerializeValue(ref Name);
             serializer.SerializeValue(ref IsHost);
+            serializer.SerializeValue(ref Ready);
         }
 
         public bool Equals(RoomNetRow other)
         {
-            return ClientId == other.ClientId && Slot == other.Slot && Name.Equals(other.Name) && IsHost == other.IsHost;
+            return ClientId == other.ClientId && Slot == other.Slot && Name.Equals(other.Name) && IsHost == other.IsHost && Ready == other.Ready;
         }
     }
 
@@ -56,6 +58,7 @@ namespace TheReturn.Network.Room
         public override void OnNetworkSpawn()
         {
             Current = this;
+            Rows.OnListChanged += OnRowsChanged;
             if (IsServer)
             {
                 state = new RoomState(Mathf.Clamp(RoomService.PendingTeamSize, 2, 4), NetworkManager.ServerClientId);
@@ -72,7 +75,8 @@ namespace TheReturn.Network.Room
 
         public override void OnNetworkDespawn()
         {
-            if (Current == this) Current = null;
+            if (Current == this) { Current = null; RoomIdentity.LocalName = ""; }
+            Rows.OnListChanged -= OnRowsChanged;
             if (IsServer && NetworkManager != null) NetworkManager.OnClientDisconnectCallback -= OnClientDisconnected;
         }
 
@@ -87,6 +91,47 @@ namespace TheReturn.Network.Room
         {
             if (IsServer) TryStartOnHost(NetworkManager.LocalClientId);
             else StartGameServerRpc();
+        }
+
+
+        private void OnRowsChanged(NetworkListEvent<RoomNetRow> change) { UpdateIdentity(); }
+
+        /// <summary>Ghi tên đã chốt (duy nhất trong phòng) của máy này cho các hệ khác (thoại) dùng.</summary>
+        private void UpdateIdentity()
+        {
+            NetworkManager nm = NetworkManager;
+            if (nm == null) return;
+            for (int i = 0; i < Rows.Count; i++)
+            {
+                if (Rows[i].ClientId == nm.LocalClientId) { RoomIdentity.LocalName = Rows[i].Name.ToString(); return; }
+            }
+        }
+
+        /// <summary>Khách bấm Sẵn sàng / Hủy sẵn sàng. Nhận cờ. Host không cần sẵn sàng nên bỏ qua.</summary>
+        public void SetReady(bool value)
+        {
+            if (IsServer) return;
+            SetReadyServerRpc(value);
+        }
+
+        /// <summary>Chỉ chủ phòng: mời một người ra khỏi phòng (trước khi bắt đầu). Nhận mã client người đó.</summary>
+        public void Kick(ulong targetClientId)
+        {
+            if (!IsServer) return;
+            if (state != null && state.Kick(NetworkManager.LocalClientId, targetClientId))
+            {
+                NetworkManager.DisconnectClient(targetClientId, "Bạn đã bị chủ phòng mời ra khỏi phòng");
+                RefreshRows();
+            }
+        }
+
+        /// <summary>True khi chủ phòng có thể bắt đầu (từ 2 người, mọi khách sẵn sàng). Chỉ đúng trên host.</summary>
+        public bool CanStartNow { get { return state != null && state.CanStartFlexible; } }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void SetReadyServerRpc(bool value, ServerRpcParams rpcParams = default)
+        {
+            if (state != null && state.SetReady(rpcParams.Receive.SenderClientId, value)) RefreshRows();
         }
 
         [ServerRpc(RequireOwnership = false)]
@@ -110,7 +155,10 @@ namespace TheReturn.Network.Room
 
         private void TryStartOnHost(ulong requester)
         {
-            if (state != null && state.TryStart(requester)) Started.Value = true;
+            if (state == null || !state.TryStartFlexible(requester)) return;
+            TeamSize.Value = state.TeamSize;
+            RefreshRows();
+            Started.Value = true;
         }
 
         private void OnClientDisconnected(ulong clientId)
@@ -124,8 +172,9 @@ namespace TheReturn.Network.Room
             Rows.Clear();
             foreach (RoomRow row in state.Rows())
             {
-                Rows.Add(new RoomNetRow { ClientId = row.ClientId, Slot = row.Slot, Name = new FixedString128Bytes(row.Name), IsHost = row.IsHost });
+                Rows.Add(new RoomNetRow { ClientId = row.ClientId, Slot = row.Slot, Name = new FixedString128Bytes(row.Name), IsHost = row.IsHost, Ready = row.Ready });
             }
+            UpdateIdentity();
         }
     }
 }

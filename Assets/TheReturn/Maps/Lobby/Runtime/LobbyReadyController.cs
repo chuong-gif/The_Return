@@ -8,6 +8,7 @@
  * - StartCountdown / CancelCountdown: bắt đầu hoặc dừng đếm ngược an toàn.
  * - CountdownRoutine: trả IEnumerator; chuyển scene khi toàn đội vẫn sẵn sàng.
  * - RefreshView: đẩy dữ liệu hiện tại sang Canvas, không trả dữ liệu.
+ * - onlineMode (T-054): khi chơi online, LobbyOnlineController bật cờ này; sảnh chỉ lo di chuyển + chuột, không tự đếm ngược / đổi vai / sẵn sàng.
  */
 using System.Collections;
 using UnityEngine;
@@ -25,6 +26,10 @@ namespace TheReturn
         [Range(2, 4)] public int participantCount = 4;
         public string schoolSceneName = "MapSchoolF";
         [Min(1f)] public float countdownSeconds = 5f;
+        [Tooltip("Do LobbyOnlineController đặt khi đang trong phiên online (T-054): danh sách người, sẵn sàng và bắt đầu do phòng online quyết định.")]
+        public bool onlineMode;
+        [Tooltip("Do LobbyLocalDevController đặt (chỉ Editor/Development): sảnh thử MỘT MÁY dùng giao diện phòng mới, vẫn đổi vai bằng phím 1–4 nhưng danh sách người/sẵn sàng/bắt đầu do bộ điều khiển dev quyết định.")]
+        public bool devSimMode;
 
         readonly bool[] ready = new bool[4];
         Coroutine countdown;
@@ -46,6 +51,13 @@ namespace TheReturn
         {
             Application.runInBackground = true;
             party.Initialize();
+            if (onlineMode || devSimMode)
+            {
+                party.SetPartySize(devSimMode ? 2 : 4);
+                if (devSimMode) party.SwitchRole(0, false);
+                PrototypePartyController.SetCursor(true); // vào sảnh là đi lại được ngay; Tab/Esc để dùng chuột bấm nút
+                return;
+            }
             if (PartySession.HasStartedParty) participantCount = PartySession.PlayerCount;
             SetPartySize(participantCount);
             party.SwitchRole(0, false);
@@ -58,8 +70,18 @@ namespace TheReturn
         {
             Keyboard keyboard = Keyboard.current;
             if (keyboard == null) return;
-            if (keyboard.escapeKey.wasPressedThisFrame || keyboard.tabKey.wasPressedThisFrame)
+            if (keyboard.escapeKey.wasPressedThisFrame || keyboard.tabKey.wasPressedThisFrame || keyboard.Control(GameAction.PauseMenu).wasPressedThisFrame)
                 PrototypePartyController.SetCursor(Cursor.lockState != CursorLockMode.Locked);
+            if (onlineMode) { party.TickInput(false); return; }
+            if (devSimMode)
+            {
+                if (keyboard.digit1Key.wasPressedThisFrame) party.SwitchRole(0, false);
+                if (keyboard.digit2Key.wasPressedThisFrame) party.SwitchRole(1, false);
+                if (keyboard.digit3Key.wasPressedThisFrame) party.SwitchRole(2, false);
+                if (keyboard.digit4Key.wasPressedThisFrame) party.SwitchRole(3, false);
+                party.TickInput(false);
+                return;
+            }
             if (keyboard.digit1Key.wasPressedThisFrame) party.SwitchRole(0, false);
             if (keyboard.digit2Key.wasPressedThisFrame) party.SwitchRole(1, false);
             if (keyboard.digit3Key.wasPressedThisFrame) party.SwitchRole(2, false);

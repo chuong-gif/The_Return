@@ -4,7 +4,7 @@
 //     T-023: chọn được giao thức Relay (DTLS/UDP hoặc WSS qua cổng 443 để vượt mạng chặn UDP) và vùng máy chủ;
 //     tự báo lỗi + dọn phòng khi Relay mất kết nối (Transport failure).
 //     WSS bắt buộc bật UnityTransport.UseWebSockets (tự chỉnh trong ApplyRelayTransportMode; LAN luôn tắt).
-// Hàm: StartLanHost, StartLanClient, StartRelayHost, JoinRelayByCode, LeaveSession, ResetError; thuộc tính RelayProtocolChoice, RelayRegion.
+// Hàm: StartLanHost, StartLanClient, StartRelayHost, JoinRelayByCode, LeaveSession, LeaveSessionAsync (T-048), ResetError; thuộc tính RelayProtocolChoice, RelayRegion.
 using System;
 using System.Threading.Tasks;
 using Unity.Netcode;
@@ -106,8 +106,22 @@ namespace TheReturn.Network
             catch (Exception e) { Fail(e); }
         }
 
-        /// <summary>Rời phòng/tắt mạng, về trạng thái Idle. Nhận/Trả: không.</summary>
+        private Task leaveTask;
+
+        /// <summary>Rời phòng/tắt mạng, về trạng thái Idle (gọi từ nút bấm, không đợi). Nhận/Trả: không.</summary>
         public async void LeaveSession()
+        {
+            await LeaveSessionAsync();
+        }
+
+        /// <summary>Như LeaveSession nhưng trả Task để đợi xong (T-048). Gọi chồng lúc đang rời thì dùng lại Task đang chạy. Trả: Task hoàn tất khi đã Idle.</summary>
+        public Task LeaveSessionAsync()
+        {
+            if (leaveTask == null || leaveTask.IsCompleted) leaveTask = LeaveInternalAsync();
+            return leaveTask;
+        }
+
+        private async Task LeaveInternalAsync()
         {
             UnwatchTransport();
             await LeaveCloudSessionAsync(State == NetworkSessionState.Hosting);

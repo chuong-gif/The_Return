@@ -12,6 +12,7 @@
  * - SetCursor: khóa/thả chuột; không thay đổi luật câu đố.
  * - EnterOnlineMode / ExitOnlineMode: (T-025) chế độ online, người chơi này chỉ điều khiển đúng MỘT ô cố định; mặc định tắt.
  * - BindSlot: (T-025) gắn/gỡ nhân vật đã spawn qua mạng vào một ô, để dùng lại cùng bộ điều khiển.
+* - SlotNameProvider / SlotName: (T-055) tên người chơi thật theo ô khi chơi online (do OnlineNames đặt); null = dùng tên mặc định của nhiệm vụ.
  */
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,6 +23,16 @@ namespace TheReturn
     {
         public Camera viewCamera;
         public Transform[] players;
+
+        /// <summary>Nguồn tên người chơi theo ô khi chơi online (T-055); null khi chơi offline. Do OnlineNames đăng ký.</summary>
+        public static System.Func<int, string> SlotNameProvider;
+
+        /// <summary>Nhận chỉ số ô; trả tên người chơi thật ở ô đó (online), hoặc null nếu không có tên.</summary>
+        public string SlotName(int slot)
+        {
+            string name = SlotNameProvider != null ? SlotNameProvider(slot) : null;
+            return string.IsNullOrEmpty(name) ? null : name;
+        }
         public Renderer[] bodies;
         public float moveSpeed = 3.2f;
         public float sprintMultiplier = 1.5f;
@@ -33,6 +44,8 @@ namespace TheReturn
         public float lookSensitivity = .10f;
         /// <summary>Hệ số nhân độ nhạy chuột từ Settings (T-008); 1 = giữ nguyên lookSensitivity.</summary>
         public static float SensitivityScale = 1f;
+        /// <summary>Đảo trục nhìn lên/xuống (Settings); false = kéo chuột lên là nhìn lên.</summary>
+        public static bool InvertLookY;
         public int ActivePlayer { get; private set; }
         public int PartySize { get; private set; }
         /// <summary>Ô duy nhất người chơi này được điều khiển ở chế độ online; -1 = chế độ 1 máy (đổi vai như cũ).</summary>
@@ -100,18 +113,18 @@ namespace TheReturn
             {
                 Vector2 delta = mouse.delta.ReadValue() * lookSensitivity * SensitivityScale;
                 players[ActivePlayer].Rotate(0, delta.x, 0);
-                pitches[ActivePlayer] = Mathf.Clamp(pitches[ActivePlayer] - delta.y, -75, 75);
+                pitches[ActivePlayer] = Mathf.Clamp(pitches[ActivePlayer] - (InvertLookY ? -delta.y : delta.y), -75, 75);
                 viewCamera.transform.localRotation = Quaternion.Euler(pitches[ActivePlayer], 0, 0);
             }
             if (keyboard == null || seated) return;
             Vector2 axis = new Vector2(
-                (keyboard.dKey.isPressed ? 1 : 0) - (keyboard.aKey.isPressed ? 1 : 0),
-                (keyboard.wKey.isPressed ? 1 : 0) - (keyboard.sKey.isPressed ? 1 : 0));
+                (keyboard.Control(GameAction.MoveRight).isPressed ? 1 : 0) - (keyboard.Control(GameAction.MoveLeft).isPressed ? 1 : 0),
+                (keyboard.Control(GameAction.MoveForward).isPressed ? 1 : 0) - (keyboard.Control(GameAction.MoveBack).isPressed ? 1 : 0));
             axis = Vector2.ClampMagnitude(axis, 1);
             Transform player = players[ActivePlayer];
             fallSpeeds[ActivePlayer] = NextFallSpeed(fallSpeeds[ActivePlayer], controllers[ActivePlayer].isGrounded,
-                allowJump && keyboard.spaceKey.wasPressedThisFrame, jumpHeight, Time.deltaTime);
-            bool sprinting = keyboard.leftShiftKey.isPressed && axis.sqrMagnitude > .01f;
+                allowJump && keyboard.Control(GameAction.Jump).wasPressedThisFrame, jumpHeight, Time.deltaTime);
+            bool sprinting = keyboard.Control(GameAction.Sprint).isPressed && axis.sqrMagnitude > .01f;
             Vector3 before = player.position;
             Vector3 motion = (player.right * axis.x + player.forward * axis.y) * moveSpeed * (sprinting ? sprintMultiplier : 1);
             motion.y = fallSpeeds[ActivePlayer];

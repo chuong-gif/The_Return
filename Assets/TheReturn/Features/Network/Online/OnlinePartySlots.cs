@@ -20,7 +20,10 @@ namespace TheReturn.Network.Online
         public static OnlinePartySlots Instance { get; private set; }
 
         /// <summary>Số người của đội (2-4).</summary>
-        public int TeamSize { get { return teamSize; } }
+        public int TeamSize { get { return SyncedTeamSize >= 2 ? SyncedTeamSize : teamSize; } }
+
+        /// <summary>Số người đội đã chốt từ phòng, đồng bộ cho MỌI máy (host và khách) trước khi vào map; 0 = chưa có. Sống qua đổi scene.</summary>
+        public static int SyncedTeamSize { get; set; }
 
         private void Awake()
         {

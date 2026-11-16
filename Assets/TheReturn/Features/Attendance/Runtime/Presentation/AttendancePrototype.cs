@@ -203,7 +203,7 @@ namespace TheReturn
                 party.TickInput(State.SeatOf(ActivePlayer) >= 0);
                 UpdateTarget();
                 var keyboard = Keyboard.current;
-                if (Cursor.lockState == CursorLockMode.Locked && keyboard != null && keyboard.eKey.wasPressedThisFrame)
+                if (Cursor.lockState == CursorLockMode.Locked && keyboard != null && keyboard.Control(GameAction.Interact).wasPressedThisFrame)
                 {
                     if (State.SeatOf(ActivePlayer) >= 0) StandActive();
                     else if (TargetSeat >= 0) TrySitActive(TargetSeat);
@@ -224,11 +224,11 @@ namespace TheReturn
         {
             var keyboard = Keyboard.current;
             if (keyboard == null) return;
-            if (keyboard.tabKey.wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame)
+            if (keyboard.Control(GameAction.PauseMenu).wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame)
                 PrototypePartyController.SetCursor(Cursor.lockState != CursorLockMode.Locked);
             if (keyboard.f5Key.wasPressedThisFrame) StartNewRound();
-            if (keyboard.rKey.wasPressedThisFrame) RetryRound();
-            if (keyboard.hKey.wasPressedThisFrame && textCatalog.hints != null && textCatalog.hints.Length > 0)
+            if (keyboard.Control(GameAction.Retry).wasPressedThisFrame) RetryRound();
+            if (keyboard.Control(GameAction.Hint).wasPressedThisFrame && textCatalog.hints != null && textCatalog.hints.Length > 0)
                 Status = textCatalog.hints[Mathf.Min(hintIndex++, textCatalog.hints.Length - 1)];
             if (keyboard.digit1Key.wasPressedThisFrame) SwitchRole(0);
             if (keyboard.digit2Key.wasPressedThisFrame) SwitchRole(1);

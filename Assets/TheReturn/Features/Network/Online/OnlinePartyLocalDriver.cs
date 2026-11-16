@@ -71,7 +71,7 @@ namespace TheReturn.Network.Online
         {
             if (controller == null || !controller.IsOnline) return;
             Keyboard keyboard = Keyboard.current;
-            if (keyboard != null && keyboard.tabKey.wasPressedThisFrame)
+            if (keyboard != null && keyboard.Control(GameAction.PauseMenu).wasPressedThisFrame)
                 PrototypePartyController.SetCursor(Cursor.lockState != CursorLockMode.Locked);
             controller.TickInput(Seated);
         }

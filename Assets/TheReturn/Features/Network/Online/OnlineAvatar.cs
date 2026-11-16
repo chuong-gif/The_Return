@@ -2,6 +2,7 @@
  * Mục đích: Nhân vật online của MỘT người chơi (T-025), spawn bởi NetworkManager cho từng client. HOST chia ô cố định lúc spawn
  * (NetworkVariable Slot); chủ nhân vật (owner) tự đặt vị trí xuất phát và tự điều khiển qua PrototypePartyController, còn máy khác chỉ
  * thấy nhân vật di chuyển nhờ OwnerNetworkTransform (CharacterController của người khác bị tắt). Đội đầy thì client dư bị ngắt.
+ * T-055: nhân vật của NGƯỜI KHÁC tự gắn OnlineNameTag (biển tên thật trên đầu).
  * Hàm: OnNetworkSpawn; OnNetworkDespawn; thuộc tính Slot; sự kiện SlotReady, Removed; ForEachReady.
  */
 using System;
@@ -78,6 +79,7 @@ namespace TheReturn.Network.Online
             if (current < 0 || current == announcedSlot) return;
             announcedSlot = current;
             if (IsOwner) TeleportToSpawn(current);
+            else if (GetComponent<OnlineNameTag>() == null) gameObject.AddComponent<OnlineNameTag>();
             Action<OnlineAvatar> handler = SlotReady;
             if (handler != null) handler(this);
         }

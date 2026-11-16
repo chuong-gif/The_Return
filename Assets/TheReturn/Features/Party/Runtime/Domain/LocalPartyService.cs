@@ -122,15 +122,27 @@ namespace TheReturn
         }
 
         /// <summary>Không nhận tham số; THÊM một người chơi giả lập (tự sẵn sàng) để thử khi chưa có mạng. NoParty nếu chưa ở trong nhóm; Full nếu đủ 4.</summary>
-        public PartyResult AddSimulatedPlayer()
+        public PartyResult AddSimulatedPlayer(bool startReady = true)
         {
             if (state == null) return PartyResult.NoParty;
             string id = SimulatedPrefix + (++simulatedCounter);
             PartyResult r = state.Join(id, "Người giả lập " + simulatedCounter);
             if (r != PartyResult.Ok) { simulatedCounter--; return r; }
-            state.SetReady(id, true);
+            state.SetReady(id, startReady);
             Notify();
             return PartyResult.Ok;
+        }
+
+        /// <summary>Nhận vị trí 0-3 và trạng thái; đặt Sẵn sàng cho thành viên ở vị trí đó (kể cả người giả lập) để nhà phát triển thử một máy. NoParty nếu vị trí trống.</summary>
+        public PartyResult SetReadyAtSlot(int slot, bool ready)
+        {
+            if (state == null) return PartyResult.NoParty;
+            PartyMemberInfo target = null;
+            foreach (PartyMemberInfo m in state.Snapshot(LocalPlayerId).Members) if (m.Slot == slot) target = m;
+            if (target == null) return PartyResult.NoParty;
+            PartyResult r = state.SetReady(target.Id, ready);
+            if (r == PartyResult.Ok) Notify();
+            return r;
         }
 
         /// <summary>Không nhận tham số; gỡ người chơi giả lập có vị trí lớn nhất. NoParty nếu chưa ở trong nhóm hoặc không còn người giả lập.</summary>

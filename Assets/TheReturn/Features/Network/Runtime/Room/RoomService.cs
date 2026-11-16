@@ -25,6 +25,9 @@ namespace TheReturn.Network.Room
 
         public NetworkSessionService Session { get { return session; } }
 
+        /// <summary>True khi dịch vụ đã nối xong vào NetworkManager (sau Start); giao diện chờ cờ này rồi mới tạo/vào phòng.</summary>
+        public bool Ready { get; private set; }
+
         private void Awake()
         {
             Instance = this;
@@ -39,11 +42,13 @@ namespace TheReturn.Network.Room
             nm.ConnectionApprovalCallback = Approve;
             nm.OnServerStarted += SpawnRoster;
             nm.OnClientDisconnectCallback += OnClientDisconnect;
+            Ready = true;
         }
 
         private void OnDestroy()
         {
             if (Instance == this) Instance = null;
+            Ready = false;
             NetworkManager nm = NetworkManager.Singleton;
             if (nm == null) return;
             nm.OnServerStarted -= SpawnRoster;

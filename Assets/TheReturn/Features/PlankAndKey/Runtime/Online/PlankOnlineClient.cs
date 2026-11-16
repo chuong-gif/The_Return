@@ -15,7 +15,7 @@ using UnityEngine.InputSystem;
 namespace TheReturn.PlankNet.Online
 {
     [DefaultExecutionOrder(60)]
-    public sealed class PlankOnlineClient : MonoBehaviour, IMissionClientEndpoint
+    public sealed class PlankOnlineClient : MonoBehaviour, IMissionClientEndpoint, IOnlineHudSource
     {
         [SerializeField] private PlankAndKeyPrototype prototype;
         [SerializeField] private MissionNetBridge bridge;
@@ -47,7 +47,11 @@ namespace TheReturn.PlankNet.Online
                 if (value == missionActive) return;
                 missionActive = value;
                 if (value) ResetReplica();
-                else if (localDriver != null) localDriver.Seated = false;
+                else
+                {
+                    if (localDriver != null) localDriver.Seated = false;
+                    ClearRiderAnimations();
+                }
             }
         }
 
@@ -82,6 +86,7 @@ namespace TheReturn.PlankNet.Online
 
         private void OnDisable()
         {
+            ClearRiderAnimations();
             OnlineAvatar.SlotReady -= HandleReady;
             OnlineAvatar.Removed -= HandleRemoved;
             if (bridge != null && bridge.ClientEndpoint == (IMissionClientEndpoint)this) bridge.ClientEndpoint = null;
@@ -175,6 +180,16 @@ namespace TheReturn.PlankNet.Online
             HandleInput();
         }
 
+        // Nhiệm vụ kết thúc/tắt: Update không còn chạy nên cờ SuppressLocomotion cuối cùng sẽ kẹt true (nhân vật đi mà chỉ phát animation đứng). Trả về false cho mọi người.
+        private void ClearRiderAnimations()
+        {
+            for (int slot = 0; slot < riderDrivers.Length; slot++)
+            {
+                rideHoldUntil[slot] = 0f;
+                if (riderDrivers[slot] != null) riderDrivers[slot].SuppressLocomotion = false;
+            }
+        }
+
         // Người ngồi trên ván bị ván chở đi nên vị trí đổi, nhưng họ đứng yên: tắt animation đi/chạy của họ trên mọi máy.
         private void UpdateRiderAnimations(PlankPublicState state)
         {
@@ -204,9 +219,9 @@ namespace TheReturn.PlankNet.Online
         {
             Keyboard keyboard = Keyboard.current;
             if (keyboard == null || Cursor.lockState != CursorLockMode.Locked) return;
-            if (keyboard.rKey.wasPressedThisFrame) Send(PlankCommand.Retry());
-            if (keyboard.gKey.wasPressedThisFrame) Send(PlankCommand.DropCard());
-            if (!keyboard.eKey.wasPressedThisFrame) return;
+            if (keyboard.Control(GameAction.Retry).wasPressedThisFrame) Send(PlankCommand.Retry());
+            if (keyboard.Control(GameAction.Grab).wasPressedThisFrame) Send(PlankCommand.DropCard());
+            if (!keyboard.Control(GameAction.Interact).wasPressedThisFrame) return;
             RaycastHit hit;
             if (!party.TryGetInteractionHit(prototype.interactDistance, out hit)) return;
             PlankInteractable item = hit.collider.GetComponentInParent<PlankInteractable>();
@@ -284,8 +299,30 @@ namespace TheReturn.PlankNet.Online
             }
         }
 
+        /// <summary>Bật true chỉ khi cần soi lỗi: hiện bảng chữ cũ (IMGUI) chồng lên HUD canvas. Mặc định tắt vì HUD canvas đã hiện cùng dữ liệu.</summary>
+        [SerializeField] private bool drawLegacyHud;
+
+        /// <summary>ID khu của nhiệm vụ này để HUD canvas tìm nguồn dữ liệu online.</summary>
+        public string AreaId { get { return "Hanh_Lang_6"; } }
+
+        /// <summary>Nhận model rỗng; điền HUD từ trạng thái thật của host. Trả false nếu chưa có trạng thái.</summary>
+        public bool TryFillOnlineHud(AreaHudModel m)
+        {
+            if (!missionActive || replica == null || !replica.HasState || prototype == null) return false;
+            PlankPublicState state = replica.Public;
+            float perUnit = prototype.settings != null ? prototype.settings.secondsPerUnit : 3f;
+            m.TeamSize = state.PlayerCount;
+            m.Progress = "Lần " + state.Attempts + " • Qua khe " + state.DisplayUsedSeconds.ToString("0.0") + "/" + state.DeadlineSeconds.ToString("0") + " giây";
+            m.Objective = Time.time < statusUntil && status.Length > 0 ? status : string.Empty;
+            m.Notebook = "Vai " + (mySlot + 1) + ": cặp sách của bạn mất " + (replica.Private.CrossUnits * perUnit).ToString("0") + " giây để qua (đi đôi thì tính người chậm hơn). Chỉ bạn biết, hãy hỏi đồng đội.\nThẻ từ: " + CardText(state);
+            m.Prompt = "[E] Nhặt thẻ / gạt cần • [G] Thả thẻ";
+            m.Controls = "WASD đi • E nhặt thẻ / gạt cần • G thả thẻ • R làm lại • Tab khóa/thả chuột";
+            return true;
+        }
+
         private void OnGUI()
         {
+            if (!drawLegacyHud) return;
             if (!missionActive || replica == null || !replica.HasState || prototype == null) return;
             PlankPublicState state = replica.Public;
             float perUnit = prototype.settings != null ? prototype.settings.secondsPerUnit : 3f;

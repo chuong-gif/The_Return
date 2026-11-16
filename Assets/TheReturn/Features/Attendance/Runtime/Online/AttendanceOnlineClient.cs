@@ -13,7 +13,7 @@ using UnityEngine.InputSystem;
 namespace TheReturn.AttendanceNet.Online
 {
     [DefaultExecutionOrder(60)]
-    public sealed class AttendanceOnlineClient : MonoBehaviour, IMissionClientEndpoint
+    public sealed class AttendanceOnlineClient : MonoBehaviour, IMissionClientEndpoint, IOnlineHudSource
     {
         [SerializeField] private AttendanceSeat[] seats = new AttendanceSeat[0];
         [SerializeField] private AttendanceTextCatalog textCatalog;
@@ -57,6 +57,7 @@ namespace TheReturn.AttendanceNet.Online
 
         private void OnDisable()
         {
+            ApplySeatPoses(null, true);
             OnlineAvatar.SlotReady -= HandleReady;
             OnlineAvatar.Removed -= HandleRemoved;
             if (bridge != null && bridge.ClientEndpoint == (IMissionClientEndpoint)this) bridge.ClientEndpoint = null;
@@ -147,6 +148,7 @@ namespace TheReturn.AttendanceNet.Online
             if (newSeat != mySeat) MoveMyAvatar(mySeat, newSeat);
             mySeat = newSeat;
             if (localDriver != null) localDriver.Seated = mySeat >= 0;
+            ApplySeatPoses(seatOwners, false);
             handledResetCount = state.ResetCount;
 
             if (state.LastMessage != lastShownMessage)
@@ -154,6 +156,24 @@ namespace TheReturn.AttendanceNet.Online
                 lastShownMessage = state.LastMessage;
                 string text = MessageText(state);
                 if (text.Length > 0) Say(text, 5f);
+            }
+        }
+
+        // Pose ngồi của NGƯỜI KHÁC: bản thân mình do PrototypePartyController.TickInput lái; người khác chỉ có vị trí qua mạng nên phải tự bật pose theo ghế host báo.
+        private void ApplySeatPoses(int[] seatOwners, bool clearAll)
+        {
+            if (party == null || party.players == null) return;
+            for (int slot = 0; slot < party.players.Length; slot++)
+            {
+                if (slot == mySlot && !clearAll) continue;
+                Transform body = party.players[slot];
+                if (body == null) continue;
+                PlayerAnimationDriver driver = body.GetComponentInChildren<PlayerAnimationDriver>(true);
+                if (driver == null) continue;
+                bool seated = false;
+                if (!clearAll && seatOwners != null)
+                    for (int i = 0; i < seatOwners.Length; i++) if (seatOwners[i] == slot) { seated = true; break; }
+                driver.Seated = seated;
             }
         }
 
@@ -184,8 +204,8 @@ namespace TheReturn.AttendanceNet.Online
         {
             Keyboard keyboard = Keyboard.current;
             if (keyboard == null || Cursor.lockState != CursorLockMode.Locked) return;
-            if (keyboard.rKey.wasPressedThisFrame) RequestRetry();
-            if (!keyboard.eKey.wasPressedThisFrame) return;
+            if (keyboard.Control(GameAction.Retry).wasPressedThisFrame) RequestRetry();
+            if (!keyboard.Control(GameAction.Interact).wasPressedThisFrame) return;
             if (mySeat >= 0) RequestStand();
             else if (targetSeat >= 0) RequestSit(targetSeat);
             else Say("Hãy đến gần một ghế và nhìn về phía ghế đó.", 3f);
@@ -243,8 +263,33 @@ namespace TheReturn.AttendanceNet.Online
             }
         }
 
+        /// <summary>Bật true chỉ khi cần soi lỗi: hiện bảng chữ cũ (IMGUI) chồng lên HUD canvas. Mặc định tắt vì HUD canvas đã hiện cùng dữ liệu.</summary>
+        [SerializeField] private bool drawLegacyHud;
+
+        /// <summary>ID khu của nhiệm vụ này để HUD canvas tìm nguồn dữ liệu online.</summary>
+        public string AreaId { get { return "Phong_1"; } }
+
+        /// <summary>Nhận model rỗng; điền HUD từ trạng thái thật của host. Trả false nếu chưa có trạng thái.</summary>
+        public bool TryFillOnlineHud(AreaHudModel m)
+        {
+            if (replica == null || !replica.HasState) return false;
+            AttendancePublicState state = replica.Public;
+            m.TeamSize = state.PlayerCount;
+            m.Progress = (state.Solved ? "Đã điểm danh đúng • " : "") + "Đã ngồi " + state.OccupiedCount() + "/" + state.PlayerCount + " • 24 ghế";
+            if (Time.time < statusUntil && status.Length > 0) m.Objective = status;
+            else if (state.Solved) m.Objective = textCatalog != null ? textCatalog.success : "Đã đúng.";
+            else if (state.Settling) m.Objective = "Đã ngồi đủ, đang kiểm tra...";
+            else if (state.Wrong) m.Objective = "Chưa đúng, hãy đứng dậy đổi chỗ.";
+            else m.Objective = "Mỗi người giữ một manh mối riêng: hãy nói cho đồng đội rồi cùng xếp chỗ.";
+            m.Prompt = mySeat >= 0 ? "[E] Đứng dậy" : (targetSeat >= 0 ? "[E] Ngồi ghế " + AttendanceRound.SeatCode(targetSeat) : "Nhìn vào bàn/ghế gần để tương tác");
+            m.Notebook = replica.Private.Clues;
+            m.Controls = "WASD đi • E ngồi/đứng • R làm lại • Tab khóa/thả chuột";
+            return true;
+        }
+
         private void OnGUI()
         {
+            if (!drawLegacyHud) return;
             if (replica == null || !replica.HasState) return;
             AttendancePublicState state = replica.Public;
             string[] names = state.NamesCopy();

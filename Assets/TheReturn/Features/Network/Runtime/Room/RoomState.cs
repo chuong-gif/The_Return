@@ -18,6 +18,8 @@ namespace TheReturn.Network.Room
         public int Slot;
         public string Name;
         public bool IsHost;
+        /// <summary>Đã bấm Sẵn sàng (chủ phòng luôn tính là sẵn sàng).</summary>
+        public bool Ready;
     }
 
     /// <summary>Trạng thái phòng của một đội cố định 2-4 người.</summary>
@@ -25,7 +27,8 @@ namespace TheReturn.Network.Room
     {
         public const int MaxNameLength = 20;
 
-        readonly SlotAllocator slots;
+        SlotAllocator slots;
+        readonly Dictionary<ulong, bool> ready = new Dictionary<ulong, bool>();
         readonly Dictionary<ulong, string> names = new Dictionary<ulong, string>();
         readonly ulong hostClientId;
 
@@ -64,6 +67,7 @@ namespace TheReturn.Network.Room
         {
             if (!slots.Release(clientId)) return false;
             names.Remove(clientId);
+            ready.Remove(clientId);
             return true;
         }
 
@@ -75,6 +79,57 @@ namespace TheReturn.Network.Room
 
         /// <summary>True khi phòng đủ người và chưa bắt đầu.</summary>
         public bool CanStart { get { return !Started && slots.IsFull; } }
+
+
+        /// <summary>Số người tối thiểu để bắt đầu ván.</summary>
+        public const int MinPlayers = 2;
+
+        /// <summary>Nhận mã client và cờ; đặt trạng thái Sẵn sàng của KHÁCH (chủ phòng không cần). Trả false nếu không phải khách trong phòng hoặc ván đã bắt đầu.</summary>
+        public bool SetReady(ulong clientId, bool value)
+        {
+            if (clientId == hostClientId || Started || slots.SlotOf(clientId) < 0) return false;
+            ready[clientId] = value;
+            return true;
+        }
+
+        /// <summary>Nhận mã client; trả true nếu người đó đã bấm Sẵn sàng.</summary>
+        public bool IsReady(ulong clientId)
+        {
+            bool v;
+            return ready.TryGetValue(clientId, out v) && v;
+        }
+
+        /// <summary>True khi mọi khách (không tính chủ phòng) đã sẵn sàng.</summary>
+        public bool AllGuestsReady
+        {
+            get
+            {
+                foreach (RoomRow r in Rows()) if (!r.IsHost && !r.Ready) return false;
+                return true;
+            }
+        }
+
+        /// <summary>True khi có từ 2 người trở lên, mọi khách sẵn sàng và ván chưa bắt đầu (số người đội = số người đang có).</summary>
+        public bool CanStartFlexible { get { return !Started && Count >= MinPlayers && AllGuestsReady; } }
+
+        /// <summary>Nhận mã client người bấm Bắt đầu. Chỉ chủ phòng, khi CanStartFlexible; dồn các ô liền nhau 0..n-1 (đội = số người đang có) rồi đánh dấu đã bắt đầu.</summary>
+        public bool TryStartFlexible(ulong requesterClientId)
+        {
+            if (requesterClientId != hostClientId || !CanStartFlexible) return false;
+            List<RoomRow> current = Rows();
+            SlotAllocator fresh = new SlotAllocator(Math.Max(MinPlayers, current.Count));
+            foreach (RoomRow r in current) fresh.Assign(r.ClientId);
+            slots = fresh;
+            Started = true;
+            return true;
+        }
+
+        /// <summary>Nhận mã người yêu cầu và mã người bị mời ra. Chỉ chủ phòng, chỉ khi chưa bắt đầu, không tự mời mình. Trả true nếu đã bỏ người đó khỏi phòng.</summary>
+        public bool Kick(ulong requesterClientId, ulong targetClientId)
+        {
+            if (requesterClientId != hostClientId || targetClientId == hostClientId || Started) return false;
+            return Leave(targetClientId);
+        }
 
         /// <summary>Nhận mã client người bấm Bắt đầu. Trả true nếu là chủ phòng và phòng đủ người; khi đó ván được đánh dấu đã bắt đầu.</summary>
         public bool TryStart(ulong requesterClientId)
@@ -92,7 +147,7 @@ namespace TheReturn.Network.Room
             {
                 ulong id;
                 if (!slots.TryGetClient(slot, out id)) continue;
-                rows.Add(new RoomRow { ClientId = id, Slot = slot, Name = names[id], IsHost = id == hostClientId });
+                rows.Add(new RoomRow { ClientId = id, Slot = slot, Name = names[id], IsHost = id == hostClientId, Ready = id == hostClientId || IsReady(id) });
             }
             return rows;
         }

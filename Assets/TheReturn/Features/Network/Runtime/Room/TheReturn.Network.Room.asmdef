@@ -4,6 +4,8 @@
   "references": [
     "TheReturn.Network",
     "TheReturn.Network.Framework",
+    "TheReturn.Core",
+    "TheReturn.Shared",
     "Unity.Netcode.Runtime",
     "Unity.Collections",
     "Unity.Services.Multiplayer"

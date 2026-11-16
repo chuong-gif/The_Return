@@ -3,8 +3,12 @@
   "rootNamespace": "TheReturn.Network.Voice",
   "references": [
     "TheReturn.Network",
+        "TheReturn.Core",
+    "TheReturn.Shared",
     "TheReturn.Network.Room",
+    "Unity.Netcode.Runtime",
     "Unity.Services.Core",
-    "Unity.Services.Vivox"
+    "Unity.Services.Vivox",
+    "Unity.InputSystem"
   ]
 }

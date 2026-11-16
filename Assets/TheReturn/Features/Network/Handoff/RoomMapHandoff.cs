@@ -5,7 +5,8 @@
  * THEO THỨ TỰ Ô (nên ô nhân vật = ô trong phòng; nhân vật tự đặt mình về điểm xuất phát). Máy khách chỉ hiện trạng thái, scene được NGO đồng bộ.
  * Scene phòng chưa đăng ký prefab nhân vật nên component tự thêm vào NetworkManager ở Start trên MỌI máy (trước khi tạo/vào phòng, để ForceSamePrefabs khớp).
  * Không sửa file cũ nào; scene map KHÔNG được có NetworkManager riêng (chỉ OnlinePartySlots + các cặp Online của nhiệm vụ).
- * Hàm: Start; Update; BeginHandoff; BeginForTest; OnLoadEventCompleted; Fail; OnDestroy; OnGUI; thuộc tính Phase, Status, Plan.
+ * T-055: khi ván bắt đầu, mọi máy ghi TÊN NGƯỜI CHƠI theo ô (từ danh sách phòng) vào OnlineNames để map dùng thay tên mặc định.
+ * Hàm: Start; Update; NamesBySlot; BeginHandoff; BeginForTest; OnLoadEventCompleted; Fail; OnDestroy; OnGUI; thuộc tính Phase, Status, Plan.
  */
 using System.Collections.Generic;
 using TheReturn.Network.Framework;
@@ -72,6 +73,8 @@ namespace TheReturn.Network.Handoff
             NetworkManager nm = NetworkManager.Singleton;
             RoomRoster roster = RoomRoster.Current;
             if (nm == null || !nm.IsListening || roster == null || !roster.Started.Value) return;
+            OnlinePartySlots.SyncedTeamSize = Mathf.Clamp(roster.TeamSize.Value, 2, 4);
+            OnlineNames.SetSynced(NamesBySlot(roster));
             if (nm.IsServer)
             {
                 BeginHandoff(nm, roster, false);
@@ -82,6 +85,18 @@ namespace TheReturn.Network.Handoff
                 Phase = HandoffPhase.Loading;
                 Status = "Chủ phòng đã bắt đầu, đang vào map...";
             }
+        }
+
+        /// <summary>Nhận danh sách phòng; trả mảng 4 tên theo ô (ô chưa có người = null).</summary>
+        private static string[] NamesBySlot(RoomRoster roster)
+        {
+            string[] names = new string[4];
+            for (int i = 0; i < roster.Rows.Count; i++)
+            {
+                RoomNetRow row = roster.Rows[i];
+                if (row.Slot >= 0 && row.Slot < names.Length) names[row.Slot] = row.Name.ToString();
+            }
+            return names;
         }
 
         /// <summary>Thêm prefab nhân vật vào NetworkManager (một lần, nếu chưa có). Phải xảy ra trước khi tạo/vào phòng; sau đó chỉ cảnh báo.</summary>
@@ -104,6 +119,7 @@ namespace TheReturn.Network.Handoff
         private void BeginHandoff(NetworkManager nm, RoomRoster roster, bool allowPartial)
         {
             begun = true;
+            OnlineNames.SetSynced(NamesBySlot(roster));
             List<HandoffMember> rows = new List<HandoffMember>();
             for (int i = 0; i < roster.Rows.Count; i++) rows.Add(new HandoffMember(roster.Rows[i].ClientId, roster.Rows[i].Slot));
             string error;
@@ -141,6 +157,7 @@ namespace TheReturn.Network.Handoff
             OnlinePartySlots slots = OnlinePartySlots.Instance;
             if (slots == null) { Fail("Scene map thiếu OnlinePartySlots."); return; }
             slots.SetTeamSize(plan.TeamSize);
+            OnlinePartySlots.SyncedTeamSize = plan.TeamSize;
             Phase = HandoffPhase.Spawning;
             foreach (HandoffMember m in plan.Members)
             {
@@ -173,6 +190,8 @@ namespace TheReturn.Network.Handoff
         private void OnDestroy()
         {
             Unsubscribe();
+            OnlinePartySlots.SyncedTeamSize = 0;
+            OnlineNames.Clear();
         }
 
         private void OnGUI()

@@ -65,7 +65,7 @@ namespace TheReturn
             if (settings != null) State.ApplyRules(settings.ToRules());
             if (keyboard != null)
             {
-                if (keyboard.tabKey.wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame)
+                if (keyboard.Control(GameAction.PauseMenu).wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame)
                     PrototypePartyController.SetCursor(Cursor.lockState != CursorLockMode.Locked);
                 int before = party.ActivePlayer;
                 if (keyboard.digit1Key.wasPressedThisFrame) party.SwitchRole(0, false);
@@ -75,7 +75,7 @@ namespace TheReturn
                 if (party.ActivePlayer != before) State.ExtendForSwitch(now);
             }
             if (Cursor.lockState != CursorLockMode.Locked) return;
-            if (keyboard != null && keyboard.rKey.wasPressedThisFrame) Retry();
+            if (keyboard != null && keyboard.Control(GameAction.Retry).wasPressedThisFrame) Retry();
             TargetPad = -1;
             RaycastHit hit;
             if (party.TryGetInteractionHit(3f, out hit))
@@ -83,7 +83,7 @@ namespace TheReturn
                 var pad = hit.collider.GetComponentInParent<ChoirPad>();
                 if (pad != null) TargetPad = pad.index;
             }
-            if (keyboard != null && keyboard.eKey.wasPressedThisFrame && TargetPad >= 0) TryPress(TargetPad, now);
+            if (keyboard != null && keyboard.Control(GameAction.Interact).wasPressedThisFrame && TargetPad >= 0) TryPress(TargetPad, now);
             if (State.Tick(now)) { Status = settings != null ? settings.tooLate : "Quá chậm."; Flash(-1, Color.red); }
             party.TickInput(false);
             RefreshBoard();

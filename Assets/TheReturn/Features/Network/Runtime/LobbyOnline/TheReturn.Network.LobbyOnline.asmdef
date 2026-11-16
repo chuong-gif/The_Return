@@ -1,0 +1,18 @@
+{
+  "name": "TheReturn.Network.LobbyOnline",
+  "rootNamespace": "TheReturn.Network.LobbyOnline",
+  "references": [
+    "TheReturn.Core",
+    "TheReturn.Shared",
+    "TheReturn.Lobby",
+    "TheReturn.Party",
+    "TheReturn.Party.Domain",
+    "TheReturn.Network",
+    "TheReturn.Network.Room",
+    "TheReturn.Network.Voice",
+    "Unity.Netcode.Runtime",
+    "Unity.Collections",
+    "Unity.InputSystem",
+    "Unity.ugui"
+  ]
+}

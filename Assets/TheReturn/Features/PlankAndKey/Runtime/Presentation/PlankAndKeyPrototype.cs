@@ -182,7 +182,7 @@ namespace TheReturn
             var keyboard = Keyboard.current;
             if (keyboard != null)
             {
-                if (keyboard.tabKey.wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame)
+                if (keyboard.Control(GameAction.PauseMenu).wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame)
                     PrototypePartyController.SetCursor(Cursor.lockState != CursorLockMode.Locked);
                 if (keyboard.digit1Key.wasPressedThisFrame) party.SwitchRole(0, false);
                 if (keyboard.digit2Key.wasPressedThisFrame) party.SwitchRole(1, false);
@@ -201,9 +201,9 @@ namespace TheReturn
             }
             if (keyboard != null)
             {
-                if (keyboard.rKey.wasPressedThisFrame) { Retry(); return; }
-                if (keyboard.eKey.wasPressedThisFrame) Interact();
-                if (keyboard.gKey.wasPressedThisFrame) DropCard(party.ActivePlayer);
+                if (keyboard.Control(GameAction.Retry).wasPressedThisFrame) { Retry(); return; }
+                if (keyboard.Control(GameAction.Interact).wasPressedThisFrame) Interact();
+                if (keyboard.Control(GameAction.Grab).wasPressedThisFrame) DropCard(party.ActivePlayer);
             }
             bool seated = false;
             if (Session.Phase == PlankPhase.Crossing)

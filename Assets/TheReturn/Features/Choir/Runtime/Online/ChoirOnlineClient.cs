@@ -13,7 +13,7 @@ using UnityEngine.InputSystem;
 namespace TheReturn.ChoirNet.Online
 {
     [DefaultExecutionOrder(60)]
-    public sealed class ChoirOnlineClient : MissionOnlineClientBase<ChoirPublicState, ChoirPrivateState>
+    public sealed class ChoirOnlineClient : MissionOnlineClientBase<ChoirPublicState, ChoirPrivateState>, IOnlineHudSource
     {
         static readonly string[] SymbolNames = { "A", "B", "C", "D" };
 
@@ -125,8 +125,8 @@ namespace TheReturn.ChoirNet.Online
         {
             Keyboard keyboard = Keyboard.current;
             if (keyboard == null || Cursor.lockState != CursorLockMode.Locked) return;
-            if (keyboard.rKey.wasPressedThisFrame) RequestRetry();
-            if (!keyboard.eKey.wasPressedThisFrame) return;
+            if (keyboard.Control(GameAction.Retry).wasPressedThisFrame) RequestRetry();
+            if (!keyboard.Control(GameAction.Interact).wasPressedThisFrame) return;
             if (targetPad < 0) { Say("Hãy nhìn vào một bục ở gần.", 3f); return; }
             RequestPress(targetPad);
         }
@@ -148,8 +148,42 @@ namespace TheReturn.ChoirNet.Online
             statusUntil = Time.time + seconds;
         }
 
+        /// <summary>Bật true chỉ khi cần soi lỗi: hiện bảng chữ cũ (IMGUI) chồng lên HUD canvas. Mặc định tắt vì HUD canvas đã hiện cùng dữ liệu.</summary>
+        [SerializeField] private bool drawLegacyHud;
+
+        /// <summary>ID khu của nhiệm vụ này để HUD canvas tìm nguồn dữ liệu online.</summary>
+        public string AreaId { get { return "Phong_6"; } }
+
+        /// <summary>Nhận model rỗng; điền HUD từ trạng thái thật của host. Trả false nếu chưa có trạng thái.</summary>
+        public bool TryFillOnlineHud(AreaHudModel m)
+        {
+            if (replica == null || !replica.HasState) return false;
+            ChoirPublicState state = replica.Public;
+            ChoirPrivateState own = replica.Private;
+            m.TeamSize = state.PlayerCount;
+            StringBuilder nb = new StringBuilder("Bản nhạc: ");
+            for (int i = 0; i < state.NoteCount; i++)
+            {
+                int s = state.SymbolAt(i);
+                nb.Append(i == state.Progress ? "[" : "").Append(s >= 0 && s < SymbolNames.Length ? SymbolNames[s] : "?").Append(i == state.Progress ? "]" : "").Append(' ');
+            }
+            nb.Append("\nThẻ của bạn (ký hiệu -> bục): ");
+            int[] syms = own.SymbolsCopy();
+            int[] padOf = own.PadsCopy();
+            for (int i = 0; i < syms.Length; i++)
+                nb.Append(syms[i] >= 0 && syms[i] < SymbolNames.Length ? SymbolNames[syms[i]] : "?").Append("=").Append(padOf[i] + 1).Append("  ");
+            m.Notebook = nb.ToString();
+            m.Progress = "Nốt " + state.Progress + "/" + state.NoteCount + " • Sai " + state.Mistakes + " • Quá giờ " + state.Timeouts;
+            if (Time.time < statusUntil && status.Length > 0) m.Objective = status;
+            else m.Objective = state.Solved ? "Đã hát xong." : string.Empty;
+            m.Prompt = targetPad >= 0 ? "[E] Bấm bục " + (targetPad + 1) : "Nhìn vào bục rồi bấm E";
+            m.Controls = "WASD đi • E bấm bục • R làm lại • Tab khóa/thả chuột";
+            return true;
+        }
+
         private void OnGUI()
         {
+            if (!drawLegacyHud) return;
             if (replica == null || !replica.HasState) return;
             ChoirPublicState state = replica.Public;
             ChoirPrivateState own = replica.Private;
