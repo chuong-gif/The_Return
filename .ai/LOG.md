@@ -46,3 +46,7 @@ LOG không phải nguồn trạng thái. Xem `CURRENT.md`, `TASKS.md`, `QUEUE.md
 
 ### 2026-11-17 | T-058 | START
 - Chia toàn bộ thay đổi đang có thành commit theo nhóm; không chỉnh sửa code, scene hoặc asset. Kiểm danh sách đường dẫn và diff trước khi stage.
+
+### 2026-11-17 | T-058 | DONE (M2)
+- Đã tạo 8 commit cho docs, BreakerPanel, network, audio, UI/map, mission dependency, URP settings và recovery/folder metadata. Không sửa nội dung code/scene/asset và không chạy test.
+- `git status --short` sạch; các cảnh báo `diff --check` chỉ do giá trị YAML/meta Unity để trống, không chỉnh sửa serialization.
