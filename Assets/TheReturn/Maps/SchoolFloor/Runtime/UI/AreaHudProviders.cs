@@ -36,7 +36,7 @@ namespace TheReturn
                 m.Objective = p.Status;
                 if (p.State != null) m.Progress = "Công tắc bật " + p.State.OnCount + "/" + p.State.Round.OverloadLimit;
                 m.Notebook = p.Notebook(player);
-                m.Prompt = p.TargetSwitch >= 0 ? "[E] Bật/tắt công tắc " + (p.TargetSwitch + 1) : "Nhìn vào công tắc rồi bấm E";
+                m.Prompt = p.TargetSwitch >= 0 ? "[E] Bật/tắt công tắc " + (p.TargetSwitch + 1) : "Nhìn vào công tắc của vai bạn rồi bấm E";
                 m.Controls = "WASD đi • E bấm công tắc • R làm lại • 1–4 đổi vai • Tab menu";
             }
         }

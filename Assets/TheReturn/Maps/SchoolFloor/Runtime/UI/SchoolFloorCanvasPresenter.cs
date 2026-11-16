@@ -224,7 +224,11 @@ namespace TheReturn
             bool back = Phase == 4 && flow.dontLookBack.PanelOpen;
             bool paused = !grade && !exam && !back && Cursor.lockState != CursorLockMode.Locked;
             if (testingMenu) PrototypePartyController.SetCursor(false);
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
             SchoolFloorCanvasView.SetVisible(view.pause, paused && !testingMenu);
+#else
+            SchoolFloorCanvasView.SetVisible(view.pause, false);
+#endif
             SchoolFloorCanvasView.SetVisible(view.tests, testingMenu);
             SchoolFloorCanvasView.SetVisible(view.gradeBoard, grade && flow.gradeRepair.OpenDocument < 0 && !testingMenu);
             SchoolFloorCanvasView.SetVisible(view.document, grade && flow.gradeRepair.OpenDocument >= 0 && !testingMenu);
@@ -257,7 +261,7 @@ namespace TheReturn
             string[] titles ={a.textCatalog.title,flow.corridor!=null?flow.corridor.settings.title:"",flow.gradeRepair!=null?flow.gradeRepair.catalog.title:"",flow.navigationExam!=null?flow.navigationExam.catalog.title:"",
                 flow.dontLookBack!=null?flow.dontLookBack.catalog.title:"",flow.teacherTruth!=null?flow.teacherTruth.catalog.title:""};
             SchoolFloorCanvasView.SetText(view.title, Phase <= 5 ? titles[Phase] : ExtraTitle());
-            SchoolFloorCanvasView.SetText(view.role, (launcher.TestSession ? "TEST • " : "") + "VAI " + (a.party.ActivePlayer + 1) + RoleNameSuffix() + " / ĐỘI " + a.PartySize);
+            SchoolFloorCanvasView.SetText(view.role, (launcher.TestSession ? "TEST • " : "") + "VAI " + (a.party.ActivePlayer + 1) + RoleNameSuffix() + " / ĐỘI " + HudTeamSize(a.PartySize));
             string info = "", message = "", hint = "", help = "";
             bool prov = FreeFlow && ActiveArea != null && HasHudProvider(ActiveArea);
             if (!prov && Phase == 0)

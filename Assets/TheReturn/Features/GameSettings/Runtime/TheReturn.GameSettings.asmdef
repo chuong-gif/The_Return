@@ -2,6 +2,11 @@
   "name": "TheReturn.GameSettings",
   "references": [
     "TheReturn.GameSettings.Domain",
-    "TheReturn.Core"
+    "TheReturn.Core",
+    "TheReturn.Shared",
+    "TheReturn.GameAudio",
+    "TheReturn.GameAudio.Domain",
+    "Unity.ugui",
+    "Unity.InputSystem"
   ]
 }

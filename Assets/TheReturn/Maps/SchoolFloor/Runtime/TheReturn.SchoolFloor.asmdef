@@ -32,6 +32,7 @@
     "TheReturn.SharedLantern.Domain",
     "TheReturn.PlankAndKey",
     "TheReturn.PlankAndKey.Domain",
-    "TheReturn.GameAudio.Domain"
+    "TheReturn.GameAudio.Domain",
+    "TheReturn.GameSettings"
   ]
 }

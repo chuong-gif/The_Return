@@ -13,6 +13,15 @@ namespace TheReturn
         void FillHud(AreaHudModel model, int player, double now);
     }
 
+    /// <summary>Nguồn HUD từ dữ liệu ONLINE thật của một nhiệm vụ (máy khách đã nhận trạng thái từ host). Presenter ưu tiên nguồn này khi chơi online.</summary>
+    public interface IOnlineHudSource
+    {
+        /// <summary>ID khu mà nguồn này phục vụ (vd Phong_1).</summary>
+        string AreaId { get; }
+        /// <summary>Nhận model rỗng; trả true và điền model nếu đã có trạng thái thật từ host, ngược lại false (giữ nguyên đường cũ).</summary>
+        bool TryFillOnlineHud(AreaHudModel model);
+    }
+
     /// <summary>Mô hình HUD của khu đang chơi.</summary>
     public sealed class AreaHudModel
     {
@@ -22,6 +31,8 @@ namespace TheReturn
         public string Prompt = "";
         public string Notebook = "";
         public string Controls = "";
+        /// <summary>Số người của đội theo dữ liệu online (0 = không rõ).</summary>
+        public int TeamSize;
 
         sealed class Alert { public string Text; public double Until; }
         readonly List<Alert> alerts = new List<Alert>();
@@ -50,6 +61,7 @@ namespace TheReturn
         public void Clear()
         {
             Title = Progress = Objective = Prompt = Notebook = Controls = "";
+            TeamSize = 0;
             alerts.Clear();
         }
     }

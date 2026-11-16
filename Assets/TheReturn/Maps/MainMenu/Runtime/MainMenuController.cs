@@ -29,6 +29,8 @@ namespace TheReturn
 
         [Header("Menu chính")]
         public Button playButton;
+        [Tooltip("Nút CHỈ NHÀ PHÁT TRIỂN (gắn DevOnly): vào Sanh_Cho thử một máy, có người giả lập. Bản build thật tự gỡ.")]
+        public Button devLobbyButton;
         public Button settingsButton;
         public Button quitButton;
 
@@ -71,7 +73,7 @@ namespace TheReturn
             Cursor.visible = true;
             PartySession.Reset();
             PartySession.Service.Changed += OnPartyChanged;
-            Bind(playButton, OnPlay); Bind(settingsButton, OnSettings); Bind(quitButton, OnQuit);
+            Bind(playButton, OnPlay); Bind(devLobbyButton, OnDevLobby); Bind(settingsButton, OnSettings); Bind(quitButton, OnQuit);
             Bind(createButton, OnCreateParty); Bind(joinButton, OnJoinParty); Bind(entryBackButton, OnBack);
             Bind(readyButton, OnToggleReady); Bind(leaveButton, OnLeaveParty); Bind(startButton, OnStartGame);
             Bind(addSimulatedButton, OnAddSimulated); Bind(removeSimulatedButton, OnRemoveSimulated);
@@ -113,6 +115,16 @@ namespace TheReturn
 
         /// <summary>Không nhận tham số; vào lập nhóm (vào thẳng phòng chờ nếu đã ở trong nhóm).</summary>
         public void OnPlay() { Show(PartySession.Service.Current != null ? Screen.PartyRoom : Screen.PartyEntry); }
+
+        /// <summary>Không nhận tham số; CHỈ NHÀ PHÁT TRIỂN: bỏ nhóm cũ rồi vào Sanh_Cho thử một máy (không mạng).</summary>
+        public void OnDevLobby()
+        {
+            if (loadingScene) return;
+            loadingScene = true;
+            PartySession.Reset();
+            if (SceneTransitionService.Instance == null) new GameObject("SceneTransitionService").AddComponent<SceneTransitionService>();
+            SceneTransitionService.Instance.LoadScene(lobbySceneName);
+        }
 
         /// <summary>Không nhận tham số; mở màn hình Settings.</summary>
         public void OnSettings() { Show(Screen.Settings); }

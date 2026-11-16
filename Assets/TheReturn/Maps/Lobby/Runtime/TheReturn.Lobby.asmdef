@@ -2,8 +2,10 @@
   "name": "TheReturn.Lobby",
   "references": [
     "TheReturn.Core",
+    "TheReturn.Shared",
     "TheReturn.Party",
     "TheReturn.Party.Domain",
+    "TheReturn.GameAudio.Domain",
     "Unity.ugui",
     "Unity.InputSystem"
   ]

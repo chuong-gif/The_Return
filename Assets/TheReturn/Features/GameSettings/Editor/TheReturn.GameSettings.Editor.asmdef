@@ -1,0 +1,13 @@
+{
+  "name": "TheReturn.GameSettings.Editor",
+  "references": [
+    "TheReturn.GameSettings",
+    "TheReturn.Core",
+    "TheReturn.Shared",
+    "Unity.ugui",
+    "Unity.InputSystem"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ]
+}

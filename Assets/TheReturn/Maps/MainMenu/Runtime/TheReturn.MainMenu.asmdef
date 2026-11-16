@@ -2,6 +2,7 @@
   "name": "TheReturn.MainMenu",
   "references": [
     "TheReturn.Core",
+    "TheReturn.Shared",
     "TheReturn.Party",
     "TheReturn.Party.Domain",
     "TheReturn.GameSettings",
