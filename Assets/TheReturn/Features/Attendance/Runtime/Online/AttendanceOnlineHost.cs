@@ -105,8 +105,8 @@ namespace TheReturn.AttendanceNet.Online
             OnlinePartySlots slots = OnlinePartySlots.Instance;
             if (slots == null || bridge == null || !bridge.IsSpawned || textCatalog == null || seats.Length != AttendanceRound.SeatCount) return false;
             int teamSize = Mathf.Clamp(slots.TeamSize, 2, 4);
-            string[] names = new string[teamSize];
-            for (int i = 0; i < teamSize; i++) names[i] = textCatalog.roleNames[i];
+            // T-055: tên người chơi thật theo ô (nhập ở panel Chơi online); thiếu thì dùng tên mặc định của asset
+            string[] names = OnlineNames.Resolve(OnlineNames.Synced, textCatalog.roleNames, teamSize);
             int seed = fixedSeed != 0 ? fixedSeed : System.Environment.TickCount;
             rules = new AttendanceHostRules(names, seed, round => textCatalog.BuildPackets(round), new HostWorld(this), settleSeconds);
 
