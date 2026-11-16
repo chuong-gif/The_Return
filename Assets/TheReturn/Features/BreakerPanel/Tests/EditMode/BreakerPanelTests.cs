@@ -71,6 +71,28 @@ namespace TheReturn.Tests
                         if ((r.SolutionSwitches >> sw & 1) == 1) owners |= 1 << r.OwnerOf(sw);
                     Assert.GreaterOrEqual(BreakerRound.CountBits(owners), 2, tag + ": cần công tắc của ít nhất hai người");
                     Assert.AreNotEqual(r.StartLamps, r.TargetLamps, tag);
+                    // T-056: đề dễ hiểu — công tắc i chỉ bật đúng đèn i, mọi đèn ban đầu tắt.
+                    Assert.AreEqual(0, r.StartLamps, tag + ": đèn đầu tắt hết");
+                    for (int sw = 0; sw < r.Size; sw++)
+                        Assert.AreEqual(1 << sw, r.SwitchMask(sw), tag + ": công tắc " + sw + " chỉ bật đèn cùng số");
+                }
+            }
+        }
+
+        [Test]
+        public void GenerateHard_KeepsOldRule_EachSwitchFlipsTwoOrThreeLampsWithUniqueSolution()
+        {
+            for (int players = 2; players <= 4; players++)
+            {
+                for (int seed = 1; seed <= 60; seed++)
+                {
+                    BreakerRound r = BreakerGenerator.GenerateHard(players, seed);
+                    string tag = players + " người, seed " + seed;
+                    int solutions = 0;
+                    for (int s = 0; s < (1 << r.Size); s++)
+                        if ((r.StartLamps ^ r.Combine(s)) == r.TargetLamps) solutions++;
+                    Assert.AreEqual(1, solutions, tag + ": phải đúng một nghiệm");
+                    Assert.LessOrEqual(BreakerRound.CountBits(r.SolutionSwitches), r.OverloadLimit, tag);
                     for (int sw = 0; sw < r.Size; sw++)
                     {
                         int bits = BreakerRound.CountBits(r.SwitchMask(sw));
@@ -78,6 +100,19 @@ namespace TheReturn.Tests
                     }
                 }
             }
+        }
+
+        [Test]
+        public void Guide_ListsWhatToDoAndWhoOwnsIt()
+        {
+            // 3 người, 5 công tắc: công tắc 1,4 của vai 1; 2,5 của vai 2; 3 của vai 3. Đích: đèn 1 và 5. Chưa bật gì.
+            string text = BreakerGuide.Describe(3, 0, (1 << 0) | (1 << 4), 3, 0, 0f, false);
+            StringAssert.Contains("BẬT công tắc 1 (của bạn)", text);
+            StringAssert.Contains("BẬT công tắc 5 (nhờ VAI 2)", text);
+            Assert.AreEqual("1, 5", BreakerGuide.ListNumbers((1 << 0) | (1 << 4), 5));
+            Assert.AreEqual("không có", BreakerGuide.ListNumbers(0, 5));
+            StringAssert.Contains("ĐÃ KHỚP", BreakerGuide.Describe(3, 17, 17, 3, 0, 0.5f, false));
+            StringAssert.Contains("ĐÃ ỔN ĐỊNH", BreakerGuide.Describe(3, 17, 17, 3, 0, 1f, true));
         }
 
         [Test]

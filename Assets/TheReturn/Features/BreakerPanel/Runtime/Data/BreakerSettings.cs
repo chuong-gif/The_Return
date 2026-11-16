@@ -15,9 +15,9 @@ namespace TheReturn
         public int fixedSeed;
 
         [Header("Chữ hiển thị")]
-        [TextArea] public string instructions = "Mỗi người chỉ bấm được công tắc của mình và chỉ xem được công tắc đó đảo những đèn nào. Khớp hàng đèn với hàng đích (không bật quá giới hạn công tắc).";
-        public string tripped = "Cầu dao nhảy! Bật quá nhiều công tắc, tất cả về tắt.";
-        public string notOwner = "Công tắc này không phải của vai bạn đang điều khiển.";
+        [TextArea] public string instructions = "Công tắc số mấy bật đèn số đó. Bật đúng các đèn có chấm xanh rồi giữ yên. Mỗi người chỉ bấm được công tắc của vai mình.";
+        public string tripped = "Cầu dao nhảy! Bật quá nhiều công tắc cùng lúc nên tất cả về tắt. Chỉ cần bật đúng các đèn có chấm xanh.";
+        public string notOwner = "Công tắc này không phải của vai bạn đang điều khiển. Nhờ đồng đội đúng vai bấm giúp.";
         public string success = "Bảng cầu dao ổn định!";
     }
 }

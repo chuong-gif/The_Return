@@ -1,7 +1,9 @@
 /*
  * Mục đích: Sinh đề «Bảng cầu dao» theo seed, bảo đảm LUÔN có đúng một cách bật công tắc đưa đèn về đích, cách đó không
  * vượt giới hạn quá tải và cần công tắc của ít nhất hai người khác nhau (T-006a). Thuần C#.
- * Hàm: Generate; IsInvertible.
+ * T-056: Generate nay sinh đề DỄ HIỂU (mỗi công tắc bật đúng một đèn cùng số, đèn đầu tắt hết, chấm xanh = đèn phải sáng);
+ * đề khó cũ (mỗi công tắc đảo 2-3 đèn bí mật, bài XOR) giữ ở GenerateHard.
+ * Hàm: Generate; GenerateHard; IsInvertible; OwnerCount.
  */
 using System;
 
@@ -11,11 +13,35 @@ namespace TheReturn
     public static class BreakerGenerator
     {
         /// <summary>
-        /// Nhận số người (2-4) và seed; trả đề mới (cùng seed cho cùng đề). Số công tắc = số đèn = số người + 2;
+        /// Nhận số người (2-4) và seed; trả đề DỄ (cùng seed cho cùng đề). Số công tắc = số đèn = số người + 2; công tắc i bật đúng đèn i,
+        /// mọi đèn ban đầu tắt, đích = 2..OverloadLimit đèn phải sáng, thuộc công tắc của ít nhất hai vai khác nhau (phải phối hợp).
+        /// Nghiệm duy nhất: bật đúng các công tắc có đèn đích. Không bao giờ cần vượt giới hạn quá tải.
+        /// </summary>
+        public static BreakerRound Generate(int playerCount, int seed)
+        {
+            if (playerCount < 2 || playerCount > 4) throw new ArgumentOutOfRangeException(nameof(playerCount));
+            int size = playerCount + 2;
+            int limit = (size + 1) / 2;
+            var rng = new Random(seed);
+            var masks = new int[size];
+            for (int i = 0; i < size; i++) masks[i] = 1 << i;
+            for (int attempt = 0; attempt < 20000; attempt++)
+            {
+                int k = 2 + rng.Next(limit - 1);
+                int solution = 0;
+                while (BreakerRound.CountBits(solution) < k) solution |= 1 << rng.Next(size);
+                if (OwnerCount(solution, size, playerCount) < 2) continue;
+                return new BreakerRound(seed, playerCount, masks, 0, solution, solution);
+            }
+            throw new InvalidOperationException("Không sinh được đề cầu dao hợp lệ");
+        }
+
+        /// <summary>
+        /// Nhận số người (2-4) và seed; trả đề KHÓ cũ (cùng seed cho cùng đề). Số công tắc = số đèn = số người + 2;
         /// mỗi công tắc đảo 2-3 đèn; nghiệm dùng 2..OverloadLimit công tắc thuộc ít nhất hai chủ khác nhau.
         /// Ném InvalidOperationException nếu không sinh được trong số lần thử tối đa (không xảy ra với tham số hợp lệ).
         /// </summary>
-        public static BreakerRound Generate(int playerCount, int seed)
+        public static BreakerRound GenerateHard(int playerCount, int seed)
         {
             if (playerCount < 2 || playerCount > 4) throw new ArgumentOutOfRangeException(nameof(playerCount));
             int size = playerCount + 2;

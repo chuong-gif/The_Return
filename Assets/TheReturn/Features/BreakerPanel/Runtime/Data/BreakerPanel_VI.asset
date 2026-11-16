@@ -14,13 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: TheReturn.BreakerPanel::TheReturn.BreakerSettings
   holdSeconds: 3
   fixedSeed: 0
-  instructions: "M\u1ED7i ng\u01B0\u1EDDi ch\u1EC9 b\u1EA5m \u0111\u01B0\u1EE3c c\xF4ng
-    t\u1EAFc c\u1EE7a m\xECnh v\xE0 ch\u1EC9 xem \u0111\u01B0\u1EE3c c\xF4ng t\u1EAFc
-    \u0111\xF3 \u0111\u1EA3o nh\u1EEFng \u0111\xE8n n\xE0o. Kh\u1EDBp h\xE0ng \u0111\xE8n
-    v\u1EDBi h\xE0ng \u0111\xEDch (kh\xF4ng b\u1EADt qu\xE1 gi\u1EDBi h\u1EA1n c\xF4ng
-    t\u1EAFc)."
-  tripped: "C\u1EA7u dao nh\u1EA3y! B\u1EADt qu\xE1 nhi\u1EC1u c\xF4ng t\u1EAFc,
-    t\u1EA5t c\u1EA3 v\u1EC1 t\u1EAFt."
+  instructions: "C\xF4ng t\u1EAFc s\u1ED1 m\u1EA5y b\u1EADt \u0111\xE8n s\u1ED1 \u0111\xF3.
+    B\u1EADt \u0111\xFAng c\xE1c \u0111\xE8n c\xF3 ch\u1EA5m xanh r\u1ED3i gi\u1EEF
+    y\xEAn. M\u1ED7i ng\u01B0\u1EDDi ch\u1EC9 b\u1EA5m \u0111\u01B0\u1EE3c c\xF4ng
+    t\u1EAFc c\u1EE7a vai m\xECnh."
+  tripped: "C\u1EA7u dao nh\u1EA3y! B\u1EADt qu\xE1 nhi\u1EC1u c\xF4ng t\u1EAFc c\xF9ng
+    l\xFAc n\xEAn t\u1EA5t c\u1EA3 v\u1EC1 t\u1EAFt. Ch\u1EC9 c\u1EA7n b\u1EADt \u0111\xFAng
+    c\xE1c \u0111\xE8n c\xF3 ch\u1EA5m xanh."
   notOwner: "C\xF4ng t\u1EAFc n\xE0y kh\xF4ng ph\u1EA3i c\u1EE7a vai b\u1EA1n \u0111ang
-    \u0111i\u1EC1u khi\u1EC3n."
+    \u0111i\u1EC1u khi\u1EC3n. Nh\u1EDD \u0111\u1ED3ng \u0111\u1ED9i \u0111\xFAng
+    vai b\u1EA5m gi\xFAp."
   success: "B\u1EA3ng c\u1EA7u dao \u1ED5n \u0111\u1ECBnh!"

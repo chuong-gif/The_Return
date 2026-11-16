@@ -1,7 +1,8 @@
 /*
  * Mục đích: Nối luật Bảng cầu dao (BreakerState) với người chơi, công tắc, đèn và HUD (T-006a2).
  * Chỉ chủ công tắc bấm được và xem được công tắc đó đảo những đèn nào (HUD chỉ hiện công tắc của vai đang điều khiển).
- * Hàm: Begin bắt đầu; Retry đặt lại công tắc; Update xử lý input và giờ; TryToggle bấm công tắc;
+ * T-056: chữ hướng dẫn/sổ tay do BreakerGuide soạn (cách chơi, đèn cần sáng, việc cần làm); đèn có số (EnsureLabels).
+ * Hàm: Begin bắt đầu; Retry đặt lại công tắc; EnsureLabels tạo số đèn; Update xử lý input và giờ; TryToggle bấm công tắc;
  * RefreshParts cập nhật công tắc/đèn; OnGUI vẽ HUD; StopSession ngừng nhiệm vụ.
  */
 using UnityEngine;
@@ -39,8 +40,19 @@ namespace TheReturn
             if (State == null) State = new BreakerState(round, settings != null ? settings.holdSeconds : 3.0);
             else State.Reset();
             Active = true;
-            Status = settings != null ? settings.instructions : "";
+            Status = BreakerGuide.Rules(round.OverloadLimit, (float)State.HoldSeconds);
+            EnsureLabels();
             RefreshParts();
+        }
+
+        /// <summary>Không nhận tham số; tạo nhãn «ĐÈN n» cho từng đèn, lấy nhãn công tắc đầu tiên làm mẫu (chỉ tạo một lần).</summary>
+        void EnsureLabels()
+        {
+            TextMesh template = null;
+            for (int i = 0; switches != null && i < switches.Length && template == null; i++)
+                if (switches[i] != null) template = switches[i].label;
+            for (int i = 0; lamps != null && i < lamps.Length; i++)
+                if (lamps[i] != null) lamps[i].EnsureNumberLabel(template);
         }
 
         /// <summary>Không nhận tham số; tắt mọi công tắc, giữ đề.</summary>
@@ -48,7 +60,7 @@ namespace TheReturn
         {
             if (State == null) return;
             State.Reset();
-            Status = "Đã đặt lại bảng cầu dao.";
+            Status = "Đã đặt lại bảng cầu dao: mọi công tắc về tắt.";
             RefreshParts();
         }
 
@@ -59,7 +71,7 @@ namespace TheReturn
             var keyboard = Keyboard.current;
             if (keyboard != null)
             {
-                if (keyboard.tabKey.wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame)
+                if (keyboard.Control(GameAction.PauseMenu).wasPressedThisFrame || keyboard.escapeKey.wasPressedThisFrame)
                     PrototypePartyController.SetCursor(Cursor.lockState != CursorLockMode.Locked);
                 if (keyboard.digit1Key.wasPressedThisFrame) party.SwitchRole(0, false);
                 if (keyboard.digit2Key.wasPressedThisFrame) party.SwitchRole(1, false);
@@ -67,7 +79,7 @@ namespace TheReturn
                 if (keyboard.digit4Key.wasPressedThisFrame) party.SwitchRole(3, false);
             }
             if (Cursor.lockState != CursorLockMode.Locked) return;
-            if (keyboard != null && keyboard.rKey.wasPressedThisFrame) Retry();
+            if (keyboard != null && keyboard.Control(GameAction.Retry).wasPressedThisFrame) Retry();
             TargetSwitch = -1;
             RaycastHit hit;
             if (party.TryGetInteractionHit(3f, out hit))
@@ -75,7 +87,7 @@ namespace TheReturn
                 var sw = hit.collider.GetComponentInParent<BreakerSwitch>();
                 if (sw != null) TargetSwitch = sw.index;
             }
-            if (keyboard != null && keyboard.eKey.wasPressedThisFrame && TargetSwitch >= 0) TryToggle(TargetSwitch, party.ActivePlayer);
+            if (keyboard != null && keyboard.Control(GameAction.Interact).wasPressedThisFrame && TargetSwitch >= 0) TryToggle(TargetSwitch, party.ActivePlayer);
             if (State.Tick(Time.timeAsDouble) && settings != null) Status = settings.success;
             party.TickInput(false);
             RefreshParts();
@@ -88,7 +100,7 @@ namespace TheReturn
             var result = State.Toggle(player, sw);
             if (result == BreakerResult.Tripped) Status = settings != null ? settings.tripped : "Cầu dao nhảy!";
             else if (result == BreakerResult.NotOwner) Status = settings != null ? settings.notOwner : "Không phải công tắc của bạn.";
-            else if (result == BreakerResult.Toggled) Status = "Quá tải: " + State.OnCount + "/" + round.OverloadLimit + " công tắc đang bật.";
+            else if (result == BreakerResult.Toggled) Status = (State.SwitchOn(sw) ? "Đã BẬT công tắc " : "Đã TẮT công tắc ") + (sw + 1) + " (đèn " + (sw + 1) + "). Đang bật " + State.OnCount + "/" + round.OverloadLimit + " công tắc.";
             RefreshParts();
             return result;
         }
@@ -122,22 +134,11 @@ namespace TheReturn
             GUI.Box(new Rect(16, 16, 480, 40 + 22 * (round.Size / 2 + 4)), "BẢNG CẦU DAO - Vai " + (player + 1) + "\n" + Notebook(player) + "\n" + Status + "\n[E] bấm công tắc  [R] làm lại  [1-4] đổi vai");
         }
 
-        /// <summary>Nhận ID vai; trả các công tắc của vai đó và đèn mỗi công tắc đảo, kèm quá tải và % giữ khớp. Rỗng nếu chưa bắt đầu.</summary>
+        /// <summary>Nhận ID vai; trả chữ sổ tay do BreakerGuide soạn: đèn cần sáng, công tắc đang bật, công tắc của vai đó, việc cần làm, % giữ khớp. Rỗng nếu chưa bắt đầu.</summary>
         public string Notebook(int player)
         {
             if (State == null || round == null) return "";
-            var sb = new System.Text.StringBuilder();
-            for (int s = 0; s < round.Size; s++)
-            {
-                int mask;
-                if (!State.Inspect(player, s, out mask)) continue;
-                sb.Append("Công tắc ").Append(s + 1).Append(" đảo đèn: ");
-                for (int l = 0; l < round.Size; l++) if ((mask >> l & 1) == 1) sb.Append(l + 1).Append(' ');
-                sb.Append('\n');
-            }
-            sb.Append("Đang bật ").Append(State.OnCount).Append('/').Append(round.OverloadLimit).Append("   Giữ khớp: ")
-              .Append((State.HoldProgress(Time.timeAsDouble) * 100).ToString("0")).Append('%');
-            return sb.ToString();
+            return BreakerGuide.Describe(round.PlayerCount, State.OnSwitches, round.TargetLamps, round.OverloadLimit, player, (float)State.HoldProgress(Time.timeAsDouble), State.Solved);
         }
 
         /// <summary>Nhận cờ reset; ngừng input; reset=true bỏ đề để lần sau sinh đề mới, false giữ kết quả.</summary>
