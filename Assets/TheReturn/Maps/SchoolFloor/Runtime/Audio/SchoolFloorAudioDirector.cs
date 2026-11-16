@@ -1,9 +1,10 @@
 /*
  * Mục đích: Đạo diễn âm thanh của map SchoolFloor (T-018): quan sát trạng thái chung rồi phát cue; không chứa luật gameplay.
  * Hàm: Update theo dõi khu bắt đầu/xong/hỏng (AreaStart/AreaDone/AreaFail + nhạc sân/nhiệm vụ), thắng (Win), đổi vai (UiSwitchPlayer),
- * bước chân người đang điều khiển (Step), cổng mở/khóa gần người chơi (GateOpen/GateLock). SchoolFloorFlow.Start tự thêm component này.
+ * bước chân người đang điều khiển (Step), tiếng nhảy (Jump, T-045: TickJump), cổng mở/khóa gần người chơi (GateOpen/GateLock). SchoolFloorFlow.Start tự thêm component này.
  */
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace TheReturn
 {
@@ -23,6 +24,12 @@ namespace TheReturn
         bool[] gateOpen = new bool[0];
         Vector3 lastPos;
         float stepAcc;
+        int jumpWatch;
+        float jumpStartY;
+        float jumpPrevY;
+        bool jumpWasGrounded;
+        Transform jumpBody;
+        CharacterController jumpController;
 
         void Start()
         {
@@ -72,6 +79,7 @@ namespace TheReturn
             int active = party.ActivePlayer;
             if (active != lastPlayer) { if (lastPlayer >= 0) AudioHub.Player.Play(AudioCues.UiSwitchPlayer); lastPlayer = active; stepAcc = 0f; lastPos = PlayerPos(party, active); }
             TickSteps(party, active);
+            TickJump(party, active);
             TickGates(party, active);
         }
 
@@ -88,6 +96,35 @@ namespace TheReturn
             if (Time.deltaTime <= 0f || dist > 1.5f || dist / Time.deltaTime < 0.4f) return;
             stepAcc += dist;
             if (stepAcc >= strideMeters) { stepAcc = 0f; AudioHub.Player.Play(AudioCues.Step); }
+        }
+
+        /// <summary>Nhận party và chỉ số người đang điều khiển; khi bấm Space lúc đang (hoặc vừa) đứng trên đất và chuột đã khóa thì theo dõi vài khung hình, nếu thân người thật sự nhích lên so với khung hình trước thì phát tiếng nhảy một lần (không phát khi ngồi hoặc bị khóa di chuyển). T-045 sửa: MissionFlowController chạy TRƯỚC đạo diễn này (thứ tự -50) nên lúc đạo diễn đọc, nhân vật có thể đã rời đất ở chính khung hình bấm; vì vậy dùng trạng thái đất của khung hình trước và so độ cao với khung hình trước.</summary>
+        void TickJump(PrototypePartyController party, int active)
+        {
+            if (party.players == null || active < 0 || active >= party.players.Length) return;
+            var body = party.players[active];
+            if (body == null) return;
+            if (body != jumpBody) { jumpBody = body; jumpController = body.GetComponent<CharacterController>(); jumpWatch = 0; jumpPrevY = body.position.y; jumpWasGrounded = false; }
+            if (jumpController == null) return;
+            bool groundedNow = jumpController.isGrounded;
+            float y = body.position.y;
+            if (jumpWatch > 0)
+            {
+                jumpWatch--;
+                if (y - jumpStartY > 0.04f) { jumpWatch = 0; AudioHub.Player.Play(AudioCues.Jump); }
+            }
+            else
+            {
+                var keyboard = Keyboard.current;
+                if (keyboard != null && party.allowJump && Cursor.lockState == CursorLockMode.Locked && keyboard.Control(GameAction.Jump).wasPressedThisFrame && (groundedNow || jumpWasGrounded))
+                {
+                    jumpStartY = jumpPrevY;
+                    if (y - jumpStartY > 0.04f) AudioHub.Player.Play(AudioCues.Jump);
+                    else jumpWatch = 4;
+                }
+            }
+            jumpWasGrounded = groundedNow;
+            jumpPrevY = y;
         }
 
         void TickGates(PrototypePartyController party, int active)

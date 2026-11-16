@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31b3a18d4ac23fc4eb4e44639ad0ec83, type: 3}
+  m_Name: SharedAudioProfile
+  m_EditorClassIdentifier: TheReturn.GameAudio::TheReturn.SharedAudioProfile
+  uiClick: {fileID: 8300000, guid: c15a91b2d7b382b4d8c3d5c10827c7f0, type: 3}
+  uiHover: {fileID: 8300000, guid: 5fe47d456799f70458dd8f87883a173e, type: 3}
+  uiHoverVolume: 0.5
+  uiSliderTick: {fileID: 0}
+  uiSliderVolume: 0.5
+  uiToggle: {fileID: 0}
+  uiSwitchPlayer: {fileID: 0}
+  footsteps:
+  - {fileID: 8300000, guid: 61d46c21932e93c4797ef293d62f0e31, type: 3}
+  - {fileID: 8300000, guid: e9e2ee14b7301274a85dfe6df94e7f95, type: 3}
+  footstepsVolume: 0.8
+  jump: {fileID: 8300000, guid: f5291827cebd4574f9d3b4cccde774a5, type: 3}
+  jumpVolume: 1

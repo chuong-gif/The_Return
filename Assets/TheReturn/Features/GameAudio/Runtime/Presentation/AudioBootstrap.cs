@@ -20,6 +20,10 @@ namespace TheReturn
             var svc = go.AddComponent<AudioService>();
             svc.bank = Resources.Load<AudioCueBank>("AudioCueBank_Main");
             if (svc.bank == null) Debug.LogWarning("AudioBootstrap: không thấy Resources/AudioCueBank_Main — game sẽ không có tiếng.");
+            // Âm dùng chung (giao diện, bước chân, nhảy): ghi đè lên bảng gốc một lần cho cả game; mỗi scene chỉ thêm phần riêng của nó.
+            var shared = Resources.Load<SharedAudioProfile>("SharedAudioProfile");
+            if (shared != null && svc.bank != null) svc.bank = shared.BuildBank(svc.bank);
+            go.AddComponent<UiSoundDirector>(); // âm giao diện toàn game (rê chuột, bấm, kéo thanh trượt)
         }
     }
 }

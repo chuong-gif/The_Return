@@ -1,9 +1,9 @@
 /*
  * Mục đích: Màn hình thắng game (T-007). Khi MissionRegistry.Won và không còn nhiệm vụ nào đang chạy thì hiện lớp phủ
- * HOÀN THÀNH liệt kê các khu đã xong, kèm nút Chơi lại, Về sảnh (chỉ hiện khi nối onReturnToLobby) và Thoát.
+ * HOÀN THÀNH liệt kê các khu đã xong, kèm nút Chơi lại, Menu chính (nạp scene MainMenu, T-045) và Thoát.
  * Canvas uGUI được dựng bằng code lần đầu hiện, nên không cần sửa scene để dựng giao diện; chỉ cần gắn component này vào
  * scene và gán missionFlow, flow (xem PLANS/T-007-win-screen.md bước S3, cần Scene lock).
- * Hàm: Update; Show; Hide; BuildUi; MakePanel; MakeText; MakeButton; EnsureEventSystem; OnReplay; OnLobby; OnQuit.
+ * Hàm: Update; Show; Hide; BuildUi; MakePanel; MakeText; MakeButton; EnsureEventSystem; OnReplay; OnMainMenu; OnQuit.
  */
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,15 +18,18 @@ namespace TheReturn
         public MissionFlowController missionFlow;
         public SchoolFloorFlow flow;
 
-        /// <summary>Nối vào Sảnh chờ khi có (T-008). Không có listener thì nút Về sảnh bị ẩn.</summary>
-        public UnityEvent onReturnToLobby;
+        /// <summary>Tên scene menu chính sẽ nạp khi bấm nút Menu chính (phải có trong Build Settings).</summary>
+        [Tooltip("Tên scene MENU CHÍNH sẽ nạp khi bấm nút Menu chính trên màn hình HOÀN THÀNH. Scene này phải có trong Build Settings.")]
+        public string mainMenuSceneName = "MainMenu";
+
+        /// <summary>Không còn dùng (nút Về sảnh đã thay bằng Menu chính); giữ lại để không mất dữ liệu đã lưu trong scene.</summary>
+        [HideInInspector] public UnityEvent onReturnToLobby;
 
         /// <summary>Hiện dòng ghi chú số khu chưa có nhiệm vụ (hữu ích khi còn phát triển; tắt khi phát hành).</summary>
         public bool showMissingNote = true;
 
         GameObject root;
         Text bodyText;
-        Button lobbyButton;
         bool shown;
         static Font font;
 
@@ -42,6 +45,7 @@ namespace TheReturn
         /// <summary>Không nhận tham số; dựng giao diện nếu chưa có, điền danh sách khu đã xong, hiện lớp phủ và THẢ con trỏ chuột để bấm nút.</summary>
         void Show()
         {
+            SessionExit.GameFinished = true;
             BuildUi();
             WinSummary summary = WinSummary.Build(missionFlow.Registry.Progress);
             var sb = new System.Text.StringBuilder();
@@ -53,7 +57,6 @@ namespace TheReturn
                 sb.AppendLine("Còn " + summary.MissingAreaNames.Count + " khu chưa có nhiệm vụ (sẽ được thêm sau): " + string.Join(", ", summary.MissingAreaNames));
             }
             bodyText.text = sb.ToString();
-            lobbyButton.gameObject.SetActive(onReturnToLobby != null && onReturnToLobby.GetPersistentEventCount() > 0);
             root.SetActive(true);
             shown = true;
             PrototypePartyController.SetCursor(false);
@@ -108,7 +111,7 @@ namespace TheReturn
             bodyText.rectTransform.offsetMax = new Vector2(-60f, -150f);
 
             MakeButton(panel.transform, "Chơi lại", -290f, OnReplay);
-            lobbyButton = MakeButton(panel.transform, "Về sảnh", 0f, OnLobby);
+            MakeButton(panel.transform, "Menu chính", 0f, OnMainMenu);
             MakeButton(panel.transform, "Thoát", 290f, OnQuit);
             root.SetActive(false);
         }
@@ -176,10 +179,11 @@ namespace TheReturn
             PrototypePartyController.SetCursor(true);
         }
 
-        /// <summary>Không nhận tham số; Về sảnh: gọi các listener đã nối (Sảnh chờ, T-008).</summary>
-        void OnLobby()
+        /// <summary>Không nhận tham số; Menu chính: thả chuột rồi gọi SessionExit.ReturnToMenu (online thì rời phòng + tắt mạng trước, T-048; không thì nạp thẳng scene mainMenuSceneName).</summary>
+        void OnMainMenu()
         {
-            if (onReturnToLobby != null) onReturnToLobby.Invoke();
+            PrototypePartyController.SetCursor(false);
+            SessionExit.ReturnToMenu(mainMenuSceneName);
         }
 
         /// <summary>Không nhận tham số; Thoát: dừng Play Mode trong Editor, đóng game trong bản build.</summary>

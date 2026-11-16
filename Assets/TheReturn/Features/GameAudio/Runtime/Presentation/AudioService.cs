@@ -37,6 +37,9 @@ namespace TheReturn
             if (Instance != null && Instance != this) { Destroy(gameObject); return; }
             Instance = this;
             AudioHub.Set(this);
+            // Cue tùy chọn (chưa có clip thì im lặng, không cảnh báo): âm rê chuột/kéo thanh trượt/công tắc và nhạc nền menu/sảnh.
+            missing.Add(AudioCues.UiHover); missing.Add(AudioCues.UiSlider); missing.Add(AudioCues.UiToggle);
+            missing.Add(AudioCues.MusicMenu); missing.Add(AudioCues.MusicLobby);
             ambience = MakeSource("Ambience"); ambience.loop = true; ambience.volume = 0f;
             for (int i = 0; i < poolSize; i++) pool.Add(MakeSource("Sfx_" + i));
             for (int i = 0; i < 2; i++) { music[i] = MakeSource("Music_" + i); music[i].loop = true; music[i].volume = 0f; }
@@ -61,6 +64,13 @@ namespace TheReturn
         {
             int i = (int)bus; if (i < 0 || i >= busVolume.Length) return;
             busVolume[i] = Mathf.Clamp01(value);
+        }
+
+        /// <summary>Nhận mã cue; trả true nếu bảng hiện tại có clip cho cue đó.</summary>
+        public bool HasCue(string cue)
+        {
+            AudioCueBank.Entry e;
+            return bank != null && bank.TryGet(cue, out e);
         }
 
         /// <summary>Nhận mã cue; phát 2D.</summary>

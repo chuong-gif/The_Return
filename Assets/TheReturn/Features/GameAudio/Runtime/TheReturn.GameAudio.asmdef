@@ -1,6 +1,8 @@
 {
   "name": "TheReturn.GameAudio",
   "references": [
-    "TheReturn.GameAudio.Domain"
+    "TheReturn.GameAudio.Domain",
+    "Unity.ugui",
+    "Unity.InputSystem"
   ]
 }

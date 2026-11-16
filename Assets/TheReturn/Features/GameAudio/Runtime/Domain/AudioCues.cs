@@ -14,6 +14,9 @@ namespace TheReturn
         // Giao diện và luồng game
         public const string UiClick = "ui.click";
         public const string UiSwitchPlayer = "ui.switch_player";
+        public const string UiHover = "ui.hover";
+        public const string UiSlider = "ui.slider";
+        public const string UiToggle = "ui.toggle";
         public const string AreaStart = "area.start";
         public const string AreaDone = "area.done";
         public const string AreaFail = "area.fail";
@@ -26,9 +29,12 @@ namespace TheReturn
         public const string GateLock = "gate.lock";
         // Di chuyển
         public const string Step = "step.floor";
+        public const string Jump = "player.jump";
         // Nhạc và nền
         public const string MusicYard = "music.yard";
         public const string MusicMission = "music.mission";
+        public const string MusicMenu = "music.menu";
+        public const string MusicLobby = "music.lobby";
         public const string AmbSchool = "amb.school";
         // Theo khu
         public const string SeatSit = "p1.sit";
